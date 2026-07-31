@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Падежи · Los 6 casos del ruso</title>
+<style>
+:root{
+  --bg:#0F0F14; --bg2:#17171E; --bg3:#1E1E28;
+  --panel:#1A1A24; --panel2:#1E1E28; --border:#2A2A38;
+  --gold:#C9A84C; --gold-soft:#E2B86A; --goldD:#C9A84C33;
+  --cream:#F0EEE8; --muted:#888080; --sub:#B8B0A8;
+  --good:#4CAF82; --bad:#E2884A; --radius:14px;
+  --sans:-apple-system,BlinkMacSystemFont,"Inter","Helvetica Neue",Arial,sans-serif;
+  --serif:-apple-system,BlinkMacSystemFont,"Inter","Helvetica Neue",Arial,sans-serif;
+  --mono:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+}
+[data-theme="light"]{
+  --bg:#F7F5F0; --bg2:#EDEAE4; --bg3:#E2DED7;
+  --panel:#FFFFFF; --panel2:#E2DED7; --border:#D5D0C8;
+  --gold:#C9A84C; --gold-soft:#C9A84C;
+  --cream:#1A1812; --muted:#8A847A; --sub:#5A5450;
+  --good:#2E7D55; --bad:#C85A1A;
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:var(--sans);background:var(--bg);color:var(--cream);min-height:100vh;transition:background .3s,color .3s;}
+h1,h2,h3{font-family:var(--serif);font-weight:700;margin:0 0 .4em;}
+button{font-family:var(--sans);cursor:pointer;}
+.wrap{max-width:760px;margin:0 auto;padding:20px 16px 80px;}
+header.top{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:10;}
+.brand{display:flex;align-items:center;gap:10px;}
+.brand .glyph{width:34px;height:34px;border-radius:10px;background:var(--panel2);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:700;color:var(--gold);font-size:16px;}
+.brand h1{font-size:17px;letter-spacing:.03em;margin:0;}
+.brand .sub{font-size:11px;color:var(--sub);margin-top:1px;}
+.top-actions{display:flex;gap:8px;align-items:center;}
+.iconbtn{background:none;border:1px solid var(--border);color:var(--cream);width:34px;height:34px;border-radius:50%;font-size:15px;display:flex;align-items:center;justify-content:center;transition:.15s;}
+.iconbtn:hover{border-color:var(--gold);color:var(--gold);}
+.xp-pill{background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:12px;font-family:var(--mono);color:var(--gold);display:flex;gap:6px;align-items:center;white-space:nowrap;}
+
+.wheel-section{display:flex;flex-direction:column;align-items:center;gap:6px;margin:18px 0 28px;}
+.wheel{position:relative;width:230px;height:230px;margin:8px auto;}
+.wheel-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:88px;height:88px;border-radius:50%;background:var(--panel2);display:flex;align-items:center;justify-content:center;text-align:center;font-family:var(--serif);font-size:13px;color:var(--gold);border:1px solid var(--border);}
+.wheel-node{position:absolute;width:74px;height:74px;border-radius:50%;background:var(--panel);border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;color:var(--muted);transition:.2s;cursor:pointer;}
+.wheel-node b{font-family:var(--serif);font-size:13px;color:var(--cream);display:block;}
+.wheel-node.done{border-color:var(--gold);}
+.wheel-node.done b{color:var(--gold);}
+.wheel-node:hover{border-color:var(--gold);transform:translateY(-2px);}
+
+.module-list{display:flex;flex-direction:column;gap:10px;}
+.mcard{background:var(--panel);border-radius:var(--radius);padding:14px 16px;display:flex;align-items:center;gap:14px;border:1px solid var(--border);cursor:pointer;transition:.2s;}
+.mcard:hover{border-color:var(--gold);transform:translateY(-2px);}
+.mcard .num{font-family:var(--serif);font-size:22px;color:var(--gold);min-width:28px;}
+.mcard .info{flex:1;}
+.mcard .info .name{font-weight:600;font-size:15px;}
+.mcard .info .desc{font-size:12px;color:var(--muted);margin-top:2px;}
+.progressbar{height:5px;border-radius:4px;background:var(--bg3);overflow:hidden;margin-top:6px;}
+.progressbar > div{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-soft));}
+.mcard .go{background:var(--gold);color:#0F0F14;border:none;border-radius:20px;padding:8px 14px;font-size:12px;font-weight:700;}
+
+.section-title{font-size:10.5px;text-transform:uppercase;letter-spacing:.11em;color:var(--gold);font-weight:600;margin:26px 0 10px;}
+
+.theory-card{background:var(--panel);border-radius:var(--radius);padding:18px;margin-bottom:14px;border-left:3px solid var(--gold);}
+.theory-card table{width:100%;border-collapse:collapse;margin-top:10px;font-size:13px;}
+.theory-card td,.theory-card th{padding:6px 8px;border-bottom:1px solid var(--border);text-align:left;}
+.theory-card th{color:var(--gold);font-weight:600;}
+.tag{display:inline-block;background:var(--goldD);color:var(--gold);border:1px solid var(--gold);border-radius:8px;padding:2px 8px;font-size:11px;font-family:var(--mono);margin-right:6px;}
+.startbtn{width:100%;padding:14px;border:none;border-radius:10px;background:var(--gold);color:#0F0F14;font-weight:700;font-size:15px;margin-top:8px;transition:filter .15s;}
+.startbtn:hover{filter:brightness(1.08);}
+
+.level-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0;}
+.level-card{background:var(--panel);border-radius:12px;padding:14px;border:1px solid var(--border);}
+.level-card b{font-family:var(--serif);font-size:16px;color:var(--gold);display:block;}
+.level-card .d{font-size:11px;color:var(--sub);margin:4px 0 10px;line-height:1.4;min-height:44px;}
+.level-card button{width:100%;padding:9px;border-radius:8px;border:none;background:var(--gold);color:#0F0F14;font-weight:700;font-size:13px;}
+.level-card.soon{opacity:.45;}
+.level-card.soon button{background:var(--panel2);color:var(--muted);}
+.level-card .acc{font-size:11px;color:var(--muted);margin-top:6px;}
+
+.exercise-header{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+.exercise-header .track{flex:1;height:4px;border-radius:4px;background:var(--bg3);overflow:hidden;}
+.exercise-header .track>div{height:100%;background:var(--gold);}
+.exercise-header .counter{font-family:var(--mono);font-size:12px;color:var(--muted);white-space:nowrap;}
+.qcard{background:var(--panel);border-radius:var(--radius);padding:22px;border:1px solid var(--border);}
+.qcard .qtype{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:10px;}
+.qcard .prompt{font-family:var(--serif);font-size:19px;font-weight:500;line-height:1.5;margin-bottom:6px;}
+.qcard .hint{font-size:12px;color:var(--muted);margin-bottom:4px;}
+.qcard .transhint{font-size:12px;color:var(--sub);margin-bottom:16px;padding:10px 12px;background:var(--bg2);border-radius:10px;line-height:1.5;}
+.qcard .transhint b{color:var(--gold);font-size:14px;}
+.qcard .blank, .dropzone{color:var(--gold);border-bottom:2px dotted var(--gold);padding:0 4px;}
+.dropzone{display:inline-block;min-width:70px;text-align:center;}
+.dropzone.filled{border-bottom-style:solid;}
+.options{display:flex;flex-direction:column;gap:7px;}
+.opt{padding:12px 15px;border-radius:10px;border:1px solid var(--border);background:var(--panel2);text-align:left;font-size:14.5px;color:var(--cream);transition:.15s;}
+.opt:hover:not([disabled]){border-color:var(--gold);}
+.opt:active{transform:scale(.98);}
+.opt.correct{border-color:var(--good);background:rgba(76,175,130,.13);color:var(--good);}
+.opt.wrong{border-color:var(--bad);background:rgba(226,136,74,.13);color:var(--bad);}
+.textrow{display:flex;gap:8px;margin-top:4px;}
+.textrow input{flex:1;padding:12px 14px;border-radius:10px;border:1px solid var(--border);background:var(--panel2);color:var(--cream);font-size:16px;}
+.textrow input:focus{outline:none;border-color:var(--gold);}
+.textrow button{padding:0 18px;border-radius:10px;border:none;background:var(--gold);color:#0F0F14;font-weight:700;}
+.chiprow{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;}
+.chip{padding:9px 15px;border-radius:8px;border:1px solid var(--border);background:var(--panel2);font-size:15px;font-family:var(--serif);color:var(--cream);transition:.15s;}
+.chip:hover:not([disabled]){border-color:var(--gold);}
+.chip.used{opacity:.3;pointer-events:none;}
+.chip.selected{border-color:var(--gold);background:var(--goldD);}
+.explain{margin-top:16px;padding:12px 14px;border-radius:10px;font-size:13.5px;line-height:1.6;}
+.explain b{color:var(--cream);}
+.explain.ok{background:rgba(76,175,130,.13);border:1px solid var(--good);color:var(--good);}
+.explain.no{background:rgba(226,136,74,.13);border:1px solid var(--bad);color:var(--bad);}
+.nextbtn{margin-top:14px;width:100%;padding:13px;border:none;border-radius:10px;background:var(--gold);color:#0F0F14;font-weight:700;font-size:15px;}
+.speakbtn{background:none;border:1px solid var(--border);color:var(--gold);border-radius:50%;width:30px;height:30px;font-size:13px;margin-left:6px;vertical-align:middle;}
+.speakbtn:hover{border-color:var(--gold);}
+
+.result-hero{text-align:center;padding:30px 10px;}
+.result-hero .big{font-family:var(--serif);font-size:46px;color:var(--gold);}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0;}
+.stat-box{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center;}
+.stat-box .n{font-family:var(--serif);font-size:22px;color:var(--gold);}
+.stat-box .l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-top:2px;}
+
+.dict-search{width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--border);background:var(--panel2);color:var(--cream);font-size:15px;margin-bottom:14px;}
+.dict-search:focus{outline:none;border-color:var(--gold);}
+.word-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:10px;}
+.word-card .head{display:flex;align-items:center;justify-content:space-between;cursor:pointer;}
+.word-card .ru{font-family:var(--serif);font-size:19px;color:var(--gold);}
+.word-card .es{color:var(--sub);font-size:13px;}
+.word-card .pron{color:var(--muted);font-size:11px;font-style:italic;}
+.word-card table{width:100%;margin-top:12px;border-collapse:collapse;font-size:13px;display:none;}
+.word-card.open table{display:table;}
+.word-card td{padding:5px 6px;border-bottom:1px solid var(--border);}
+.word-card td:first-child{color:var(--gold);width:34%;}
+
+nav.bottom{position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:1px solid var(--border);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:flex;padding:6px 0 max(6px,env(safe-area-inset-bottom));z-index:10;}
+nav.bottom button{flex:1;background:none;border:none;color:var(--muted);font-size:10px;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;border-radius:10px;}
+nav.bottom button .ic{font-size:19px;}
+nav.bottom button.active{color:var(--gold);}
+.empty{text-align:center;color:var(--muted);padding:40px 10px;font-size:14px;}
+@media(min-width:600px){.wrap{padding-top:26px;}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <div class="glyph">П</div>
+    <div>
+      <h1>Падежи</h1>
+      <div class="sub">Los 6 casos del ruso</div>
+    </div>
+  </div>
+  <div class="top-actions">
+    <div class="xp-pill">⚡ <span id="xpLabel">0</span></div>
+    <button class="iconbtn" id="themeBtn" title="Modo claro/oscuro">◐</button>
+  </div>
+</header>
+
+<div class="wrap" id="app"></div>
+
+<nav class="bottom">
+  <button data-view="home" class="active"><span class="ic">🏠</span>Inicio</button>
+  <button data-view="review"><span class="ic">🔁</span>Repaso</button>
+  <button data-view="dict"><span class="ic">📖</span>Diccionario</button>
+  <button data-view="stats"><span class="ic">📊</span>Estadísticas</button>
+</nav>
+
+<script>
+/* =========================================================
+   CASOS
+========================================================= */
+const CASE_META = {
+  nom:{id:'nom',es:'Nominativo',short:'Nom.',color:'#C9A84C',
+    rule:'El caso del sujeto: quién o qué realiza la acción, o "quién/qué es esto". Es la forma que encontrarás en el diccionario.',
+    example:'Это стол. — Esto es una mesa.'},
+  acc:{id:'acc',es:'Acusativo',short:'Ac.',color:'#E2884A',
+    rule:'El caso del objeto directo (a quién / qué). Con sustantivos inanimados, la forma es igual al nominativo. Con sustantivos animados, es igual al genitivo (en masculino singular).',
+    example:'Я вижу стол (inanimado). Я вижу брата (animado).'},
+  gen:{id:'gen',es:'Genitivo',short:'Gen.',color:'#4CAF82',
+    rule:'Expresa posesión ("de"), ausencia ("нет" = no hay), cantidad, y aparece tras preposiciones como у, из, для, без, до, около.',
+    example:'У меня нет брата. — No tengo hermano.'},
+  dat:{id:'dat',es:'Dativo',short:'Dat.',color:'#4B6FAB',
+    rule:'El caso del destinatario ("a quién"). Se usa con звонить, давать, помогать, y en construcciones impersonales de edad/sentimientos.',
+    example:'Я звоню брату. — Llamo a mi hermano.'},
+  inst:{id:'inst',es:'Instrumental',short:'Inst.',color:'#E2B86A',
+    rule:'Expresa el instrumento o medio ("con qué/con quién"), y se usa con быть/стать y con la preposición с (con).',
+    example:'Я работаю с братом. — Trabajo con mi hermano.'},
+  prep:{id:'prep',es:'Preposicional',short:'Prep.',color:'#9B7FE8',
+    rule:'El único caso que SIEMPRE va con preposición: о/об (sobre), в (en), на (en/sobre). Para hablar de temas o de ubicación.',
+    example:'Я думаю о брате. — Pienso en mi hermano.'}
+};
+const CASE_ORDER = ['nom','acc','gen','dat','inst','prep'];
+const GENDER_LABEL = {m:'masculino',f:'femenino',n:'neutro'};
+
+/* =========================================================
+   TRANSLITERACIÓN APROXIMADA (Cirílico -> español)
+========================================================= */
+const PRON_MAP = {'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ё':'io','ж':'zh','з':'z','и':'i','й':'i',
+  'к':'k','л':'l','м':'m','н':'n','о':'o','п':'p','р':'r','с':'s','т':'t','у':'u','ф':'f',
+  'х':'j','ц':'ts','ч':'ch','ш':'sh','щ':'sch','ъ':'','ы':'i','ь':'','э':'e','ю':'iu','я':'ia'};
+function approxPron(ru){
+  let out='';
+  for(const ch of ru.toLowerCase()){ out += PRON_MAP.hasOwnProperty(ch) ? PRON_MAP[ch] : ch; }
+  return out;
+}
+
+/* =========================================================
+   MOTOR DE DECLINACIÓN
+========================================================= */
+const SIB_VELAR = ['г','к','х','ж','ч','ш','щ'];
+const SIB_INST = ['ж','ч','ш','щ','ц'];
+function declineRegular(nom, type, animate){
+  const last = s=>s.slice(-1);
+  let stem, f={};
+  if(type==='m-hard'){
+    stem = nom;
+    f.nom = nom; f.gen = stem+'а'; f.dat = stem+'у';
+    f.acc = animate ? f.gen : nom;
+    f.inst = stem + (SIB_INST.includes(last(stem)) ? 'ем':'ом');
+    f.prep = stem+'е';
+  } else if(type==='m-soft-ь' || type==='m-soft-й'){
+    stem = nom.slice(0,-1);
+    f.nom = nom; f.gen = stem+'я'; f.dat = stem+'ю';
+    f.acc = animate ? f.gen : nom;
+    f.inst = stem+'ем'; f.prep = stem+'е';
+  } else if(type==='f-a'){
+    stem = nom.slice(0,-1);
+    f.nom = nom; f.acc = stem+'у';
+    f.gen = stem + (SIB_VELAR.includes(last(stem)) ? 'и':'ы');
+    f.dat = stem+'е'; f.inst = stem+'ой'; f.prep = stem+'е';
+  } else if(type==='f-ya'){
+    stem = nom.slice(0,-1);
+    f.nom = nom; f.acc = stem+'ю'; f.gen = stem+'и';
+    f.dat = stem+'е'; f.inst = stem+'ей'; f.prep = stem+'е';
+  } else if(type==='f-soft'){
+    stem = nom.slice(0,-1);
+    f.nom = nom; f.acc = nom; f.gen = stem+'и';
+    f.dat = stem+'и'; f.inst = stem+'ью'; f.prep = stem+'и';
+  } else if(type==='n-o'){
+    stem = nom.slice(0,-1);
+    f.nom = nom; f.acc = nom; f.gen = stem+'а'; f.dat = stem+'у';
+    f.inst = stem + (SIB_INST.includes(last(stem)) ? 'ем':'ом');
+    f.prep = stem+'е';
+  } else if(type==='n-e'){
+    stem = nom.slice(0,-1);
+    f.nom = nom; f.acc = nom; f.gen = stem+'я'; f.dat = stem+'ю';
+    f.inst = stem+'ем'; f.prep = stem+'е';
+  }
+  return f;
+}
+function genderOf(type){
+  if(type.startsWith('m-')) return 'm';
+  if(type.startsWith('f-')) return 'f';
+  return 'n';
+}
+
+/* =========================================================
+   BANCO DE PALABRAS (~300+)
+   Formato regular: "ru:es"
+========================================================= */
+const REG = {
+'m-hard':{animate:false,list:[
+ 'стол:mesa/escritorio','дом:casa','город:ciudad','стул:silla','шкаф:armario','завод:fábrica','банк:banco','парк:parque',
+ 'урок:lección','ответ:respuesta','вопрос:pregunta','вагон:vagón (de tren)','билет:boleto/entrada','поезд:tren','автобус:autobús',
+ 'магазин:tienda','телефон:teléfono','компьютер:computadora','интернет:internet','университет:universidad','институт:instituto',
+ 'завтрак:desayuno','обед:almuerzo','ужин:cena','хлеб:pan','суп:sopa','сыр:queso','сахар:azúcar','стакан:vaso','пол:piso/suelo',
+ 'двор:patio','сад:jardín','лес:bosque','остров:isla','океан:océano','вокзал:estación de tren','аэропорт:aeropuerto',
+ 'паспорт:pasaporte','документ:documento','журнал:revista','фильм:película','театр:teatro','стадион:estadio','спорт:deporte',
+ 'футбол:fútbol','снег:nieve','мороз:frío intenso','дым:humo','воздух:aire','свет:luz','цвет:color','вкус:sabor','запах:olor',
+ 'звук:sonido','голос:voz','взгляд:mirada','характер:carácter','возраст:edad','рост:estatura','вес:peso','размер:tamaño',
+ 'номер:número','адрес:dirección','район:barrio','банан:banana','апельсин:naranja','помидор:tomate','лимон:limón','рис:arroz',
+ 'ковёр:alfombra','диван:sofá','телевизор:televisor','холодильник:refrigerador','карандаш:lápiz','рюкзак:mochila','чемодан:maleta',
+ 'замок:castillo','мост:puente','вагон:vagón','дождик:lloviznita','ветер:viento (uso especial)','поток:corriente/flujo','рынок:mercado',
+ 'этаж:planta/piso (edificio)','заказ:pedido','отдых:descanso','праздник:fiesta/celebración','подъезд:portal/entrada','квартал:cuadra/manzana'
+]},
+'m-hard-anim':{animate:true,list:[
+ 'студент:estudiante','сосед:vecino','начальник:jefe','инженер:ingeniero','журналист:periodista','актёр:actor','солдат:soldado',
+ 'капитан:capitán','президент:presidente','министр:ministro','директор:director','доктор:doctor','кот:gato','слон:elefante',
+ 'тигр:tigre','волк:lobo','крокодил:cocodrilo','дельфин:delfín','верблюд:camello','петух:gallo','баран:carnero','бык:toro',
+ 'кролик:conejo','пациент:paciente','клиент:cliente','турист:turista','гражданин:ciudadano','миллионер:millonario','школьник:escolar',
+ 'спортсмен:deportista','чемпион:campeón','герой:héroe (variante dura)','повар:cocinero','космонавт:cosmonauta','химик:químico'
+]},
+'m-soft':{animate:false,list:[
+ 'словарь:diccionario','календарь:calendario','рубль:rublo','спектакль:obra de teatro','автомобиль:automóvil','уровень:nivel',
+ 'корабль:barco','руль:volante (coche)','ноль:cero','картофель:patata','апрель:abril','январь:enero','вентилятор:no soft omitir'
+]},
+'m-soft-anim':{animate:true,list:[
+ 'учитель:profesor','писатель:escritor','водитель:conductor','житель:habitante','зритель:espectador','читатель:lector',
+ 'родитель:padre/progenitor','гость:invitado','медведь:oso','олень:ciervo','гусь:ganso','конь:caballo','тюлень:foca'
+]},
+'m-soft-y':{animate:false,list:[
+ 'музей:museo','трамвай:tranvía','чай:té','ручей:arroyo','случай:caso/ocasión','край:borde/región','сарай:granero',
+ 'юбилей:aniversario','урожай:cosecha','обычай:costumbre'
+]},
+'m-soft-y-anim':{animate:true,list:[
+ 'герой:héroe','гений:genio','попугай:loro'
+]},
+'f-a':{animate:false,list:[
+ 'книга:libro','газета:periódico','комната:habitación','машина:coche','работа:trabajo','школа:escuela','улица:calle',
+ 'страна:país','столица:capital','картина:cuadro','музыка:música','природа:naturaleza','погода:clima','вода:agua','еда:comida',
+ 'рыба:pez/pescado','гора:montaña','река:río','дорога:camino','квартира:apartamento','библиотека:biblioteca','больница:hospital',
+ 'аптека:farmacia','минута:minuto','секунда:segundo','суббота:sábado','весна:primavera','зима:invierno','трава:hierba',
+ 'цена:precio','разница:diferencia','причина:razón/causa','система:sistema','программа:programa','группа:grupo','команда:equipo',
+ 'карта:mapa','бумага:papel','сумка:bolso','шапка:gorro','юбка:falda','рубашка:camisa','куртка:chaqueta','зарплата:salario',
+ 'встреча:encuentro/reunión','задача:tarea/problema','шутка:broma','ошибка:error','привычка:costumbre','среда:miércoles/entorno',
+ 'фабрика:fábrica','ферма:granja','деревня:no aqui','ракета:cohete','планета:planeta','наука:ciencia','техника:técnica',
+ 'победа:victoria','опасность:no aqui','основа:base/fundamento'
+]},
+'f-a-anim':{animate:true,list:[
+ 'мама:mamá','сестра:hermana','подруга:amiga','бабушка:abuela','девушка:chica joven','женщина:mujer','студентка:estudiante (f)',
+ 'учительница:maestra','актриса:actriz','собака:perro','кошка:gato (f)','корова:vaca'
+]},
+'f-ya':{animate:false,list:[
+ 'неделя:semana','кухня:cocina','деревня:pueblo/aldea','земля:tierra','семья:familia','песня:canción','линия:línea','идея:idea',
+ 'станция:estación','профессия:profesión','религия:religión','история:historia','компания:compañía','территория:territorio',
+ 'энергия:energía','фантазия:fantasía','аудитория:aula/audiencia','традиция:tradición','ситуация:situación','эмоция:emoción'
+]},
+'f-ya-anim':{animate:true,list:[
+ 'тётя:tía','судья:juez'
+]},
+'f-soft':{animate:false,list:[
+ 'ночь:noche','дверь:puerta','кровать:cama','тетрадь:cuaderno','площадь:plaza','соль:sal','боль:dolor','роль:rol','цель:objetivo',
+ 'жизнь:vida','часть:parte','вещь:cosa','помощь:ayuda','речь:habla/discurso','мысль:pensamiento','новость:noticia',
+ 'радость:alegría','грусть:tristeza','молодость:juventud','старость:vejez','болезнь:enfermedad','осень:otoño','власть:poder (político)',
+ 'честь:honor','страсть:pasión','скорость:velocidad','постель:cama/ropa de cama','мебель:muebles','запись:anotación/grabación'
+]},
+'f-soft-anim':{animate:true,list:[
+ 'лошадь:caballo (yegua)'
+]},
+'n-o':{animate:false,list:[
+ 'молоко:leche','мясо:carne','масло:mantequilla/aceite','яблоко:manzana','яйцо:huevo','облако:nube','озеро:lago','слово:palabra',
+ 'дело:asunto/negocio','место:lugar','утро:mañana','лето:verano','вино:vino','пиво:cerveza','мыло:jabón','зеркало:espejo',
+ 'кресло:sillón','колесо:rueda','золото:oro','серебро:plata','железо:hierro','стекло:vidrio','тело:cuerpo','число:número/fecha',
+ 'правило:regla','кольцо:anillo','искусство:arte','государство:estado (país)','общество:sociedad','лицо:cara/rostro',
+ 'село:pueblo/aldea','озеро:no aqui','пятно:mancha','волокно:no aqui'
+]},
+'n-e-ie':{animate:false,list:[
+ 'решение:decisión','движение:movimiento','настроение:estado de ánimo','здание:edificio','растение:planta','путешествие:viaje',
+ 'знание:conocimiento','событие:evento','воскресенье:domingo','счастье:felicidad','платье:vestido','занятие:actividad/clase',
+ 'упражнение:ejercicio','предложение:oración/oferta','объявление:anuncio','выражение:expresión','впечатление:impresión',
+ 'направление:dirección','отношение:relación','изменение:cambio','явление:fenómeno','мнение:opinión','значение:significado',
+ 'понимание:comprensión','желание:deseo','умение:habilidad','развитие:desarrollo','воспоминание:recuerdo','поведение:comportamiento'
+]},
+'n-e-pole':{animate:false,list:[
+ 'поле:campo','море:mar','горе:pena/dolor','сердце:corazón','солнце:sol'
+]}
+};
+
+const TYPE_MAP = {
+ 'm-hard':'m-hard','m-hard-anim':'m-hard','m-soft':'m-soft-ь','m-soft-anim':'m-soft-ь',
+ 'm-soft-y':'m-soft-й','m-soft-y-anim':'m-soft-й',
+ 'f-a':'f-a','f-a-anim':'f-a','f-ya':'f-ya','f-ya-anim':'f-ya',
+ 'f-soft':'f-soft','f-soft-anim':'f-soft','n-o':'n-o','n-e-ie':'n-e','n-e-pole':'n-e'
+};
+
+let _id = 0;
+const WORDS = [];
+Object.entries(REG).forEach(([groupKey,group])=>{
+  const type = TYPE_MAP[groupKey];
+  group.list.forEach(pair=>{
+    const [ru,es] = pair.split(':');
+    if(es.startsWith('no aqui') || es.startsWith('omitir')) return; // placeholders descartados
+    WORDS.push({
+      id:'w'+(_id++), ru, es, gender:genderOf(type), animate:group.animate,
+      forms: declineRegular(ru,type,group.animate)
+    });
+  });
+});
+
+/* Palabras irregulares (vocal móvil / declinación especial), formas escritas a mano */
+const IRREGULAR = [
+ {ru:'день',es:'día',gender:'m',animate:false,forms:{nom:'день',acc:'день',gen:'дня',dat:'дню',inst:'днём',prep:'дне'}},
+ {ru:'отец',es:'padre',gender:'m',animate:true,forms:{nom:'отец',acc:'отца',gen:'отца',dat:'отцу',inst:'отцом',prep:'отце'}},
+ {ru:'ребёнок',es:'niño/a',gender:'m',animate:true,forms:{nom:'ребёнок',acc:'ребёнка',gen:'ребёнка',dat:'ребёнку',inst:'ребёнком',prep:'ребёнке'}},
+ {ru:'ветер',es:'viento',gender:'m',animate:false,forms:{nom:'ветер',acc:'ветер',gen:'ветра',dat:'ветру',inst:'ветром',prep:'ветре'}},
+ {ru:'лёд',es:'hielo',gender:'m',animate:false,forms:{nom:'лёд',acc:'лёд',gen:'льда',dat:'льду',inst:'льдом',prep:'льде'}},
+ {ru:'огонь',es:'fuego',gender:'m',animate:false,forms:{nom:'огонь',acc:'огонь',gen:'огня',dat:'огню',inst:'огнём',prep:'огне'}},
+ {ru:'сон',es:'sueño',gender:'m',animate:false,forms:{nom:'сон',acc:'сон',gen:'сна',dat:'сну',inst:'сном',prep:'сне'}},
+ {ru:'конец',es:'fin/final',gender:'m',animate:false,forms:{nom:'конец',acc:'конец',gen:'конца',dat:'концу',inst:'концом',prep:'конце'}},
+ {ru:'палец',es:'dedo',gender:'m',animate:false,forms:{nom:'палец',acc:'палец',gen:'пальца',dat:'пальцу',inst:'пальцем',prep:'пальце'}},
+ {ru:'заяц',es:'liebre',gender:'m',animate:true,forms:{nom:'заяц',acc:'зайца',gen:'зайца',dat:'зайцу',inst:'зайцем',prep:'зайце'}},
+ {ru:'подарок',es:'regalo',gender:'m',animate:false,forms:{nom:'подарок',acc:'подарок',gen:'подарка',dat:'подарку',inst:'подарком',prep:'подарке'}},
+ {ru:'звонок',es:'timbre/llamada',gender:'m',animate:false,forms:{nom:'звонок',acc:'звонок',gen:'звонка',dat:'звонку',inst:'звонком',prep:'звонке'}},
+ {ru:'кусок',es:'pedazo',gender:'m',animate:false,forms:{nom:'кусок',acc:'кусок',gen:'куска',dat:'куску',inst:'куском',prep:'куске'}},
+ {ru:'значок',es:'insignia',gender:'m',animate:false,forms:{nom:'значок',acc:'значок',gen:'значка',dat:'значку',inst:'значком',prep:'значке'}},
+ {ru:'щенок',es:'cachorro',gender:'m',animate:true,forms:{nom:'щенок',acc:'щенка',gen:'щенка',dat:'щенку',inst:'щенком',prep:'щенке'}},
+ {ru:'цветок',es:'flor',gender:'m',animate:false,forms:{nom:'цветок',acc:'цветок',gen:'цветка',dat:'цветку',inst:'цветком',prep:'цветке'}},
+ {ru:'платок',es:'pañuelo',gender:'m',animate:false,forms:{nom:'платок',acc:'платок',gen:'платка',dat:'платку',inst:'платком',prep:'платке'}},
+ {ru:'носок',es:'calcetín',gender:'m',animate:false,forms:{nom:'носок',acc:'носок',gen:'носка',dat:'носку',inst:'носком',prep:'носке'}},
+ {ru:'подросток',es:'adolescente',gender:'m',animate:true,forms:{nom:'подросток',acc:'подростка',gen:'подростка',dat:'подростку',inst:'подростком',prep:'подростке'}},
+ {ru:'орёл',es:'águila',gender:'m',animate:true,forms:{nom:'орёл',acc:'орла',gen:'орла',dat:'орлу',inst:'орлом',prep:'орле'}},
+ {ru:'продавец',es:'vendedor',gender:'m',animate:true,forms:{nom:'продавец',acc:'продавца',gen:'продавца',dat:'продавцу',inst:'продавцом',prep:'продавце'}},
+ {ru:'певец',es:'cantante',gender:'m',animate:true,forms:{nom:'певец',acc:'певца',gen:'певца',dat:'певцу',inst:'певцом',prep:'певце'}},
+ {ru:'месяц',es:'mes',gender:'m',animate:false,forms:{nom:'месяц',acc:'месяц',gen:'месяца',dat:'месяцу',inst:'месяцем',prep:'месяце'}},
+ {ru:'нож',es:'cuchillo',gender:'m',animate:false,forms:{nom:'нож',acc:'нож',gen:'ножа',dat:'ножу',inst:'ножом',prep:'ноже'}},
+ {ru:'муж',es:'esposo',gender:'m',animate:true,forms:{nom:'муж',acc:'мужа',gen:'мужа',dat:'мужу',inst:'мужем',prep:'муже'}},
+ {ru:'врач',es:'médico',gender:'m',animate:true,forms:{nom:'врач',acc:'врача',gen:'врача',dat:'врачу',inst:'врачом',prep:'враче'}},
+ {ru:'товарищ',es:'camarada',gender:'m',animate:true,forms:{nom:'товарищ',acc:'товарища',gen:'товарища',dat:'товарищу',inst:'товарищем',prep:'товарище'}},
+ {ru:'гараж',es:'garaje',gender:'m',animate:false,forms:{nom:'гараж',acc:'гараж',gen:'гаража',dat:'гаражу',inst:'гаражом',prep:'гараже'}},
+ {ru:'плащ',es:'impermeable',gender:'m',animate:false,forms:{nom:'плащ',acc:'плащ',gen:'плаща',dat:'плащу',inst:'плащом',prep:'плаще'}},
+ {ru:'ёж',es:'erizo',gender:'m',animate:true,forms:{nom:'ёж',acc:'ежа',gen:'ежа',dat:'ежу',inst:'ежом',prep:'еже'}},
+ {ru:'время',es:'tiempo',gender:'n',animate:false,forms:{nom:'время',acc:'время',gen:'времени',dat:'времени',inst:'временем',prep:'времени'}},
+ {ru:'имя',es:'nombre (de pila)',gender:'n',animate:false,forms:{nom:'имя',acc:'имя',gen:'имени',dat:'имени',inst:'именем',prep:'имени'}},
+ {ru:'путь',es:'camino/vía',gender:'m',animate:false,forms:{nom:'путь',acc:'путь',gen:'пути',dat:'пути',inst:'путём',prep:'пути'}},
+ {ru:'мать',es:'madre',gender:'f',animate:true,forms:{nom:'мать',acc:'мать',gen:'матери',dat:'матери',inst:'матерью',prep:'матери'}},
+ {ru:'дочь',es:'hija',gender:'f',animate:true,forms:{nom:'дочь',acc:'дочь',gen:'дочери',dat:'дочери',inst:'дочерью',prep:'дочери'}},
+ {ru:'любовь',es:'amor',gender:'f',animate:false,forms:{nom:'любовь',acc:'любовь',gen:'любви',dat:'любви',inst:'любовью',prep:'любви'}}
+];
+IRREGULAR.forEach(w=>{ w.id='w'+(_id++); WORDS.push(w); });
+
+/* =========================================================
+   PLANTILLAS DE FRASES POR CASO (nivel 2)
+========================================================= */
+const TEMPLATES = {
+  nom:[{pre:'',post:' здесь.',es:'___ está aquí.'},{pre:'Смотри, вот ',post:'.',es:'Mira, aquí está ___.'}],
+  acc:[{pre:'Я вижу ',post:'.',es:'Veo ___.'},{pre:'Я люблю ',post:'.',es:'Amo / me gusta ___.'},{pre:'Она читает ',post:'.',es:'Ella lee ___.'}],
+  gen:[{pre:'У меня нет ',post:'.',es:'No tengo ___.'},{pre:'Это цвет ',post:'.',es:'Este es el color de ___.'},{pre:'Я жду ',post:'.',es:'Espero a/el ___.'}],
+  dat:[{pre:'Я звоню ',post:'.',es:'Llamo a ___.'},{pre:'Он пишет письмо ',post:'.',es:'Él escribe una carta a ___.'},{pre:'Мы помогаем ',post:'.',es:'Ayudamos a ___.'}],
+  inst:[{pre:'Я работаю с ',post:'.',es:'Trabajo con ___.'},{pre:'Она гордится ',post:'.',es:'Ella está orgullosa de ___.'},{pre:'Мы довольны ',post:'.',es:'Estamos contentos con ___.'}],
+  prep:[{pre:'Я думаю о ',post:'.',es:'Pienso en ___.'},{pre:'Мы говорим о ',post:'.',es:'Hablamos de ___.'}]
+};
+
+/* =========================================================
+   UTILIDADES
+========================================================= */
+function shuffle(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function transHint(word, formShown){
+  const pron = approxPron(formShown||word.ru);
+  return `<b>${word.es}</b><br>/${pron}/`;
+}
+function explainCase(word,caseKey){
+  const meta = CASE_META[caseKey];
+  let animNote='';
+  if(caseKey==='acc'){
+    animNote = word.animate
+      ? ` Como «${word.ru}» es animado, el acusativo copia la forma del genitivo (${word.forms.gen}).`
+      : ` Como «${word.ru}» es inanimado, el acusativo es igual al nominativo (${word.forms.nom}).`;
+  }
+  return `<b>${meta.es} (${meta.short})</b> — ${meta.rule}${animNote}<br><br>«${word.ru}» es ${GENDER_LABEL[word.gender]}${word.animate?', animado':''}. En este caso: <b>${word.forms[caseKey]}</b>.`;
+}
+
+/* Rotación de palabras para evitar repeticiones entre sesiones */
+function nextWordBatch(key, count){
+  STATE.cursors = STATE.cursors || {};
+  const n = WORDS.length;
+  let cursor = STATE.cursors[key] || 0;
+  const batch = [];
+  const used = new Set();
+  for(let i=0;i<count && used.size<n;i++){
+    const w = WORDS[(cursor+i)%n];
+    batch.push(w); used.add(w.id);
+  }
+  STATE.cursors[key] = (cursor+count)%n;
+  saveState();
+  return batch;
+}
+
+/* =========================================================
+   GENERADORES DE EJERCICIOS
+========================================================= */
+function distractorsFor(word,caseKey){
+  const others = CASE_ORDER.filter(c=>c!==caseKey).map(c=>word.forms[c]);
+  return shuffle([...new Set(others)].filter(f=>f!==word.forms[caseKey])).slice(0,3);
+}
+
+// Nivel 1 — terminación / género / animacidad de UNA palabra (sin frase)
+function buildLevel1(word, caseKey, idx, sessionId){
+  if(caseKey==='nom'){
+    const askGender = Math.random()<0.6;
+    if(askGender){
+      return {id:`${sessionId}-${idx}`, type:'mcq', caseKey:'nom', wordRu:word.ru,
+        prompt:`¿Cuál es el género de <b>«${word.ru}»</b>?`,
+        transhint: transHint(word),
+        options: shuffle(['masculino','femenino','neutro']),
+        correct: GENDER_LABEL[word.gender],
+        explain:`«${word.ru}» es <b>${GENDER_LABEL[word.gender]}</b>${word.animate?' y además animado (persona o animal)':''}. Regla general: consonante final = masculino, -а/-я = femenino, -о/-е = neutro (con excepciones).`};
+    } else {
+      return {id:`${sessionId}-${idx}`, type:'mcq', caseKey:'nom', wordRu:word.ru,
+        prompt:`¿«${word.ru}» es animado o inanimado?`,
+        transhint: transHint(word),
+        options:['Animado','Inanimado'],
+        correct: word.animate?'Animado':'Inanimado',
+        explain:`«${word.ru}» (${word.es}) es <b>${word.animate?'animado':'inanimado'}</b>. Los animados son personas y animales; esto es clave para el acusativo.`};
+    }
+  }
+  const correct = word.forms[caseKey];
+  const opts = distractorsFor(word,caseKey);
+  while(opts.length<3){
+    const other = WORDS[Math.floor(Math.random()*WORDS.length)];
+    const f = other.forms[caseKey];
+    if(f!==correct && !opts.includes(f)) opts.push(f);
+  }
+  return {id:`${sessionId}-${idx}`, type:'mcq', caseKey, wordRu:word.ru,
+    prompt:`¿Cuál es la forma de <b>${CASE_META[caseKey].es}</b> de <b>«${word.ru}»</b>?`,
+    transhint: transHint(word),
+    options: shuffle([correct,...opts]),
+    correct,
+    explain: explainCase(word,caseKey)};
+}
+
+// Nivel 2 — frase con hueco + 4 fichas (formas de la MISMA palabra) para tocar/colocar
+function buildLevel2(word, caseKey, idx, sessionId){
+  const templates = TEMPLATES[caseKey];
+  const t = templates[idx % templates.length];
+  const correct = word.forms[caseKey];
+  let otherCases = shuffle(CASE_ORDER.filter(c=>c!==caseKey));
+  const chipForms = [correct];
+  for(const c of otherCases){
+    const f = word.forms[c];
+    if(!chipForms.includes(f)) chipForms.push(f);
+    if(chipForms.length>=4) break;
+  }
+  while(chipForms.length<4){ chipForms.push(correct); } // por si la palabra tiene formas repetidas
+  return {id:`${sessionId}-${idx}`, type:'drag', caseKey, wordRu:word.ru,
+    pre:t.pre, post:t.post,
+    prompt: t.es.replace('___', `«${word.es}»`),
+    transhint: transHint(word, correct),
+    chips: shuffle(chipForms),
+    correct,
+    explain: explainCase(word,caseKey)};
+}
+
+// Nivel 3 — frase larga (2-3 huecos), misma dinámica de fichas que el nivel 2, un hueco activo a la vez
+function buildLevel3(caseKey, words, idx, sessionId){
+  const t = TEMPLATES[caseKey][0];
+  const blanks = words.map(word=>{
+    const correct = word.forms[caseKey];
+    let otherCases = shuffle(CASE_ORDER.filter(c=>c!==caseKey));
+    const chipForms = [correct];
+    for(const c of otherCases){
+      const f = word.forms[c];
+      if(!chipForms.includes(f)) chipForms.push(f);
+      if(chipForms.length>=4) break;
+    }
+    while(chipForms.length<4){ chipForms.push(correct); }
+    return {word, correct, chips: shuffle(chipForms)};
+  });
+  return {id:`${sessionId}-${idx}`, type:'drag3', caseKey,
+    pre:t.pre, post:t.post, blanks, blankIdx:0, blankAnswers:[],
+    explain: blanks.map(b=>explainCase(b.word,caseKey)).join('<br><br>')};
+}
+
+function buildLevel3Session(caseKey, sessionId, exerciseCount){
+  const pool = nextWordBatch(`${caseKey}-3`, exerciseCount*3);
+  let idx=0; const ex=[];
+  for(let i=0;i<exerciseCount;i++){
+    const n = 2 + Math.floor(Math.random()*2); // 2 o 3 palabras
+    const words = [];
+    for(let j=0;j<n;j++){ words.push(pool[idx % pool.length]); idx++; }
+    ex.push(buildLevel3(caseKey, words, i, sessionId));
+  }
+  return shuffle(ex);
+}
+
+// Nivel 4 — se muestra solo la palabra base; el usuario escribe la forma declinada
+function buildLevel4(word, caseKey, idx, sessionId){
+  const templates = TEMPLATES[caseKey];
+  const t = templates[idx % templates.length];
+  const correct = word.forms[caseKey];
+  return {id:`${sessionId}-${idx}`, type:'fill', caseKey, wordRu:word.ru,
+    pre:t.pre, post:t.post,
+    baseWord: word.ru, baseEs: word.es,
+    transhint: transHint(word),
+    correct,
+    explain: explainCase(word,caseKey)};
+}
+
+function buildSession(caseKey, level, sessionId, count){
+  if(level===3) return buildLevel3Session(caseKey, sessionId, count);
+  const batch = nextWordBatch(`${caseKey}-${level}`, count);
+  const builders = {1:buildLevel1, 2:buildLevel2, 4:buildLevel4};
+  const ex = batch.map((w,i)=> builders[level](w,caseKey,i,sessionId));
+  return shuffle(ex);
+}
+
+function buildModule0(count){
+  const batch = nextWordBatch('m0', count);
+  return shuffle(batch.map((w,i)=>buildLevel1(w,'nom',i,'m0')));
+}
+
+function buildReviewMix(count){
+  const batch = nextWordBatch('mix', count);
+  const ex = [];
+  batch.forEach((w,i)=>{
+    const caseKey = CASE_ORDER[1+Math.floor(Math.random()*5)];
+    ex.push(Math.random()<0.5 ? buildLevel1(w,caseKey,i,'mix') : buildLevel2(w,caseKey,i,'mix'));
+  });
+  return shuffle(ex);
+}
+
+/* =========================================================
+   MÓDULOS
+========================================================= */
+const MODULES = [
+  {id:0,key:'m0',title:'Introducción',subtitle:'Qué son los casos, género y animacidad',caseKey:null},
+  {id:1,key:'nom',title:'Nominativo',subtitle:'El sujeto de la frase'},
+  {id:2,key:'acc',title:'Acusativo',subtitle:'El objeto directo — ¿a quién / qué?'},
+  {id:3,key:'gen',title:'Genitivo',subtitle:'Posesión, ausencia y cantidad'},
+  {id:4,key:'dat',title:'Dativo',subtitle:'El destinatario — ¿a quién?'},
+  {id:5,key:'inst',title:'Instrumental',subtitle:'¿Con qué / con quién?'},
+  {id:6,key:'prep',title:'Preposicional',subtitle:'De qué se habla, dónde'},
+  {id:7,key:'mix',title:'Repaso mixto',subtitle:'Los 6 casos combinados'}
+];
+MODULES.forEach((m,i)=>{ if(i>=1 && i<=6) m.caseKey = CASE_ORDER[i-1]; });
+
+const LEVEL_INFO = [
+  {n:1,title:'Nivel 1',desc:'Identifica la terminación, el género o la animacidad de una palabra.'},
+  {n:2,title:'Nivel 2',desc:'Coloca la forma correcta de la palabra en una frase (4 opciones).'},
+  {n:3,title:'Nivel 3',desc:'Frases más largas con hasta 3 palabras, hueco por hueco.'},
+  {n:4,title:'Nivel 4',desc:'Se da la palabra base — escribe tú la forma correcta.'}
+];
+
+/* =========================================================
+   ESTADO / PERSISTENCIA (window.storage — compatible con artifacts)
+========================================================= */
+const STORE_KEY = 'ruCasesApp_v2';
+function defaultState(){
+  return {
+    xp:0, streak:0, lastStudyDate:null, theme:'dark',
+    levelStats:{}, // "caseKey-level" -> {correct,total,bestAccuracy,attempts}
+    caseStats:{},  // caseKey -> {correct,total}
+    wrongWords:{}, // ru -> count
+    cursors:{}      // rotación para evitar repeticiones
+  };
+}
+let STATE = defaultState();
+async function loadState(){
+  try{
+    const result = await window.storage.get(STORE_KEY, false);
+    if(result && result.value){ STATE = Object.assign(defaultState(), JSON.parse(result.value)); }
+  }catch(e){ /* sin progreso guardado todavía */ }
+}
+function saveState(){ window.storage.set(STORE_KEY, JSON.stringify(STATE), false).catch(()=>{}); }
+
+function touchStreak(){
+  const today = new Date().toISOString().slice(0,10);
+  if(STATE.lastStudyDate===today) return;
+  const yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
+  STATE.streak = (STATE.lastStudyDate===yesterday) ? STATE.streak+1 : 1;
+  STATE.lastStudyDate = today;
+  saveState();
+}
+function addXP(n){ STATE.xp += n; saveState(); document.getElementById('xpLabel').textContent = STATE.xp; }
+function recordAnswer(caseKey,correct,wordRu){
+  if(caseKey){
+    const cs = STATE.caseStats[caseKey] || {correct:0,total:0};
+    cs.total++; if(correct) cs.correct++;
+    STATE.caseStats[caseKey]=cs;
+  }
+  if(!correct && wordRu){ STATE.wrongWords[wordRu] = (STATE.wrongWords[wordRu]||0)+1; }
+  saveState();
+}
+function recordLevelResult(key, correctCount, total){
+  const acc = Math.round(correctCount/total*100);
+  const s = STATE.levelStats[key] || {correct:0,total:0,bestAccuracy:0,attempts:0};
+  s.correct += correctCount; s.total += total; s.attempts++;
+  s.bestAccuracy = Math.max(s.bestAccuracy, acc);
+  STATE.levelStats[key] = s;
+  saveState();
+  return acc;
+}
+
+/* theme */
+function applyTheme(){
+  document.documentElement.setAttribute('data-theme', STATE.theme);
+  document.getElementById('themeBtn').textContent = STATE.theme==='dark' ? '◐' : '◑';
+}
+document.getElementById('themeBtn').onclick = ()=>{
+  STATE.theme = STATE.theme==='dark' ? 'light' : 'dark';
+  saveState(); applyTheme();
+};
+
+/* speech */
+function speak(text){
+  try{
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang='ru-RU'; u.rate=0.85;
+    const voices = speechSynthesis.getVoices();
+    const ruVoice = voices.find(v=>v.lang.startsWith('ru'));
+    if(ruVoice) u.voice = ruVoice;
+    speechSynthesis.cancel();
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+/* =========================================================
+   NAVEGACIÓN / VISTAS
+========================================================= */
+const appEl = document.getElementById('app');
+let currentSession = null;
+
+function setActiveNav(view){
+  document.querySelectorAll('nav.bottom button').forEach(b=>b.classList.toggle('active', b.dataset.view===view));
+}
+document.querySelectorAll('nav.bottom button').forEach(b=>{
+  b.onclick = ()=>{
+    if(b.dataset.view==='home') renderHome();
+    if(b.dataset.view==='review') renderReview();
+    if(b.dataset.view==='dict') renderDict();
+    if(b.dataset.view==='stats') renderStats();
+    setActiveNav(b.dataset.view);
+  };
+});
+
+function bestAccFor(caseKey){
+  const keys = [1,2,3,4].map(l=>`${caseKey}-${l}`);
+  const accs = keys.map(k=> (STATE.levelStats[k]||{}).bestAccuracy || 0);
+  return Math.round(accs.reduce((a,b)=>a+b,0)/4);
+}
+
+function renderHome(){
+  setActiveNav('home');
+  let wheel = `<div class="wheel-section"><div class="wheel"><div class="wheel-center">6 casos<br>del ruso</div>`;
+  const R=90, cx=115, cy=115;
+  CASE_ORDER.forEach((c,i)=>{
+    const angle = (Math.PI*2*i/6) - Math.PI/2;
+    const x = cx + R*Math.cos(angle) - 37;
+    const y = cy + R*Math.sin(angle) - 37;
+    const acc = bestAccFor(c);
+    wheel += `<div class="wheel-node ${acc>0?'done':''}" style="left:${x}px;top:${y}px" data-case="${c}"><b>${CASE_META[c].short}</b>${CASE_META[c].es}</div>`;
+  });
+  wheel += `</div><div style="font-size:12px;color:var(--muted)">Toca un caso para practicar. Todos los módulos están siempre disponibles.</div></div>`;
+
+  let list = `<div class="section-title">Ruta de aprendizaje</div><div class="module-list">`;
+  MODULES.forEach(m=>{
+    let descExtra = '';
+    let acc = 0;
+    if(m.id===0){
+      const s = STATE.levelStats['m0-0'];
+      acc = s?s.bestAccuracy:0;
+    } else if(m.id===7){
+      const s = STATE.levelStats['mix-0'];
+      acc = s?s.bestAccuracy:0;
+    } else {
+      acc = bestAccFor(m.caseKey);
+    }
+    list += `<div class="mcard" data-open="${m.id}">
+      <div class="num">${m.id===7?'✦':m.id}</div>
+      <div class="info">
+        <div class="name">${m.title}</div>
+        <div class="desc">${m.subtitle}</div>
+        <div class="progressbar"><div style="width:${acc}%"></div></div>
+      </div>
+      <button class="go">Abrir</button>
+    </div>`;
+  });
+  list += `</div>`;
+
+  appEl.innerHTML = wheel + list;
+  appEl.querySelectorAll('[data-case]').forEach(el=>{
+    el.onclick = ()=> renderCaseDetail(el.dataset.case);
+  });
+  appEl.querySelectorAll('[data-open]').forEach(el=>{
+    el.onclick = ()=>{
+      const id = parseInt(el.dataset.open,10);
+      const m = MODULES[id];
+      if(id===0) renderSimpleModule(0);
+      else if(id===7) renderSimpleModule(7);
+      else renderCaseDetail(m.caseKey);
+    };
+  });
+}
+
+function renderSimpleModule(moduleId){
+  const m = MODULES[moduleId];
+  let html = `<button class="iconbtn" id="backBtn" style="margin-bottom:14px">←</button>`;
+  html += `<h2>${m.title}</h2><div style="color:var(--muted);margin-bottom:16px">${m.subtitle}</div>`;
+  if(moduleId===0){
+    html += `<div class="theory-card"><p>En ruso, la terminación de cada palabra indica su función en la frase (sujeto, objeto, destinatario...). También necesitas reconocer el <b>género</b> y si la palabra es <b>animada</b> (personas/animales) o <b>inanimada</b> (objetos).</p></div>`;
+  } else {
+    html += `<div class="theory-card"><p>Combina los 6 casos sin pistas — deberás deducir cuál corresponde en cada ejercicio.</p></div>`;
+  }
+  html += `<button class="startbtn" id="startBtn">Empezar 50 ejercicios →</button>`;
+  appEl.innerHTML = html;
+  document.getElementById('backBtn').onclick = renderHome;
+  document.getElementById('startBtn').onclick = ()=>{
+    const exercises = moduleId===0 ? buildModule0(50) : buildReviewMix(50);
+    currentSession = {statKey: moduleId===0?'m0-0':'mix-0', caseKeyForXP:null, exercises, idx:0, correctCount:0, answered:false};
+    touchStreak();
+    renderQuestion();
+  };
+}
+
+function renderCaseDetail(caseKey){
+  const meta = CASE_META[caseKey];
+  let html = `<button class="iconbtn" id="backBtn" style="margin-bottom:14px">←</button>`;
+  html += `<h2>${meta.es}</h2>`;
+  html += `<div class="theory-card"><span class="tag">${meta.short}</span><p>${meta.rule}</p><p style="color:var(--gold-soft)"><i>${meta.example}</i></p></div>`;
+  html += `<div class="section-title">Elige un nivel</div><div class="level-grid">`;
+  LEVEL_INFO.forEach(L=>{
+    const key = `${caseKey}-${L.n}`;
+    const st = STATE.levelStats[key];
+    html += `<div class="level-card">
+      <b>${L.title}</b>
+      <div class="d">${L.desc}</div>
+      ${st? `<div class="acc">Mejor: ${st.bestAccuracy}% · ${st.attempts} sesión(es)</div>`:''}
+      <button data-level="${L.n}">Practicar (50)</button>
+    </div>`;
+  });
+  html += `</div>`;
+  appEl.innerHTML = html;
+  document.getElementById('backBtn').onclick = renderHome;
+  appEl.querySelectorAll('[data-level]').forEach(btn=>{
+    btn.onclick = ()=>{
+      const level = parseInt(btn.dataset.level,10);
+      const sessionId = `${caseKey}-${level}-${Date.now()}`;
+      const exercises = buildSession(caseKey, level, sessionId, 50);
+      currentSession = {statKey:`${caseKey}-${level}`, caseKeyForXP:caseKey, exercises, idx:0, correctCount:0, answered:false};
+      touchStreak();
+      renderQuestion();
+    };
+  });
+}
+
+function renderQuestion(){
+  const s = currentSession;
+  if(s.idx >= s.exercises.length){ renderResults(); return; }
+  const ex = s.exercises[s.idx];
+  s.answered = false;
+  let body = `<div class="exercise-header">
+      <button class="iconbtn" id="quitBtn">✕</button>
+      <div class="track"><div style="width:${(s.idx/s.exercises.length*100)}%"></div></div>
+      <div class="counter">${s.idx+1}/${s.exercises.length}</div>
+    </div>`;
+  body += `<div class="qcard">`;
+
+  if(ex.type==='mcq'){
+    body += `<div class="qtype">Opción múltiple</div>`;
+    body += `<div class="prompt">${ex.prompt} <button class="speakbtn" id="speakBtn">🔊</button></div>`;
+    body += `<div class="transhint">${ex.transhint}</div>`;
+    body += `<div class="options">` + ex.options.map(o=>`<button class="opt" data-val="${encodeURIComponent(o)}">${o}</button>`).join('') + `</div>`;
+  } else if(ex.type==='drag'){
+    body += `<div class="qtype">Toca la palabra correcta</div>`;
+    body += `<div class="prompt">${ex.pre}<span class="dropzone" id="dropzone">____</span>${ex.post} <button class="speakbtn" id="speakBtn">🔊</button></div>`;
+    body += `<div class="hint">${ex.prompt}</div>`;
+    body += `<div class="transhint">${ex.transhint}</div>`;
+    body += `<div class="chiprow" id="chipRow">` + ex.chips.map((c,i)=>`<button class="chip" data-i="${i}" data-val="${encodeURIComponent(c)}">${c}</button>`).join('') + `</div>`;
+  } else if(ex.type==='drag3'){
+    body += `<div class="qtype">Frase con ${ex.blanks.length} huecos — completa uno por uno</div>`;
+    const parts = ex.blanks.map((b,i)=>{
+      if(i<ex.blankIdx) return `<span class="dropzone filled">${ex.blankAnswers[i].chosen}</span>`;
+      if(i===ex.blankIdx) return `<span class="dropzone" id="dropzone">____</span>`;
+      return `<span class="dropzone" style="opacity:.35">____</span>`;
+    });
+    const joined = parts.length===2 ? parts[0]+' и '+parts[1] : parts[0]+', '+parts[1]+' и '+parts[2];
+    body += `<div class="prompt">${ex.pre}${joined}${ex.post} <button class="speakbtn" id="speakBtn">🔊</button></div>`;
+    body += `<div class="hint">Hueco ${ex.blankIdx+1} de ${ex.blanks.length} · palabra: «${ex.blanks[ex.blankIdx].word.ru}»</div>`;
+    body += `<div class="transhint">${transHint(ex.blanks[ex.blankIdx].word, ex.blanks[ex.blankIdx].correct)}</div>`;
+    body += `<div class="chiprow" id="chipRow">` + ex.blanks[ex.blankIdx].chips.map((c,i)=>`<button class="chip" data-i="${i}" data-val="${encodeURIComponent(c)}">${c}</button>`).join('') + `</div>`;
+  } else if(ex.type==='fill'){
+    body += `<div class="qtype">Escribe la respuesta</div>`;
+    body += `<div class="prompt">${ex.pre}<span class="blank" id="fillBlank">____</span>${ex.post} <button class="speakbtn" id="speakBtn">🔊</button></div>`;
+    body += `<div class="hint">Palabra base: <b>${ex.baseWord}</b> (${ex.baseEs})</div>`;
+    body += `<div class="transhint">${ex.transhint}</div>`;
+    body += `<div class="textrow"><input type="text" id="fillInput" autocomplete="off" autocapitalize="off" placeholder="Escribe en ruso..."><button id="fillSubmit">✓</button></div>`;
+  }
+  body += `<div id="explainBox"></div>`;
+  body += `</div>`;
+
+  appEl.innerHTML = body;
+  document.getElementById('quitBtn').onclick = ()=>{ if(confirm('¿Salir del ejercicio? Perderás el progreso de esta sesión.')) renderHome(); };
+  const sb = document.getElementById('speakBtn');
+  if(sb) sb.onclick = ()=>speak(
+    ex.type==='drag3' ? ex.blanks[ex.blankIdx].word.ru :
+    ex.type==='fill' ? ex.baseWord :
+    ex.wordRu
+  );
+
+  if(ex.type==='mcq'){
+    appEl.querySelectorAll('.opt').forEach(btn=>{
+      btn.onclick = ()=>handleAnswer(decodeURIComponent(btn.dataset.val)===ex.correct, ex, btn.textContent);
+    });
+  } else if(ex.type==='drag'){
+    const dz = document.getElementById('dropzone');
+    appEl.querySelectorAll('.chip').forEach(chip=>{
+      chip.onclick = ()=>{
+        if(s.answered) return;
+        appEl.querySelectorAll('.chip').forEach(c=>c.classList.remove('selected'));
+        chip.classList.add('selected');
+        const val = decodeURIComponent(chip.dataset.val);
+        dz.textContent = val;
+        dz.classList.add('filled');
+        dz.dataset.val = chip.dataset.val;
+        setTimeout(()=>{
+          if(!s.answered) handleAnswer(val===ex.correct, ex, val);
+        },350);
+      };
+    });
+  } else if(ex.type==='drag3'){
+    let locked = false;
+    appEl.querySelectorAll('.chip').forEach(chip=>{
+      chip.onclick = ()=>{
+        if(locked) return;
+        locked = true;
+        appEl.querySelectorAll('.chip').forEach(c=>c.classList.remove('selected'));
+        chip.classList.add('selected');
+        const val = decodeURIComponent(chip.dataset.val);
+        const dz = document.getElementById('dropzone');
+        dz.textContent = val; dz.classList.add('filled');
+        setTimeout(()=> handleDrag3Answer(ex, val), 350);
+      };
+    });
+  } else if(ex.type==='fill'){
+    const input = document.getElementById('fillInput');
+    const submit = ()=>{
+      const val = input.value.trim().toLowerCase().replace(/ё/g,'е');
+      const correct = ex.correct.toLowerCase().replace(/ё/g,'е');
+      handleAnswer(val===correct, ex, input.value);
+    };
+    document.getElementById('fillSubmit').onclick = submit;
+    input.onkeydown = (e)=>{ if(e.key==='Enter') submit(); };
+    setTimeout(()=>input.focus(),50);
+  }
+}
+
+function handleDrag3Answer(ex, chosenVal){
+  const blank = ex.blanks[ex.blankIdx];
+  const isCorrect = chosenVal===blank.correct;
+  ex.blankAnswers.push({ok:isCorrect, chosen:chosenVal});
+  recordAnswer(ex.caseKey, isCorrect, blank.word.ru);
+  addXP(isCorrect?10:2);
+  ex.blankIdx++;
+  if(ex.blankIdx < ex.blanks.length){
+    renderQuestion(); // siguiente hueco de la misma frase
+  } else {
+    const s = currentSession;
+    const allOk = ex.blankAnswers.every(a=>a.ok);
+    if(!s.answered){ s.answered = true; if(allOk) s.correctCount++; }
+    appEl.querySelectorAll('.chip').forEach(c=>{ c.disabled = true; c.style.pointerEvents='none'; });
+    document.getElementById('explainBox').innerHTML = `<div class="explain ${allOk?'ok':'no'}">
+        ${allOk ? '✔ ¡Los ' + ex.blanks.length + ' huecos correctos!' : '✘ Algún hueco falló. Revisa las formas correctas abajo.'}
+        <br><br>${ex.explain}
+      </div>
+      <button class="nextbtn" id="nextBtn">Continuar →</button>`;
+    document.getElementById('nextBtn').onclick = ()=>{ currentSession.idx++; renderQuestion(); };
+  }
+}
+
+function handleAnswer(isCorrect, ex, chosenLabel){
+  const s = currentSession;
+  if(s.answered) return;
+  s.answered = true;
+  if(isCorrect) s.correctCount++;
+  recordAnswer(ex.caseKey==='nom' && s.statKey && s.statKey.startsWith('m0') ? null : ex.caseKey, isCorrect, ex.wordRu);
+  addXP(isCorrect?10:2);
+
+  if(ex.type==='mcq'){
+    appEl.querySelectorAll('.opt').forEach(btn=>{
+      const label = btn.textContent;
+      const isThisCorrect = decodeURIComponent(btn.dataset.val)===ex.correct;
+      if(isThisCorrect) btn.classList.add('correct');
+      else if(label===chosenLabel) btn.classList.add('wrong');
+      btn.disabled = true;
+    });
+  } else if(ex.type==='drag'){
+    appEl.querySelectorAll('.chip').forEach(chip=>{
+      const val = decodeURIComponent(chip.dataset.val);
+      if(val===ex.correct) chip.classList.add('used');
+    });
+  } else if(ex.type==='fill'){
+    document.getElementById('fillInput').disabled = true;
+    document.getElementById('fillSubmit').disabled = true;
+    document.getElementById('fillBlank').textContent = ex.correct;
+  }
+
+  const box = document.getElementById('explainBox');
+  box.innerHTML = `<div class="explain ${isCorrect?'ok':'no'}">
+      ${isCorrect ? '✔ ¡Correcto!' : `✘ No exactamente. Respuesta correcta: <b>${ex.correct||''}</b>`}
+      <br><br>${ex.explain}
+    </div>
+    <button class="nextbtn" id="nextBtn">Continuar →</button>`;
+  document.getElementById('nextBtn').onclick = ()=>{ currentSession.idx++; renderQuestion(); };
+}
+
+function renderResults(){
+  const s = currentSession;
+  const acc = recordLevelResult(s.statKey, s.correctCount, s.exercises.length);
+  appEl.innerHTML = `
+    <div class="result-hero">
+      <div style="font-size:40px">${acc>=85?'🏆':acc>=60?'👍':'💪'}</div>
+      <div class="big">${acc}%</div>
+      <div style="color:var(--muted)">${s.correctCount} de ${s.exercises.length} correctas</div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-box"><div class="n">${s.correctCount}/${s.exercises.length}</div><div class="l">Correctas</div></div>
+      <div class="stat-box"><div class="n">+${s.correctCount*10 + (s.exercises.length-s.correctCount)*2}</div><div class="l">XP ganado</div></div>
+    </div>
+    <button class="startbtn" id="homeBtn">Volver al inicio</button>
+  `;
+  document.getElementById('homeBtn').onclick = renderHome;
+}
+
+/* repaso: palabras más falladas */
+function renderReview(){
+  const entries = Object.entries(STATE.wrongWords).sort((a,b)=>b[1]-a[1]).slice(0,12);
+  if(entries.length===0){
+    appEl.innerHTML = `<div class="section-title">Repaso inteligente</div><div class="empty">Aún no tienes palabras para repasar.<br>Completa algunos niveles y volveremos con ejercicios centrados en tus errores.</div>`;
+    return;
+  }
+  appEl.innerHTML = `<div class="section-title">Tus palabras más difíciles</div>
+    <div class="module-list">${entries.map(([w,c])=>`<div class="mcard" style="cursor:default"><div class="num">${c}×</div><div class="info"><div class="name">${w}</div><div class="desc">veces fallada</div></div></div>`).join('')}</div>
+    <button class="startbtn" id="reviewStart" style="margin-top:18px">Practicar estas palabras →</button>`;
+  document.getElementById('reviewStart').onclick = ()=>{
+    const targetWords = entries.map(([w])=>WORDS.find(x=>x.ru===w)).filter(Boolean);
+    const pool = targetWords.length ? targetWords : shuffle(WORDS).slice(0,10);
+    const ex = [];
+    pool.forEach((w,i)=>{
+      const caseKey = CASE_ORDER[1+Math.floor(Math.random()*5)];
+      ex.push(Math.random()<0.5 ? buildLevel1(w,caseKey,i,'review') : buildLevel2(w,caseKey,i,'review'));
+    });
+    currentSession = {statKey:'mix-0', caseKeyForXP:null, exercises: shuffle(ex), idx:0, correctCount:0, answered:false};
+    touchStreak();
+    renderQuestion();
+  };
+}
+
+/* diccionario */
+function renderDict(){
+  appEl.innerHTML = `<div class="section-title">Diccionario (${WORDS.length} palabras)</div>
+    <input class="dict-search" id="dictSearch" placeholder="Buscar palabra en ruso o español...">
+    <div id="dictList"></div>`;
+  const list = document.getElementById('dictList');
+  function draw(filter){
+    const f = (filter||'').toLowerCase();
+    const items = f ? WORDS.filter(w=>w.ru.toLowerCase().includes(f)||w.es.toLowerCase().includes(f)) : WORDS.slice(0,40);
+    list.innerHTML = (items.length?items:[]).map(w=>`
+      <div class="word-card" data-id="${w.id}">
+        <div class="head">
+          <div><span class="ru">${w.ru}</span> <button class="speakbtn" data-speak="${w.ru}">🔊</button>
+            <div class="es">${w.es} · ${GENDER_LABEL[w.gender]}${w.animate?', animado':''}</div>
+            <div class="pron">/${approxPron(w.ru)}/</div>
+          </div>
+          <span style="color:var(--muted)">▾</span>
+        </div>
+        <table>${CASE_ORDER.map(c=>`<tr><td>${CASE_META[c].es}</td><td>${w.forms[c]} <span style="color:var(--muted)">/${approxPron(w.forms[c])}/</span></td></tr>`).join('')}</table>
+      </div>`).join('') || `<div class="empty">Sin resultados.</div>`;
+    if(!f) list.innerHTML += `<div class="empty">Mostrando 40 de ${WORDS.length}. Escribe para buscar el resto.</div>`;
+    list.querySelectorAll('.word-card .head').forEach(h=>h.onclick=(e)=>{
+      if(e.target.dataset.speak) return;
+      h.parentElement.classList.toggle('open');
+    });
+    list.querySelectorAll('[data-speak]').forEach(b=>b.onclick=(e)=>{e.stopPropagation();speak(b.dataset.speak);});
+  }
+  draw('');
+  document.getElementById('dictSearch').oninput = (e)=>draw(e.target.value);
+}
+
+/* estadísticas */
+function renderStats(){
+  const totalAnswered = Object.values(STATE.caseStats).reduce((a,c)=>a+c.total,0);
+  const totalCorrect = Object.values(STATE.caseStats).reduce((a,c)=>a+c.correct,0);
+  const overallAcc = totalAnswered ? Math.round(totalCorrect/totalAnswered*100) : 0;
+
+  let html = `<div class="section-title">Tu progreso</div>
+    <div class="stat-grid">
+      <div class="stat-box"><div class="n">${STATE.xp}</div><div class="l">XP total</div></div>
+      <div class="stat-box"><div class="n">${STATE.streak}🔥</div><div class="l">Racha (días)</div></div>
+      <div class="stat-box"><div class="n">${overallAcc}%</div><div class="l">Precisión global</div></div>
+      <div class="stat-box"><div class="n">${totalAnswered}</div><div class="l">Ejercicios resueltos</div></div>
+    </div>
+    <div class="section-title">Precisión por caso (todos los niveles)</div>
+    <div class="module-list">`;
+  CASE_ORDER.forEach(c=>{
+    const cs = STATE.caseStats[c] || {correct:0,total:0};
+    const pct = cs.total ? Math.round(cs.correct/cs.total*100) : 0;
+    html += `<div class="mcard" style="cursor:default"><div class="num" style="color:${CASE_META[c].color};font-size:14px">${CASE_META[c].short}</div>
+      <div class="info"><div class="name">${CASE_META[c].es}</div><div class="desc">${cs.total?`${cs.correct}/${cs.total} correctas`:'Sin datos aún'}</div>
+      <div class="progressbar"><div style="width:${pct}%"></div></div></div></div>`;
+  });
+  html += `</div><div class="section-title">Nivel por caso</div><div class="module-list">`;
+  CASE_ORDER.forEach(c=>{
+    [1,2].forEach(L=>{
+      const st = STATE.levelStats[`${c}-${L}`];
+      html += `<div class="mcard" style="cursor:default"><div class="num" style="font-size:13px;color:var(--muted)">N${L}</div>
+        <div class="info"><div class="name">${CASE_META[c].es}</div><div class="desc">${st?`Mejor ${st.bestAccuracy}% · ${st.attempts} sesión(es)`:'Sin intentos aún'}</div></div></div>`;
+    });
+  });
+  html += `</div>`;
+
+  const worst = Object.entries(STATE.wrongWords).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  html += `<div class="section-title">Palabras más difíciles</div>`;
+  html += worst.length ? `<div class="module-list">${worst.map(([w,c])=>`<div class="mcard" style="cursor:default"><div class="info"><div class="name">${w}</div><div class="desc">${c} error(es)</div></div></div>`).join('')}</div>` : `<div class="empty">Todavía sin errores registrados — ¡sigue así!</div>`;
+
+  appEl.innerHTML = html;
+}
+
+/* =========================================================
+   INIT
+========================================================= */
+(async function init(){
+  appEl.innerHTML = `<div class="empty">Cargando tu progreso...</div>`;
+  await loadState();
+  applyTheme();
+  document.getElementById('xpLabel').textContent = STATE.xp;
+  renderHome();
+})();
+</script>
+</body>
+</html>

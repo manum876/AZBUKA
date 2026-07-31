@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Español → Ruso</title>
+<style>
+  :root {
+    --bg:#0F0F14; --bg2:#17171E; --bg3:#1E1E28;
+    --card:#1A1A24; --border:#2A2A38;
+    --gold:#C9A84C; --goldD:#C9A84C33;
+    --text:#F0EEE8; --muted:#888080; --sub:#B8B0A8;
+    --accent:#4B6FAB; --green:#4CAF82; --orange:#E2884A; --purple:#9B7FE8;
+    --red:#E2884A;
+    --r:14px;
+    --sans:-apple-system,"Inter","Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;overscroll-behavior:none;}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);overflow:hidden;display:flex;flex-direction:column;transition:background .3s,color .3s;}
+  ::selection{background:var(--goldD);}
+  ::-webkit-scrollbar{width:5px;height:5px;}
+  ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+  button{font-family:inherit;cursor:pointer;}
+  :focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+
+  header{background:var(--bg2);border-bottom:1px solid var(--border);padding:16px 20px 12px;flex-shrink:0;z-index:100;}
+  .header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+  .logo{display:flex;align-items:baseline;gap:8px;}
+  .logo-es{font-family:var(--sans);font-size:19px;font-weight:700;color:var(--gold);letter-spacing:-.2px;}
+  .logo-arrow{color:var(--muted);font-size:14px;}
+  .logo-ru{font-family:var(--sans);font-size:17px;color:var(--purple);font-weight:600;}
+  .stats{font-size:11px;color:var(--muted);}
+  .search-wrap{position:relative;}
+  #searchInput{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px 36px 10px 38px;color:var(--text);font-size:14px;font-family:inherit;outline:none;transition:border-color .15s;}
+  #searchInput:focus{border-color:var(--gold);}
+  #searchInput::placeholder{color:var(--muted);}
+  .si{position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none;opacity:.7;}
+  .clear-btn{position:absolute;right:9px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;font-size:15px;padding:4px;display:none;}
+  .clear-btn:hover{color:var(--gold);}
+
+  .layout{display:flex;flex:1;overflow:hidden;}
+  .sidebar{background:var(--bg2);border-right:1px solid var(--border);padding:14px 0;width:180px;flex-shrink:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent;}
+  .sidebar-label{font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;padding:0 14px 8px;}
+  .cat-btn{display:flex;align-items:center;gap:8px;width:100%;padding:9px 14px;background:none;border:none;color:var(--sub);font-size:12.5px;cursor:pointer;text-align:left;transition:background .15s,color .15s;border-left:3px solid transparent;}
+  .cat-btn:hover{background:var(--bg3);color:var(--text);}
+  .cat-btn.active{background:var(--bg3);color:var(--gold);border-left-color:var(--gold);font-weight:600;}
+  .cat-icon{font-size:15px;width:18px;text-align:center;flex-shrink:0;}
+  .cat-count{margin-left:auto;font-size:10px;color:var(--muted);background:var(--border);padding:1px 6px;border-radius:8px;}
+
+  .content{padding:22px;overflow-y:auto;flex:1;}
+  .cat-header{display:flex;align-items:center;gap:13px;margin-bottom:20px;}
+  .cat-header-icon{font-size:28px;}
+  .cat-header-title{font-family:var(--sans);font-size:24px;font-weight:700;color:var(--gold);}
+  .cat-header-ru{font-family:var(--sans);font-size:15px;color:var(--purple);margin-top:2px;font-weight:600;}
+  .subcat{margin-bottom:26px;}
+  .subcat-title{font-size:10.5px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);padding-bottom:6px;margin-bottom:12px;}
+  .word-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;}
+
+  .word-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;cursor:pointer;transition:.15s;position:relative;}
+  .word-card:hover{border-color:var(--gold);transform:translateY(-1px);}
+  .word-card.flipped{border-color:var(--green);background:#1A241D;}
+  .word-es{font-size:15px;font-weight:600;color:var(--text);margin-bottom:2px;}
+  .word-gender{font-size:10px;color:var(--muted);font-style:italic;}
+  .word-ru{font-family:var(--sans);font-size:16px;color:var(--green);margin-top:6px;display:none;font-weight:600;}
+  .word-pronun{font-size:11px;color:var(--purple);margin-top:2px;font-style:italic;display:none;}
+  .word-card.flipped .word-ru{display:block;}
+  .word-card.flipped .word-pronun{display:none;}
+  .word-card.flipped.show-pronun .word-pronun{display:block;}
+  .flip-hint{position:absolute;top:8px;right:10px;font-size:10px;color:var(--muted);}
+
+  .controls{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+  .ctrl-btn{background:var(--bg3);border:1px solid var(--border);color:var(--sub);padding:9px 15px;border-radius:10px;font-size:13px;cursor:pointer;transition:.15s;font-family:inherit;}
+  .ctrl-btn:hover{border-color:var(--gold);color:var(--gold);}
+  .ctrl-btn.active{background:var(--gold);color:#0F0F14;border-color:var(--gold);font-weight:700;}
+  .ctrl-btn.active2{background:var(--purple);color:#0F0F14;border-color:var(--purple);font-weight:700;}
+
+  .quiz-wrap{max-width:460px;margin:0 auto;padding:24px 0;}
+  .quiz-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:30px 26px;text-align:center;margin-bottom:20px;}
+  .quiz-question{font-family:var(--sans);font-size:26px;font-weight:700;color:var(--text);margin-bottom:6px;}
+  .quiz-category{font-size:10.5px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:22px;font-weight:600;}
+  .quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+  .quiz-opt{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 10px;cursor:pointer;transition:.15s;font-family:var(--sans);font-size:14.5px;color:var(--text);}
+  .quiz-opt:hover{border-color:var(--gold);color:var(--gold);}
+  .quiz-opt.correct{border-color:var(--green);background:#4CAF8222;color:var(--green);}
+  .quiz-opt.wrong{border-color:var(--orange);background:#E2884A22;color:var(--orange);}
+  .quiz-progress{display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+  .quiz-bar-bg{flex:1;height:5px;background:var(--bg3);border-radius:3px;overflow:hidden;}
+  .quiz-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),#E2B86A);border-radius:3px;transition:width .3s;}
+  .quiz-score{font-size:12.5px;color:var(--sub);white-space:nowrap;}
+  .quiz-next{background:var(--gold);border:none;color:#0F0F14;padding:12px 28px;border-radius:10px;font-size:14.5px;font-weight:700;cursor:pointer;display:none;margin:0 auto;font-family:inherit;}
+  .quiz-next:hover{filter:brightness(1.08);}
+  .quiz-result{text-align:center;padding:36px 20px;}
+  .quiz-result-score{font-family:var(--sans);font-size:54px;font-weight:900;color:var(--gold);}
+  .quiz-result-label{font-size:15.5px;color:var(--sub);margin:6px 0 22px;}
+
+  .search-results-title{font-size:12.5px;color:var(--muted);margin-bottom:16px;}
+  .empty{text-align:center;padding:50px 20px;color:var(--muted);font-size:14.5px;}
+
+  @media(max-width:600px){
+    .layout{flex-direction:column-reverse;}
+    .sidebar{width:100%;height:auto;border-right:none;border-top:1px solid var(--border);padding:6px 0;overflow-x:auto;overflow-y:hidden;display:flex;flex-shrink:0;}
+    .sidebar-label{display:none;}
+    .cat-btn{flex-direction:column;gap:3px;padding:8px 12px;font-size:10.5px;border-left:none;border-bottom:3px solid transparent;white-space:nowrap;}
+    .cat-btn.active{border-left-color:transparent;border-bottom-color:var(--gold);}
+    .cat-count{display:none;}
+    .content{padding:16px;}
+    .word-grid{grid-template-columns:1fr 1fr;}
+    .quiz-options{grid-template-columns:1fr;}
+  }
+  @media(prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style>
+
+</head>
+<body>
+<header>
+  <div class="header-top">
+    <div class="logo">
+      <span class="logo-es">Español</span>
+      <span class="logo-arrow">→</span>
+      <span class="logo-ru">Русский</span>
+    </div>
+    <div class="stats" id="stats"></div>
+  </div>
+  <div class="search-wrap">
+    <span class="si">🔍</span>
+    <input type="text" id="searchInput" placeholder="Buscar en español o en ruso…" autocomplete="off" spellcheck="false">
+    <button class="clear-btn" id="clearBtn" onclick="clearSearch()">✕</button>
+  </div>
+</header>
+<div class="layout">
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="content" id="content"></main>
+</div>
+<script>
+// Pronunciación en letras latinas (fonética aproximada para hispanohablantes)
+const DATA=[
+{id:"basico",label:"Conceptos básicos",labelRu:"Основные понятия",icon:"💬",subcats:[
+{title:"Saludos y despedidas",words:[
+["¡Hola!","Привет!","pri-VYET"],
+["Buenos días","Доброе утро","DO-bro-ye U-tro"],
+["Buenas tardes","Добрый день","DO-bri dyen"],
+["Buenas noches","Добрый вечер","DO-bri VYE-cher"],
+["Hasta luego","До свидания","da svi-DA-ni-ya"],
+["Hasta pronto","До скорого","da SKO-ra-va"],
+["Adiós","Пока","pa-KA"],
+["¿Cómo estás?","Как дела?","kak di-LA"],
+["Bien, gracias","Хорошо, спасибо","ja-ra-SHO, spa-SI-ba"],
+]},{title:"Cortesía",words:[
+["Gracias","Спасибо","spa-SI-ba"],
+["Muchas gracias","Большое спасибо","bal-SHO-ye spa-SI-ba"],
+["De nada","Пожалуйста","pa-ZHA-lus-ta"],
+["Por favor","Пожалуйста","pa-ZHA-lus-ta"],
+["Perdona","Извини","iz-vi-NI"],
+["Disculpe","Извините","iz-vi-NI-tye"],
+["Lo siento","Мне жаль","mnye zhal"],
+["De acuerdo","Хорошо","ja-ra-SHO"],
+["Por supuesto","Конечно","ka-NYECH-na"],
+]},{title:"Pronombres",words:[
+["yo","я","ya"],
+["tú","ты","ti"],
+["él","он","on"],
+["ella","она","a-NA"],
+["nosotros","мы","mi"],
+["vosotros / ustedes","вы","vi"],
+["ellos","они","a-NI"],
+["mi / mis","мой / мои","moi / ma-I"],
+["tu / tus","твой / твои","tvoi / tva-I"],
+["su / sus","его / её","ye-VO / ye-YO"],
+]},{title:"Preguntas básicas",words:[
+["¿Quién?","Кто?","kto"],
+["¿Qué?","Что?","shto"],
+["¿Dónde?","Где?","gdye"],
+["¿Cuándo?","Когда?","kag-DA"],
+["¿Por qué?","Почему?","pa-chi-MU"],
+["¿Cómo?","Как?","kak"],
+["¿Cuánto?","Сколько?","SKOL-ka"],
+["¿Cuál?","Какой?","ka-KOI"],
+["¿A quién?","Кому?","ka-MU"],
+]},{title:"Números (0–20)",words:[
+["cero","ноль","nol"],
+["uno","один","a-DIN"],
+["dos","два","dva"],
+["tres","три","tri"],
+["cuatro","четыре","chi-TI-rye"],
+["cinco","пять","pyat"],
+["seis","шесть","shest"],
+["siete","семь","syem"],
+["ocho","восемь","VO-syem"],
+["nueve","девять","DYE-vyat"],
+["diez","десять","DYE-syat"],
+["once","одиннадцать","a-DI-nat-sat"],
+["doce","двенадцать","dvi-NAT-sat"],
+["veinte","двадцать","DVA-tsat"],
+["cien","сто","sto"],
+["mil","тысяча","TI-sya-cha"],
+]},{title:"Colores",words:[
+["blanco","белый","BYE-li"],
+["negro","чёрный","CHOR-ni"],
+["gris","серый","SYE-ri"],
+["rojo","красный","KRAS-ni"],
+["naranja","оранжевый","a-RAN-zhe-vi"],
+["amarillo","жёлтый","ZHOL-ti"],
+["verde","зелёный","zi-LYO-ni"],
+["azul","синий","SI-ni"],
+["azul claro","голубой","ga-lu-BOI"],
+["morado","фиолетовый","fi-a-LYE-ta-vi"],
+["marrón","коричневый","ka-RICH-ni-vi"],
+["rosa","розовый","RO-za-vi"],
+["dorado","золотой","za-la-TOI"],
+]},{title:"Días de la semana",words:[
+["lunes","понедельник","pa-ni-DYEL-nik","m"],
+["martes","вторник","VTOR-nik","m"],
+["miércoles","среда","sri-DA","f"],
+["jueves","четверг","chit-VYERK","m"],
+["viernes","пятница","PYAT-ni-tsa","f"],
+["sábado","суббота","su-BO-ta","f"],
+["domingo","воскресенье","vas-kri-SYE-nye","n"],
+["hoy","сегодня","si-VOD-nya"],
+["mañana","завтра","ZAV-tra"],
+["ayer","вчера","fchi-RA"],
+["semana","неделя","ni-DYE-lya","f"],
+]},{title:"Meses y estaciones",words:[
+["enero","январь","yan-VAR","m"],
+["febrero","февраль","fiv-RAL","m"],
+["marzo","март","mart","m"],
+["abril","апрель","ap-RYEL","m"],
+["mayo","май","mai","m"],
+["junio","июнь","i-YUN","m"],
+["julio","июль","i-YUL","m"],
+["agosto","август","AV-gust","m"],
+["septiembre","сентябрь","sin-TYABR","m"],
+["octubre","октябрь","ak-TYABR","m"],
+["noviembre","ноябрь","na-YABR","m"],
+["diciembre","декабрь","di-KABR","m"],
+["primavera","весна","vis-NA","f"],
+["verano","лето","LYE-ta","n"],
+["otoño","осень","O-sin","f"],
+["invierno","зима","zi-MA","f"],
+]}
+]},{id:"persona",label:"La persona",labelRu:"Человек",icon:"👤",subcats:[
+{title:"Cuerpo",words:[
+["cabeza","голова","ga-la-VA","f"],
+["cara","лицо","li-TSO","n"],
+["ojo","глаз","glas","m"],
+["oreja / oído","ухо","U-ja","n"],
+["nariz","нос","nos","m"],
+["boca","рот","rot","m"],
+["diente","зуб","zup","m"],
+["pelo / cabello","волосы","VO-la-si","m.pl"],
+["cuello","шея","SHE-ya","f"],
+["hombro","плечо","pli-CHO","n"],
+["brazo","рука","ru-KA","f"],
+["mano","ладонь","la-DON","f"],
+["dedo","палец","PA-lets","m"],
+["espalda","спина","spi-NA","f"],
+["pecho","грудь","grut","f"],
+["estómago","живот","zhi-VOT","m"],
+["pierna","нога","na-GA","f"],
+["rodilla","колено","ka-LYE-na","n"],
+["pie","ступня","stup-NYA","f"],
+["corazón","сердце","SYERT-tse","n"],
+]},{title:"Familia",words:[
+["padre","отец","a-TYETS","m"],
+["madre","мать","mat","f"],
+["hijo","сын","sin","m"],
+["hija","дочь","doch","f"],
+["hermano","брат","brat","m"],
+["hermana","сестра","sis-TRA","f"],
+["abuelo","дедушка","DYE-dush-ka","m"],
+["abuela","бабушка","BA-bush-ka","f"],
+["tío","дядя","DYA-dya","m"],
+["tía","тётя","TYO-tya","f"],
+["primo / prima","двоюродный брат/сестра","dva-YU-rad-ni brat"],
+["marido / esposo","муж","mush","m"],
+["mujer / esposa","жена","zhi-NA","f"],
+["bebé","ребёнок","ri-BYO-nak"],
+["familia","семья","sim-YA","f"],
+]},{title:"Sentimientos",words:[
+["feliz / contento","счастливый","shchas-LI-vi"],
+["triste","грустный","GRUS-ni"],
+["enfadado","злой / сердитый","zloi"],
+["cansado","усталый","us-TA-li"],
+["nervioso","нервный","NYERV-ni"],
+["asustado","испуганный","is-PU-gan-ni"],
+["sorprendido","удивлённый","u-div-LYON-ni"],
+["enamorado","влюблённый","vlyub-LYON-ni"],
+["solo / solitario","одинокий","a-di-NO-ki"],
+["tranquilo","спокойный","spa-KOI-ni"],
+["orgulloso","гордый","GOR-di"],
+["aburrido","скучающий","sku-CHA-yu-shchi"],
+]},{title:"Ropa",words:[
+["camiseta","футболка","fut-BOL-ka","f"],
+["camisa","рубашка","ru-BASH-ka","f"],
+["pantalón","брюки","BRYU-ki","m.pl"],
+["vaqueros","джинсы","DZHIN-si","m.pl"],
+["falda","юбка","YUP-ka","f"],
+["vestido","платье","PLA-tye","n"],
+["chaqueta","пиджак","pid-ZHAK","m"],
+["abrigo","пальто","pal-TO","n"],
+["zapatos","туфли","TUF-li","f.pl"],
+["zapatillas","кроссовки","kra-SOV-ki","f.pl"],
+["calcetines","носки","nas-KI","m.pl"],
+["sombrero","шляпа","SHLYA-pa","f"],
+["gorra","кепка","KYEP-ka","f"],
+["bufanda","шарф","sharf","m"],
+["guantes","перчатки","pir-CHAT-ki","f.pl"],
+]}
+]},{id:"alimentacion",label:"Alimentación",labelRu:"Питание",icon:"🍽️",subcats:[
+{title:"Alimentos básicos",words:[
+["pan","хлеб","jlyep","m"],
+["arroz","рис","ris","m"],
+["pasta","макароны","ma-ka-RO-ni","f.pl"],
+["patata","картофель","kar-TO-shka","f"],
+["huevo","яйцо","yai-TSO","n"],
+["carne","мясо","MYA-sa","n"],
+["pollo","курица","KU-ri-tsa","f"],
+["cerdo","свинина","svi-NI-na","f"],
+["ternera","говядина","ga-VYA-di-na","f"],
+["pescado","рыба","RI-ba","f"],
+["queso","сыр","sir","m"],
+["mantequilla","масло","MAS-la","n"],
+["aceite","оливковое масло","a-LIV-ka-va-ye MAS-la"],
+["sal","соль","sol","f"],
+["azúcar","сахар","SA-jar","m"],
+]},{title:"Verduras",words:[
+["tomate","помидор","pa-mi-DOR","m"],
+["cebolla","лук","luk","m"],
+["ajo","чеснок","chis-NOK","m"],
+["pimiento","перец","PYE-rets","m"],
+["zanahoria","морковь","mar-KOF","f"],
+["lechuga","салат","sa-LAT","m"],
+["pepino","огурец","a-gu-RYETS","m"],
+["coliflor","цветная капуста","tsvet-NA-ya ka-PUS-ta"],
+["espinacas","шпинат","shpi-NAT","m"],
+["calabacín","кабачок","ka-ba-CHOK","m"],
+["berenjena","баклажан","bak-la-ZHAN","m"],
+]},{title:"Frutas",words:[
+["manzana","яблоко","YAB-la-ka","n"],
+["naranja","апельсин","a-pil-SIN","m"],
+["limón","лимон","li-MON","m"],
+["plátano","банан","ba-NAN","m"],
+["uva","виноград","vi-na-GRAT","m"],
+["fresa","клубника","klub-NI-ka","f"],
+["sandía","арбуз","ar-BUS","m"],
+["melón","дыня","DI-nya","f"],
+["melocotón","персик","PYER-sik","m"],
+["pera","груша","GRU-sha","f"],
+["cereza","вишня","VISH-nya","f"],
+]},{title:"Bebidas",words:[
+["agua","вода","va-DA","f"],
+["café","кофе","KO-fye","m"],
+["té","чай","chai","m"],
+["leche","молоко","ma-la-KO","n"],
+["zumo / jugo","сок","sok","m"],
+["vino","вино","vi-NO","n"],
+["cerveza","пиво","PI-va","n"],
+["agua con gas","газированная вода","ga-ZI-ra-van-na-ya va-DA"],
+["refresco","напиток","na-PI-tak","m"],
+]},{title:"En el restaurante",words:[
+["restaurante","ресторан","ris-ta-RAN","m"],
+["menú","меню","mi-NYU","n"],
+["camarero","официант","a-fi-tsi-ANT","m"],
+["la cuenta","счёт","shchot","m"],
+["propina","чаевые","cha-yi-VI-ye","pl"],
+["reserva","бронирование","bra-ni-RO-va-ni-ye","n"],
+["plato del día","блюдо дня","BLYU-da dnya"],
+]}
+]},{id:"ciudad",label:"La ciudad",labelRu:"Город",icon:"🏙️",subcats:[
+{title:"Lugares urbanos",words:[
+["calle","улица","U-li-tsa","f"],
+["plaza","площадь","PLO-shad","f"],
+["avenida","проспект","pras-PYEKT","m"],
+["barrio","район","ra-ION","m"],
+["edificio","здание","ZDA-ni-ye","n"],
+["piso / apartamento","квартира","kvar-TI-ra","f"],
+["tienda","магазин","ma-ga-ZIN","m"],
+["supermercado","супермаркет","su-pir-MAR-kit","m"],
+["mercado","рынок","RI-nak","m"],
+["banco","банк","bank","m"],
+["hospital","больница","bal-NI-tsa","f"],
+["farmacia","аптека","ap-TYE-ka","f"],
+["parque","парк","park","m"],
+["museo","музей","mu-ZYEI","m"],
+["biblioteca","библиотека","bib-li-a-TYE-ka","f"],
+["escuela","школа","SHKO-la","f"],
+["universidad","университет","u-ni-vir-si-TYET","m"],
+["hotel","гостиница","gas-TI-ni-tsa","f"],
+["iglesia","церковь","TSER-kaf","f"],
+]},{title:"Transporte",words:[
+["metro","метро","mit-RO","n"],
+["autobús","автобус","af-TO-bus","m"],
+["tren","поезд","PO-yest","m"],
+["avión","самолёт","sa-ma-LYOT","m"],
+["coche / carro","машина","ma-SHI-na"],
+["moto","мотоцикл","ma-ta-TSIKL","m"],
+["bicicleta","велосипед","vi-la-si-PYET","m"],
+["taxi","такси","tak-SI","n"],
+["parada (bus)","остановка","as-ta-NOF-ka","f"],
+["estación","вокзал","vak-ZAL","m"],
+["aeropuerto","аэропорт","a-i-ra-PORT","m"],
+["billete","билет","bi-LYET","m"],
+]},{title:"En casa",words:[
+["casa","дом","dom","m"],
+["habitación","комната","KOM-na-ta","f"],
+["dormitorio","спальня","SPAL-nya","f"],
+["sala de estar","гостиная","gas-TI-na-ya","f"],
+["cocina","кухня","KUJH-nya","f"],
+["baño","ванная","VAN-na-ya","f"],
+["aseo / wc","туалет","tu-a-LYET","m"],
+["puerta","дверь","dvyer","f"],
+["ventana","окно","ak-NO","n"],
+["suelo","пол","pol","m"],
+["techo","потолок","pa-ta-LOK","m"],
+["pared","стена","sti-NA","f"],
+["cama","кровать","kra-VAT","f"],
+["sofá","диван","di-VAN","m"],
+["armario","шкаф","shkaf","m"],
+["nevera","холодильник","ja-la-DIL-nik","m"],
+["lavadora","стиральная машина","sti-RAL-na-ya ma-SHI-na"],
+]}
+]},{id:"trabajo",label:"Trabajo",labelRu:"Работа",icon:"💼",subcats:[
+{title:"Profesiones",words:[
+["médico","врач","vrach","m"],
+["enfermero/a","медсестра","mid-sis-TRA","f"],
+["profesor/a","учитель","u-CHI-til","m"],
+["ingeniero/a","инженер","in-zhi-NYER","m"],
+["arquitecto/a","архитектор","ar-ji-TYEK-tar","m"],
+["abogado/a","адвокат","ad-va-KAT","m"],
+["policía","полицейский","pa-li-TSEI-ski","m"],
+["bombero","пожарный","pa-ZHAR-ni","m"],
+["cocinero/a","повар","PO-var","m"],
+["conductor/a","водитель","va-DI-til","m"],
+["periodista","журналист","zhur-na-LIST","m"],
+["programador/a","программист","pra-gra-MIST","m"],
+["albañil","каменщик","KA-min-shchik","m"],
+["electricista","электрик","i-LYEK-trik","m"],
+["fontanero","сантехник","san-TYEK-nik","m"],
+]},{title:"En el trabajo",words:[
+["oficina","офис","O-fis","m"],
+["empresa","компания","kam-PA-ni-ya","f"],
+["jefe / jefa","начальник","na-CHAL-nik","m"],
+["empleado","сотрудник","sa-TRUD-nik","m"],
+["reunión","совещание","sa-vi-SHCHA-ni-ye","n"],
+["sueldo","зарплата","zar-PLA-ta","f"],
+["contrato","контракт","kan-TRAKT","m"],
+["vacaciones","отпуск","OT-pusk","m"],
+["horario","расписание","ras-pi-SA-ni-ye","n"],
+["ordenador","компьютер","kam-PYU-tir","m"],
+["correo electrónico","электронная почта","po-chta"],
+["proyecto","проект","pra-YEKT","m"],
+["plazo","срок","srok","m"],
+]}
+]},{id:"naturaleza",label:"Naturaleza",labelRu:"Природа",icon:"🌿",subcats:[
+{title:"Animales",words:[
+["perro","собака","sa-BA-ka","f"],
+["gato","кошка","KOSH-ka","f"],
+["caballo","лошадь","LO-shad","f"],
+["vaca","корова","ka-RO-va","f"],
+["cerdo","свинья","svin-YA","f"],
+["oveja","овца","af-TSA","f"],
+["pájaro","птица","PTI-tsa","f"],
+["pez","рыба","RI-ba","f"],
+["tigre","тигр","tigr","m"],
+["oso","медведь","mid-VYET","m"],
+["lobo","волк","volk","m"],
+["conejo","кролик","KRO-lik","m"],
+["araña","паук","pa-UK","m"],
+["serpiente","змея","zmye-YA","f"],
+]},{title:"Geografía y paisaje",words:[
+["mar","море","MO-rye","n"],
+["océano","океан","a-ki-AN","m"],
+["río","река","ri-KA","f"],
+["lago","озеро","O-zi-ra","n"],
+["montaña","гора","ga-RA","f"],
+["bosque","лес","lyes","m"],
+["campo","поле","PO-lye","n"],
+["desierto","пустыня","pus-TI-nya","f"],
+["isla","остров","OS-traf","m"],
+["playa","пляж","plyash","m"],
+["cielo","небо","NYE-ba","n"],
+["sol","солнце","SON-tse","n"],
+["luna","луна","lu-NA","f"],
+["estrella","звезда","zviz-DA","f"],
+["tierra","земля","zim-LYA","f"],
+]},{title:"Tiempo meteorológico",words:[
+["soleado","солнечно","SON-tish-na"],
+["nublado","облачно","OB-lach-na"],
+["lluvia","дождь","dosht","m"],
+["nieve","снег","snyek","m"],
+["viento","ветер","VYE-tir","m"],
+["niebla","туман","tu-MAN","m"],
+["tormenta","гроза","gra-ZA","f"],
+["calor","жарко","ZHAR-ka"],
+["frío","холодно","JO-lad-na"],
+["temperatura","температура","tim-pi-ra-TU-ra","f"],
+]}
+]},{id:"verbos",label:"Verbos clave",labelRu:"Основные глаголы",icon:"⚡",subcats:[
+{title:"Verbos esenciales",words:[
+["ser / estar","быть","bit"],
+["tener","иметь","i-MYET"],
+["hacer","делать","DYE-lat"],
+["ir","идти / ехать","id-TI"],
+["venir","приходить","pri-ja-DIT"],
+["poder","мочь","moch"],
+["querer","хотеть / любить","ja-TYET"],
+["saber","знать","znat"],
+["ver","видеть","VI-dit"],
+["decir","говорить","ga-va-RIT"],
+["hablar","разговаривать","raz-ga-VA-ri-vat"],
+["dar","давать","da-VAT"],
+["tomar","брать","brat"],
+["pensar","думать","DU-mat"],
+["esperar","ждать","zhdat"],
+]},{title:"Verbos cotidianos",words:[
+["comer","есть / кушать","yest"],
+["beber","пить","pit"],
+["dormir","спать","spat"],
+["trabajar","работать","ra-BO-tat"],
+["estudiar","учиться","u-CHI-tsa"],
+["leer","читать","chi-TAT"],
+["escribir","писать","pi-SAT"],
+["escuchar","слушать","SLU-shat"],
+["comprar","покупать","pa-ku-PAT"],
+["vender","продавать","pra-da-VAT"],
+["vivir","жить","zhit"],
+["llamar","звонить","zva-NIT"],
+["buscar","искать","is-KAT"],
+["encontrar","находить","na-ja-DIT"],
+["abrir","открывать","at-kri-VAT"],
+["cerrar","закрывать","za-kri-VAT"],
+["salir","выходить","vi-ja-DIT"],
+["llegar","прийти","pri-TI"],
+["volar","летать","li-TAT"],
+["conducir","водить машину","va-DIT ma-SHI-nu"],
+]}
+]},{id:"viajes",label:"Viajes",labelRu:"Путешествия",icon:"✈️",subcats:[
+{title:"En el aeropuerto",words:[
+["vuelo","рейс / полёт","reys","m"],
+["embarque","посадка","pa-SAT-ka","f"],
+["equipaje","багаж","ba-GASH","m"],
+["maleta","чемодан","chi-ma-DAN","m"],
+["billete / boleto","билет","bi-LYET","m"],
+["pasaporte","паспорт","PAS-part","m"],
+["aduana","таможня","ta-MOZH-nya","f"],
+["llegadas","прибытие","pri-BI-ti-ye"],
+["salidas","отправление","at-pravl-YE-ni-ye"],
+["retraso","задержка","za-DYERZH-ka","f"],
+]},{title:"Alojamiento",words:[
+["hotel","гостиница","gas-TI-ni-tsa","f"],
+["habitación","номер","NO-mir","m"],
+["reserva","бронирование","bra-ni-RO-va-ni-ye","n"],
+["check-in","заезд","za-YEST","m"],
+["check-out","выезд","VI-yest","m"],
+["desayuno incluido","завтрак включён","ZAV-trak fkly-CHON"],
+["llave","ключ","klyuch","m"],
+["piscina","бассейн","ba-SYIN","m"],
+]},{title:"Turismo",words:[
+["turista","турист","tu-RIST","m"],
+["mapa","карта","KAR-ta","f"],
+["guía","гид","git","m"],
+["monumento","памятник","PAM-yat-nik","m"],
+["excursión","экскурсия","eks-KUR-si-ya","f"],
+["fotografía","фотография","fa-ta-GRA-fi-ya","f"],
+["souvenir","сувенир","su-vi-NIR","m"],
+["entrada (ticket)","входной билет","vjod-NOI bi-LYET"],
+]}
+]},{id:"salud",label:"Salud",labelRu:"Медицина",icon:"🏥",subcats:[
+{title:"En el médico",words:[
+["médico / doctor","врач / доктор","vrach","m"],
+["enfermedad","болезнь","ba-LYEZN","f"],
+["dolor","боль","bol","f"],
+["fiebre","температура / жар","tim-pi-ra-TU-ra"],
+["tos","кашель","KA-shil","m"],
+["resfriado","простуда","pras-TU-da","f"],
+["pastilla","таблетка","tab-LYET-ka","f"],
+["medicamento","лекарство","li-KAR-stva","n"],
+["receta","рецепт","ri-TSEPT","m"],
+["alergia","аллергия","a-lir-GI-ya","f"],
+["herida","рана","RA-na","f"],
+["operación","операция","a-pi-RA-tsi-ya","f"],
+["urgencias","скорая помощь","SKO-ra-ya PO-moshch"],
+["ambulancia","скорая помощь","SKO-ra-ya PO-moshch"],
+["farmacia","аптека","ap-TYE-ka","f"],
+]}
+]}
+];
+
+let currentCat=DATA[0].id, revealAll=false, showPronun=true, mode='browse', quizState=null;
+
+function getAllWords(){const w=[];DATA.forEach(c=>c.subcats.forEach(s=>s.words.forEach(x=>w.push({es:x[0],ru:x[1],pronun:x[2],gender:x[3],cat:c.label}))));return w;}
+function countWords(c){return c.subcats.reduce((a,s)=>a+s.words.length,0);}
+
+function renderSidebar(){
+  const nav=document.getElementById('sidebar');
+  nav.innerHTML=`<div class="sidebar-label">Temas</div>`+DATA.map(c=>`<button class="cat-btn ${c.id===currentCat?'active':''}" onclick="selectCat('${c.id}')"><span class="cat-icon">${c.icon}</span><span>${c.label}</span><span class="cat-count">${countWords(c)}</span></button>`).join('');
+  document.getElementById('stats').textContent=`${getAllWords().length} palabras · ${DATA.length} temas`;
+}
+
+function selectCat(id){currentCat=id;mode='browse';revealAll=false;document.getElementById('searchInput').value='';document.getElementById('clearBtn').style.display='none';renderSidebar();renderContent();}
+
+function renderContent(){
+  const cat=DATA.find(c=>c.id===currentCat);
+  if(!cat)return;
+  const el=document.getElementById('content');
+  const pronunBtn=`<button class="ctrl-btn ${showPronun?'active2':''}" onclick="togglePronun()">${showPronun?'🔤 Ocultar pronunc.':'🔤 Ver pronunc.'}</button>`;
+  const controls=`<div class="controls">
+    <button class="ctrl-btn ${mode==='browse'?'active':''}" onclick="setMode('browse')">📖 Explorar</button>
+    <button class="ctrl-btn ${mode==='quiz'?'active':''}" onclick="setMode('quiz')">🎯 Quiz</button>
+    ${mode==='browse'?`<button class="ctrl-btn ${revealAll?'active':''}" onclick="toggleReveal()">${revealAll?'🙈 Ocultar ruso':'👁 Revelar ruso'}</button>`:''}
+    ${mode==='browse'?pronunBtn:''}
+  </div>`;
+  if(mode==='quiz'){el.innerHTML=controls+renderQuiz(cat);bindQuizEvents();return;}
+  const header=`<div class="cat-header"><span class="cat-header-icon">${cat.icon}</span><div><div class="cat-header-title">${cat.label}</div><div class="cat-header-ru">${cat.labelRu}</div></div></div>`;
+  const subs=cat.subcats.map(s=>`<div class="subcat"><div class="subcat-title">${s.title}</div><div class="word-grid">${s.words.map(w=>cardHTML(w)).join('')}</div></div>`).join('');
+  el.innerHTML=controls+header+subs;
+}
+
+function cardHTML(w){
+  const[es,ru,p,g]=w;
+  const pronunEl=`<div class="word-pronun">${p}</div>`;
+  const flippedClass=revealAll?'flipped':'';
+  const pronunClass=showPronun?'show-pronun':'';
+  return `<div class="word-card ${flippedClass} ${pronunClass}" onclick="this.classList.toggle('flipped')">
+    <span class="flip-hint">${revealAll?'':'▶'}</span>
+    <div class="word-es">${es}</div>
+    ${g?`<div class="word-gender">${g}</div>`:''}
+    <div class="word-ru">${ru}</div>
+    ${pronunEl}
+  </div>`;
+}
+
+function toggleReveal(){revealAll=!revealAll;renderContent();}
+function togglePronun(){showPronun=!showPronun;renderContent();}
+function setMode(m){mode=m;if(m==='quiz')initQuiz();renderContent();}
+
+function initQuiz(){const cat=DATA.find(c=>c.id===currentCat);const words=[];cat.subcats.forEach(s=>s.words.forEach(w=>words.push(w)));quizState={words:[...words].sort(()=>Math.random()-.5),index:0,correct:0,answered:false};}
+
+function renderQuiz(cat){
+  if(!quizState)initQuiz();
+  const qs=quizState;
+  if(qs.index>=qs.words.length){
+    const pct=Math.round(qs.correct/qs.words.length*100);
+    const em=pct>=80?'🏆':pct>=50?'💪':'📚';
+    return `<div class="quiz-wrap"><div class="quiz-result"><div class="quiz-result-score">${em} ${pct}%</div><div class="quiz-result-label">${qs.correct} de ${qs.words.length} correctas</div><button class="ctrl-btn active" onclick="initQuiz();renderContent()">Repetir quiz</button></div></div>`;
+  }
+  const word=qs.words[qs.index];
+  const allRu=[];cat.subcats.forEach(s=>s.words.forEach(w=>allRu.push(w[1])));
+  const opts=[word[1],...allRu.filter(r=>r!==word[1]).sort(()=>Math.random()-.5).slice(0,3)].sort(()=>Math.random()-.5);
+  const prog=qs.index/qs.words.length*100;
+  return `<div class="quiz-wrap"><div class="quiz-progress"><div class="quiz-bar-bg"><div class="quiz-bar-fill" style="width:${prog}%"></div></div><div class="quiz-score">✅ ${qs.correct} / ${qs.index}</div></div><div class="quiz-card"><div class="quiz-question">${word[0]}</div><div class="quiz-category">${DATA.find(c=>c.id===currentCat).label}</div><div class="quiz-options" id="quizOpts">${opts.map(o=>`<button class="quiz-opt" data-opt="${o.replace(/"/g,'&quot;')}" data-correct="${word[1].replace(/"/g,'&quot;')}">${o}</button>`).join('')}</div></div><button class="quiz-next" id="quizNext" onclick="nextQ()">Siguiente →</button></div>`;
+}
+
+function bindQuizEvents(){document.querySelectorAll('.quiz-opt').forEach(b=>b.addEventListener('click',function(){if(quizState.answered)return;quizState.answered=true;const c=this.dataset.correct;document.querySelectorAll('.quiz-opt').forEach(x=>{if(x.dataset.opt===c)x.classList.add('correct');else if(x===this&&x.dataset.opt!==c)x.classList.add('wrong');});if(this.dataset.opt===c)quizState.correct++;document.getElementById('quizNext').style.display='block';}));}
+function nextQ(){quizState.index++;quizState.answered=false;renderContent();}
+
+function doSearch(q){
+  const el=document.getElementById('content');
+  if(!q){renderContent();return;}
+  const res=getAllWords().filter(w=>w.es.toLowerCase().includes(q)||w.ru.includes(q)||w.pronun.toLowerCase().includes(q));
+  if(!res.length){el.innerHTML=`<div class="empty">Sin resultados para "<strong>${q}</strong>"</div>`;return;}
+  el.innerHTML=`<div class="search-results-title">🔍 ${res.length} resultado${res.length!==1?'s':''} para "<strong>${q}</strong>"</div><div class="word-grid">${res.map(w=>`<div class="word-card ${showPronun?'show-pronun':''}" onclick="this.classList.toggle('flipped')"><span class="flip-hint">▶</span><div class="word-es">${w.es}</div>${w.gender?`<div class="word-gender">${w.gender}</div>`:''}<div class="word-ru" style="display:block;color:var(--green)">${w.ru}</div><div class="word-pronun" style="display:block">${w.pronun}</div><div style="font-size:10px;color:var(--muted);margin-top:5px">${w.cat}</div></div>`).join('')}</div>`;
+}
+
+function clearSearch(){const i=document.getElementById('searchInput');i.value='';document.getElementById('clearBtn').style.display='none';renderContent();i.focus();}
+
+document.getElementById('searchInput').addEventListener('input',function(){const q=this.value.trim().toLowerCase();document.getElementById('clearBtn').style.display=q?'block':'none';doSearch(q);});
+
+renderSidebar();
+renderContent();
+</script>
+</body>
+</html>
