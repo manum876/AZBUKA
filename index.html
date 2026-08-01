@@ -69,6 +69,7 @@
 <div id="toast"></div>
 
 <script src="core.js"></script>
+<script src="data-diccionario.js"></script>
 <script>
 function renderModulesGrid(){
   const grid = document.getElementById('modulesGrid');
@@ -117,6 +118,11 @@ document.getElementById('gsClear').addEventListener('click', ()=>{
 
 renderModulesGrid();
 azInit({activeType:null, activeId:null}); // home no tiene unidad/módulo activo
+
+// Poblar el buscador global con los módulos que ya exponen sus datos.
+// Cada módulo nuevo que sume su data-*.js se registra acá en una línea.
+azRegisterSearchEntries('diccionario', 'Diccionario temático', 'diccionario.html',
+  getAllDiccionarioWords().map(w=>({ru:w.ru, es:w.es, tr:w.pronun})));
 </script>
 
 </body>
