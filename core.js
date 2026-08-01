@@ -28,7 +28,7 @@ const AZ_MODULES = [
   {id:"dialogos",title:"Diálogos",desc:"30 conversaciones con audio y vocabulario",href:"dialogos.html",icon:"yellow",glyph:"Ди"},
   {id:"diccionario",title:"Diccionario temático",desc:"Vocabulario español–ruso por categorías",href:"diccionario.html",icon:"green",glyph:"Дс"},
   {id:"verbos",title:"Verbos frecuentes",desc:"Los 50 verbos más usados, con conjugación",href:"verbos.html",icon:"blue",glyph:"Вб"},
-  {id:"casos",title:"Casos gramaticales",desc:"Declinaciones del ruso, los 6 casos",href:"casos-ruso.html",icon:"purple",glyph:"Пд"},
+  {id:"casos",title:"Casos gramaticales",desc:"Declinaciones del ruso, los 6 casos",href:"casos.html",icon:"purple",glyph:"Пд"},
 ];
 const AZ_ALL_ENTRIES = [
   {kind:"unit", ...({})}, // placeholder, no usado directamente
