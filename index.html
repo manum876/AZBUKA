@@ -70,6 +70,7 @@
 
 <script src="core.js"></script>
 <script src="data-diccionario.js"></script>
+<script src="data-verbos.js"></script>
 <script>
 function renderModulesGrid(){
   const grid = document.getElementById('modulesGrid');
@@ -123,6 +124,8 @@ azInit({activeType:null, activeId:null}); // home no tiene unidad/módulo activo
 // Cada módulo nuevo que sume su data-*.js se registra acá en una línea.
 azRegisterSearchEntries('diccionario', 'Diccionario temático', 'diccionario.html',
   getAllDiccionarioWords().map(w=>({ru:w.ru, es:w.es, tr:w.pronun})));
+azRegisterSearchEntries('verbos', 'Verbos frecuentes', 'verbos.html',
+  verbs.map(v=>({ru:v.inf, es:v.es, tr:''})));
 </script>
 
 </body>

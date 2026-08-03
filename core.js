@@ -35,16 +35,23 @@ const AZ_ALL_ENTRIES = [
 ];
 
 /* ── STORAGE UNIFICADO ───────────────────────────────────────
-   TODO módulo usa window.storage (no localStorage) para que el
-   progreso sea transversal. Una sola key raíz por tipo de dato. */
+   IMPORTANTE: usamos localStorage, NO window.storage.
+   window.storage es una API exclusiva del preview de artifacts de
+   Claude.ai — no existe en un navegador real (Chrome, Safari, etc.)
+   corriendo un sitio hosteado en GitHub Pages. Si el código de acá
+   volviera a usar window.storage, el try/catch de abajo lo atraparía
+   en silencio y SIEMPRE devolvería el valor por defecto — que es
+   exactamente el bug de "el tema no persiste" que estábamos viendo.
+   localStorage es la API estándar real, funciona en cualquier
+   navegador, y persiste por dominio — perfecta para GitHub Pages. */
 async function azGet(key, fallback){
   try{
-    const r = await window.storage.get(key, false);
-    return r ? JSON.parse(r.value) : fallback;
+    const v = localStorage.getItem(key);
+    return v !== null ? JSON.parse(v) : fallback;
   }catch{ return fallback; }
 }
 async function azSet(key, value){
-  try{ await window.storage.set(key, JSON.stringify(value), false); }catch{}
+  try{ localStorage.setItem(key, JSON.stringify(value)); }catch{}
 }
 
 /* ── PROGRESO — SIN GAMIFICACIÓN ─────────────────────────────

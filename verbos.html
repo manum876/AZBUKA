@@ -4,134 +4,36 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
 <title>50 Verbos — Ruso por temas</title>
+<link rel="stylesheet" href="core.css">
 <style>
-:root{
-  --bg:#0F0F14;--bg2:#17171E;--bg3:#1E1E28;
-  --card:#1A1A24;--border:#2A2A38;
-  --gold:#C9A84C;--goldD:#C9A84C33;
-  --text:#F0EEE8;--muted:#888080;--sub:#B8B0A8;
-  --green:#4CAF82;--orange:#E2884A;--purple:#9B7FE8;
-  --nav-h:64px;--r:14px;
-  --sans:-apple-system,"Inter","Helvetica Neue",Arial,sans-serif;
-  --serif:-apple-system,"Inter","Helvetica Neue",Arial,sans-serif;
-}
-body.light{
-  --bg:#F7F5F0;--bg2:#EDEAE4;--bg3:#E2DED7;
-  --card:#FFFFFF;--border:#D5D0C8;
-  --text:#1A1812;--muted:#8A847A;--sub:#5A5450;
-  --green:#2E7D55;--orange:#C85A1A;--purple:#6B4EC0;
-}
-*{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;overscroll-behavior:none;}
-body{font-family:var(--sans);background:var(--bg);color:var(--text);transition:background .3s,color .3s;}
-::selection{background:var(--goldD);}
-::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
-button{font-family:inherit;cursor:pointer;}
-:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
-
-#content{min-height:calc(100vh - var(--nav-h));padding-bottom:calc(var(--nav-h) + 8px);}
-.inner{max-width:700px;margin:0 auto;padding:20px 16px 40px;}
-.view{animation:fi .22s ease;}
-@keyframes fi{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
-
-.ey{font-size:10.5px;letter-spacing:1.8px;text-transform:uppercase;color:var(--gold);margin-bottom:7px;font-weight:600;}
-h1.pt{font-family:var(--serif);font-size:26px;margin-bottom:6px;}
-p.ps{color:var(--sub);font-size:14px;margin-bottom:18px;max-width:560px;line-height:1.65;}
-.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px;}
-.sb{margin-bottom:22px;}
-
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 16px;border-radius:10px;border:1px solid var(--border);background:var(--bg3);color:var(--text);font-size:13.5px;transition:.15s;font-family:inherit;cursor:pointer;width:100%;margin-top:8px;}
-.btn:hover{border-color:var(--gold);color:var(--gold);}
-.btn.pr{background:var(--gold);border-color:var(--gold);color:#0F0F14;font-weight:700;}
-.btn.pr:hover{filter:brightness(1.08);color:#0F0F14;}
-.btn.gh{background:transparent;}
-
-.sr{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;}
-.sc{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:11px 15px;display:flex;flex-direction:column;gap:2px;min-width:90px;flex:1;}
-.sc .sv{font-family:var(--serif);font-size:19px;color:var(--gold);}
-.sc .sl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;}
-
-/* MODULE GRID */
-.ugrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;}
-.uc{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;cursor:pointer;position:relative;overflow:hidden;transition:.2s;}
-.uc:hover{border-color:var(--gold);transform:translateY(-2px);}
-.un{font-family:var(--serif);font-size:34px;color:var(--border);position:absolute;right:9px;top:2px;line-height:1;user-select:none;}
-.ut{font-weight:600;font-size:14px;margin:20px 0 3px;max-width:80%;}
-.ud{font-size:12px;color:var(--muted);margin-bottom:10px;min-height:32px;line-height:1.5;}
-.pb{height:5px;border-radius:4px;background:var(--bg3);overflow:hidden;margin-bottom:3px;}
-.pb>div{height:100%;background:linear-gradient(90deg,var(--gold),#E2B86A);border-radius:4px;transition:width .4s;}
-.upc{font-size:11px;color:var(--muted);}
-
-.abk{display:flex;align-items:center;gap:6px;background:none;border:none;color:var(--muted);font-size:13.5px;margin-bottom:14px;padding:0;cursor:pointer;}
-.abk:hover{color:var(--gold);}
-
-.sh{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border);}
-.sh h2{font-family:var(--serif);font-size:19px;}
-.shs{font-size:12px;color:var(--muted);}
-
-/* VERB CARD (dentro de módulo) */
-.wr{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:13px 14px;margin-bottom:8px;cursor:pointer;transition:.15s;}
-.wr:hover{border-color:var(--gold);}
-.wru{font-family:var(--serif);font-size:19px;flex:1;}
-.wes{font-size:12.5px;color:var(--sub);}
-.stb{padding:3px 9px;border-radius:8px;border:1px solid var(--border);background:var(--bg3);font-size:11px;color:var(--muted);flex-shrink:0;}
-.stb.s0{background:#E2884A22;border-color:var(--orange);color:var(--orange);}
-.stb.s1{background:#C9A84C22;border-color:var(--gold);color:var(--gold);}
-.stb.s2{background:#4CAF8222;border-color:var(--green);color:var(--green);}
-.psm{width:30px;height:30px;border-radius:50%;border:1px solid var(--border);background:var(--bg3);color:var(--gold);font-size:12px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;}
-.psm:hover{background:var(--goldD);}
-
-/* DETAIL */
-.dh2{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:16px;}
-.dbig{font-family:var(--serif);font-size:44px;color:var(--gold);line-height:1;}
-.di h3{font-size:17px;font-weight:700;margin-bottom:4px;}
-.pch{display:inline-block;background:var(--goldD);border:1px solid var(--gold);border-radius:8px;padding:3px 9px;font-size:12px;color:var(--gold);margin:2px 4px 2px 0;}
-.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
-@media(max-width:540px){.dgrid{grid-template-columns:1fr;}}
-.db{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px;}
-.dbl{font-size:10.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;color:var(--gold);}
-.db p{font-size:12.5px;color:var(--sub);line-height:1.7;}
-.conjrow{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);font-size:13.5px;}
-.conjrow:last-child{border-bottom:none;}
-.pron{color:var(--muted);font-size:12px;}
-
-/* QUIZ */
-.qq{font-size:16px;font-weight:500;margin-bottom:12px;line-height:1.5;}
-.qh{font-size:12px;color:var(--muted);margin-bottom:13px;}
-.qopts{display:flex;flex-direction:column;gap:7px;}
-.qo{padding:12px 15px;border-radius:10px;border:1px solid var(--border);background:var(--bg3);text-align:left;font-size:14px;cursor:pointer;transition:.15s;color:var(--text);width:100%;}
-.qo:hover:not([disabled]){border-color:var(--gold);}
-.qo.co{background:#4CAF8222;border-color:var(--green);color:var(--green);}
-.qo.wr2{background:#E2884A22;border-color:var(--orange);color:var(--orange);}
-.excard{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:22px;}
-.epb{height:4px;background:var(--bg3);border-radius:4px;margin-bottom:16px;overflow:hidden;}
-.epb>div{height:100%;background:var(--gold);transition:width .3s;}
-.flash{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:34px 16px;text-align:center;min-height:150px;display:flex;flex-direction:column;justify-content:center;gap:10px;cursor:pointer;user-select:none;}
-.flash .big{font-family:var(--serif);font-size:28px;color:var(--gold);}
-.flash .small{color:var(--sub);font-size:14px;}
-
-.pmgrid{display:grid;gap:10px;}
-.pmc{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:.15s;}
-.pmc:hover{border-color:var(--gold);}
-.pmc .ic{font-size:22px;}
-.pmc b{display:block;font-size:14.5px;}
-.pmc span{font-size:12px;color:var(--muted);}
-
-/* NAV */
-#bnav{position:fixed;bottom:0;left:0;right:0;height:var(--nav-h);background:var(--bg2);border-top:1px solid var(--border);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:space-around;padding:0 8px;z-index:100;}
-.nb{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;color:var(--muted);padding:7px 12px;border-radius:10px;font-size:11px;}
-.nb .ni{font-size:20px;}
-.nb:hover{background:var(--bg3);color:var(--text);}
-.nb.ac{color:var(--gold);}
-header{position:sticky;top:0;background:var(--bg);z-index:10;border-bottom:1px solid var(--border);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;}
-header h1{font-family:var(--serif);font-size:17px;font-weight:600;}
-.xpPill{background:var(--goldD);border:1px solid var(--gold);color:var(--gold);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600;}
-.dim{color:var(--muted);font-size:13px;}
-.err{color:var(--orange);font-size:12.5px;margin-top:10px;}
+  /* Específico de este módulo: header propio (sin drawer), flashcards,
+     menú de práctica y detalle de conjugación — no están en core.css
+     porque son patrones únicos de esta app. */
+  header{position:sticky;top:0;background:var(--bg);z-index:10;border-bottom:1px solid var(--border);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;}
+  header h1{font-family:var(--serif);font-size:17px;font-weight:600;}
+  .back-btn{color:var(--muted);text-decoration:none;font-size:13px;white-space:nowrap;}
+  .back-btn:hover{color:var(--gold);}
+  .conjrow{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);font-size:13.5px;}
+  .conjrow:last-child{border-bottom:none;}
+  .pron{color:var(--muted);font-size:12px;}
+  .flash{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:34px 16px;text-align:center;min-height:150px;display:flex;flex-direction:column;justify-content:center;gap:10px;cursor:pointer;user-select:none;}
+  .flash .big{font-family:var(--serif);font-size:28px;color:var(--gold);}
+  .flash .small{color:var(--sub);font-size:14px;}
+  .pmgrid{display:grid;gap:10px;}
+  .pmc{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:.15s;}
+  .pmc:hover{border-color:var(--gold);}
+  .pmc .ic{font-size:22px;}
+  .pmc b{display:block;font-size:14.5px;}
+  .pmc span{font-size:12px;color:var(--muted);}
+  .dim{color:var(--muted);font-size:13px;}
 </style>
 </head>
 <body>
-<header><h1>Ру · 50 Verbos por temas</h1><span class="xpPill" id="xpPill">0 XP</span></header>
+<header>
+  <a href="index.html" class="back-btn">← Inicio</a>
+  <h1>Ру · 50 Verbos por temas</h1>
+  <button class="theme-btn" id="themeBtn" aria-label="Cambiar tema" style="width:32px;height:32px;border-radius:8px;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:14px;">🌙</button>
+</header>
 <div id="content"><div class="inner" id="app"></div></div>
 
 <nav id="bnav">
@@ -141,305 +43,25 @@ header h1{font-family:var(--serif);font-size:17px;font-weight:600;}
   <button class="nb" id="nav-theme"><span class="ni">🌓</span><span>Tema</span></button>
 </nav>
 
+<div id="toast"></div>
+<script src="core.js"></script>
+<script src="data-verbos.js"></script>
 <script>
-/* ============ MÓDULOS TEMÁTICOS ============ */
-const MODULES = [
- {n:1,title:"Los verbos esenciales",desc:"Sin ellos no puedes construir una frase.",obj:"Presentarte, expresar necesidades y construir frases básicas.",verbs:["быть","иметь","делать","мочь","хотеть"]},
- {n:2,title:"Comunicación",desc:"Hablar e interactuar con otros.",obj:"Mantener conversaciones simples.",verbs:["говорить","сказать","спрашивать","отвечать","звонить"]},
- {n:3,title:"Pensamiento y aprendizaje",desc:"Expresar ideas y conocimiento.",obj:"Hablar sobre conocimientos, opiniones y aprendizaje.",verbs:["знать","понимать","думать","учиться","помнить"]},
- {n:4,title:"Percepción",desc:"Usar los sentidos.",obj:"Describir lo que ves, escuchas y buscas.",verbs:["видеть","смотреть","слышать","слушать","искать"]},
- {n:5,title:"Movimiento",desc:"Moverse por la ciudad.",obj:"Preguntar direcciones, desplazarte y quedar con gente.",verbs:["идти","ходить","ехать","ездить","встречать"]},
- {n:6,title:"Vida cotidiana",desc:"Las acciones más frecuentes del día.",obj:"Hablar de la rutina diaria.",verbs:["жить","работать","читать","писать","использовать"]},
- {n:7,title:"Personas y emociones",desc:"Relaciones y gustos.",obj:"Expresar sentimientos, relaciones y cambios.",verbs:["любить","нравиться","помогать","ждать","становиться"]},
- {n:8,title:"Objetos y acciones",desc:"Manipular cosas.",obj:"Desenvolverte con objetos y acciones cotidianas.",verbs:["брать","давать","получать","открывать","закрывать"]},
- {n:9,title:"Compras y comida",desc:"Situaciones comunes para cualquier viajero.",obj:"Comprar, pedir comida y encontrar lugares o cosas.",verbs:["покупать","продавать","есть","пить","находить"]},
- {n:10,title:"Cambios y acciones continuas",desc:"Completar acciones y ampliar vocabulario.",obj:"Hablar sobre procesos, cambios y acciones específicas.",verbs:["начинать","заканчивать","забывать","носить","нести"]}
-];
-
-/* ============ DATOS DE VERBOS ============ */
-const verbsRaw = [
-{inf:"быть",es:"ser / estar",aspect:"impf",freq:5,tense:"fut",
- conj:["буду","будешь","будет","будем","будете","будут"],
- case_:"—",caseNote:"Verbo de enlace; no rige caso propio, conecta con nominativo o instrumental (быть врачом = ser médico).",
- ex:[["Я буду дома.","Estaré en casa."],["Он был студентом.","Él era estudiante."],["Это будет трудно.","Esto será difícil."],["Мы были в Москве.","Estuvimos en Moscú."]],
- vocab:[["дом","casa"],["студент","estudiante"],["трудно","difícil"],["вчера","ayer"],["завтра","mañana"],["всегда","siempre"]]},
-{inf:"иметь",es:"tener",aspect:"impf",freq:3,tense:"pres",
- conj:["имею","имеешь","имеет","имеем","имеете","имеют"],
- case_:"Acusativo",caseNote:"иметь + Acusativo: иметь право (tener derecho), иметь машину.",
- ex:[["Я имею право.","Tengo derecho."],["Он имеет машину.","Él tiene un coche."],["Это не имеет значения.","Esto no tiene importancia."]],
- vocab:[["право","derecho"],["значение","importancia"],["машина","coche"],["опыт","experiencia"]]},
-{inf:"делать",es:"hacer",aspect:"impf",freq:5,tense:"pres",
- conj:["делаю","делаешь","делает","делаем","делаете","делают"],
- case_:"Acusativo",caseNote:"делать + Acusativo: делать работу, делать ошибку.",
- ex:[["Я делаю домашнее задание.","Hago los deberes."],["Что ты делаешь?","¿Qué haces?"],["Она делает ошибку.","Ella comete un error."],["Мы делаем это вместе.","Lo hacemos juntos."]],
- vocab:[["работа","trabajo"],["ошибка","error"],["задание","tarea"],["вместе","juntos"]]},
-{inf:"мочь",es:"poder",aspect:"impf",freq:5,tense:"pres",
- conj:["могу","можешь","может","можем","можете","могут"],
- case_:"— (+ infinitivo)",caseNote:"мочь + infinitivo, sin caso propio: я могу помочь.",
- ex:[["Я могу помочь тебе.","Puedo ayudarte."],["Ты можешь прийти завтра?","¿Puedes venir mañana?"],["Мы не можем.","No podemos."]],
- vocab:[["возможность","posibilidad"],["сила","fuerza"]]},
-{inf:"хотеть",es:"querer",aspect:"impf",freq:5,tense:"pres",
- conj:["хочу","хочешь","хочет","хотим","хотите","хотят"],
- case_:"Acusativo / Genitivo (parcial) + infinitivo",caseNote:"хотеть + Acusativo o infinitivo: хочу кофе, хочу спать.",
- ex:[["Я хочу кофе.","Quiero café."],["Он хочет спать.","Él quiere dormir."],["Мы хотим поехать в Москву.","Queremos ir a Moscú."]],
- vocab:[["кофе","café"],["желание","deseo"],["мечта","sueño"]]},
-{inf:"говорить",es:"hablar",aspect:"impf",freq:5,tense:"pres",
- conj:["говорю","говоришь","говорит","говорим","говорите","говорят"],
- case_:"о + Prepositional / по + Dativo",caseNote:"говорить о чём (Prep.), говорить по-русски, говорить с кем (Instr.).",
- ex:[["Я говорю по-русски.","Hablo ruso."],["Мы говорим о фильме.","Hablamos sobre la película."],["Он говорит с другом.","Él habla con su amigo."],["Говори медленно, пожалуйста.","Habla despacio, por favor."]],
- vocab:[["язык","idioma"],["друг","amigo"],["фильм","película"],["медленно","despacio"],["громко","en voz alta"]]},
-{inf:"сказать",es:"decir",aspect:"perf",freq:5,tense:"fut",
- conj:["скажу","скажешь","скажет","скажем","скажете","скажут"],
- case_:"Dativo (кому) + Acusativo (что)",caseNote:"сказать кому-то что-то: Я скажу тебе правду.",
- ex:[["Я скажу тебе правду.","Te diré la verdad."],["Он сказал: 'Привет!'","Él dijo: '¡Hola!'"],["Скажи мне, пожалуйста.","Dime, por favor."]],
- vocab:[["правда","verdad"],["слово","palabra"],["ответ","respuesta"]]},
-{inf:"спрашивать",es:"preguntar",aspect:"impf",freq:4,tense:"pres",
- conj:["спрашиваю","спрашиваешь","спрашивает","спрашиваем","спрашиваете","спрашивают"],
- case_:"Acusativo (кого) + о + Prep. (о чём)",caseNote:"спрашивать кого о чём: спрашиваю тебя о работе.",
- ex:[["Я спрашиваю тебя о работе.","Te pregunto sobre el trabajo."],["Он спрашивает дорогу.","Él pregunta por el camino."]],
- vocab:[["вопрос","pregunta"],["дорога","camino"]]},
-{inf:"отвечать",es:"responder",aspect:"impf",freq:4,tense:"pres",
- conj:["отвечаю","отвечаешь","отвечает","отвечаем","отвечаете","отвечают"],
- case_:"Dativo (кому) + на + Acusativo",caseNote:"отвечать кому на что: отвечаю тебе на вопрос.",
- ex:[["Я отвечаю на вопрос.","Respondo la pregunta."],["Он не отвечает на письма.","Él no responde a las cartas."]],
- vocab:[["вопрос","pregunta"],["письмо","carta"]]},
-{inf:"звонить",es:"llamar (por teléfono)",aspect:"impf",freq:5,tense:"pres",
- conj:["звоню","звонишь","звонит","звоним","звоните","звонят"],
- case_:"Dativo",caseNote:"звонить + Dativo: звоню маме (NO 'звоню мама').",
- ex:[["Я звоню маме.","Llamo a mi madre."],["Позвони мне вечером.","Llámame por la tarde."]],
- vocab:[["телефон","teléfono"],["вечер","tarde/noche"]]},
-{inf:"знать",es:"saber / conocer",aspect:"impf",freq:5,tense:"pres",
- conj:["знаю","знаешь","знает","знаем","знаете","знают"],
- case_:"Acusativo",caseNote:"знать + Acusativo: знать ответ, знать человека.",
- ex:[["Я знаю ответ.","Sé la respuesta."],["Ты знаешь этого человека?","¿Conoces a esa persona?"],["Мы не знаем.","No lo sabemos."]],
- vocab:[["ответ","respuesta"],["человек","persona"],["правило","regla"]]},
-{inf:"понимать",es:"entender",aspect:"impf",freq:5,tense:"pres",
- conj:["понимаю","понимаешь","понимает","понимаем","понимаете","понимают"],
- case_:"Acusativo",caseNote:"понимать + Acusativo: понимаю тебя, понимаю текст.",
- ex:[["Я тебя понимаю.","Te entiendo."],["Ты понимаешь по-русски?","¿Entiendes ruso?"],["Я не понимаю.","No entiendo."]],
- vocab:[["текст","texto"],["смысл","sentido"],["урок","lección"]]},
-{inf:"думать",es:"pensar",aspect:"impf",freq:5,tense:"pres",
- conj:["думаю","думаешь","думает","думаем","думаете","думают"],
- case_:"о + Prepositional",caseNote:"думать о чём/ком (Prep.): думаю о тебе.",
- ex:[["Я думаю о тебе.","Pienso en ti."],["Что ты думаешь об этом?","¿Qué piensas de esto?"],["Он много думает.","Él piensa mucho."]],
- vocab:[["мысль","pensamiento"],["идея","idea"],["мнение","opinión"]]},
-{inf:"учиться",es:"estudiar / aprender",aspect:"impf",freq:4,tense:"pres",
- conj:["учусь","учишься","учится","учимся","учитесь","учатся"],
- case_:"Dativo (чему) / в + Prep. (где)",caseNote:"учиться чему-то (Dat.): учиться русскому языку; где: учиться в университете.",
- ex:[["Я учусь в университете.","Estudio en la universidad."],["Она учится русскому языку.","Ella aprende ruso."]],
- vocab:[["университет","universidad"],["урок","lección"],["студент","estudiante"]]},
-{inf:"помнить",es:"recordar",aspect:"impf",freq:4,tense:"pres",
- conj:["помню","помнишь","помнит","помним","помните","помнят"],
- case_:"Acusativo / о + Prep.",caseNote:"помнить что / о чём: помню тебя, помню о встрече.",
- ex:[["Я помню тебя.","Te recuerdo."],["Ты помнишь о встрече?","¿Te acuerdas de la reunión?"]],
- vocab:[["память","memoria"],["встреча","reunión"]]},
-{inf:"видеть",es:"ver",aspect:"impf",freq:5,tense:"pres",
- conj:["вижу","видишь","видит","видим","видите","видят"],
- case_:"Acusativo",caseNote:"видеть + Acusativo: вижу дом, вижу тебя.",
- ex:[["Я вижу тебя.","Te veo."],["Он видит море.","Él ve el mar."],["Мы видим проблему.","Vemos el problema."]],
- vocab:[["море","mar"],["проблема","problema"],["глаз","ojo"]]},
-{inf:"смотреть",es:"mirar / ver (TV)",aspect:"impf",freq:5,tense:"pres",
- conj:["смотрю","смотришь","смотрит","смотрим","смотрите","смотрят"],
- case_:"на + Acusativo",caseNote:"смотреть на кого/что (Ac.): смотрю на тебя; смотреть телевизор (sin preposición, objeto directo).",
- ex:[["Я смотрю телевизор.","Veo la televisión."],["Она смотрит на меня.","Ella me mira."],["Мы смотрим фильм.","Vemos una película."]],
- vocab:[["телевизор","televisión"],["фильм","película"],["окно","ventana"]]},
-{inf:"слышать",es:"oír",aspect:"impf",freq:4,tense:"pres",
- conj:["слышу","слышишь","слышит","слышим","слышите","слышат"],
- case_:"Acusativo",caseNote:"слышать + Acusativo: слышу музыку.",
- ex:[["Я слышу музыку.","Oigo música."],["Ты слышишь меня?","¿Me oyes?"]],
- vocab:[["музыка","música"],["звук","sonido"],["шум","ruido"]]},
-{inf:"слушать",es:"escuchar",aspect:"impf",freq:5,tense:"pres",
- conj:["слушаю","слушаешь","слушает","слушаем","слушаете","слушают"],
- case_:"Acusativo",caseNote:"слушать + Acusativo: слушаю музыку, слушаю тебя.",
- ex:[["Я слушаю музыку.","Escucho música."],["Слушай меня внимательно.","Escúchame con atención."]],
- vocab:[["внимательно","con atención"],["радио","radio"],["песня","canción"]]},
-{inf:"искать",es:"buscar",aspect:"impf",freq:4,tense:"pres",
- conj:["ищу","ищешь","ищет","ищем","ищете","ищут"],
- case_:"Genitivo / Acusativo",caseNote:"искать работу (Ac., concreto) / искать счастья (Gen., abstracto).",
- ex:[["Я ищу работу.","Busco trabajo."],["Он ищет ключи.","Él busca las llaves."]],
- vocab:[["ключ","llave"],["работа","trabajo"]]},
-{inf:"идти",es:"ir (a pie, ahora)",aspect:"impf",freq:5,tense:"pres",
- conj:["иду","идёшь","идёт","идём","идёте","идут"],
- case_:"Acusativo (dirección: в/на + Ac.)",caseNote:"идти в школу, идти на работу — movimiento unidireccional en curso.",
- ex:[["Я иду домой.","Voy a casa."],["Куда ты идёшь?","¿Adónde vas?"],["Мы идём в кино.","Vamos al cine."]],
- vocab:[["дом","casa"],["школа","escuela"],["кино","cine"],["улица","calle"]]},
-{inf:"ходить",es:"ir (a pie, habitual)",aspect:"impf",freq:4,tense:"pres",
- conj:["хожу","ходишь","ходит","ходим","ходите","ходят"],
- case_:"Acusativo (в/на + Ac.)",caseNote:"Acción repetida o de ida y vuelta: я хожу в спортзал каждый день.",
- ex:[["Я хожу в спортзал каждый день.","Voy al gimnasio todos los días."],["Он часто ходит в парк.","Él va al parque a menudo."]],
- vocab:[["спортзал","gimnasio"],["парк","parque"],["каждый день","cada día"],["часто","a menudo"]]},
-{inf:"ехать",es:"ir (en transporte, ahora)",aspect:"impf",freq:4,tense:"pres",
- conj:["еду","едешь","едет","едем","едете","едут"],
- case_:"Acusativo (dirección)",caseNote:"Movimiento en transporte, unidireccional: мы едем в Барселону.",
- ex:[["Мы едем в Барселону.","Vamos a Barcelona (en transporte)."],["Куда вы едете?","¿Adónde van?"]],
- vocab:[["поезд","tren"],["машина","coche"],["автобус","autobús"]]},
-{inf:"ездить",es:"ir (en transporte, habitual)",aspect:"impf",freq:3,tense:"pres",
- conj:["езжу","ездишь","ездит","ездим","ездите","ездят"],
- case_:"Acusativo (dirección)",caseNote:"Viajes repetidos: я езжу на работу на метро.",
- ex:[["Я езжу на работу на метро.","Voy al trabajo en metro."],["Они ездят в Россию каждый год.","Ellos viajan a Rusia cada año."]],
- vocab:[["метро","metro"],["работа","trabajo"],["год","año"]]},
-{inf:"встречать",es:"encontrarse con / recibir",aspect:"impf",freq:4,tense:"pres",
- conj:["встречаю","встречаешь","встречает","встречаем","встречаете","встречают"],
- case_:"Acusativo",caseNote:"встречать + Acusativo: встречаю друга в аэропорту.",
- ex:[["Я встречаю друга в аэропорту.","Recojo a mi amigo en el aeropuerto."],["Мы встречаем Новый год вместе.","Celebramos juntos el Año Nuevo."]],
- vocab:[["аэропорт","aeropuerto"],["праздник","fiesta"]]},
-{inf:"жить",es:"vivir",aspect:"impf",freq:5,tense:"pres",
- conj:["живу","живёшь","живёт","живём","живёте","живут"],
- case_:"Prepositional (где)",caseNote:"жить в городе (Prep.): dónde se vive.",
- ex:[["Я живу в Барселоне.","Vivo en Barcelona."],["Где ты живёшь?","¿Dónde vives?"],["Мы живём вместе.","Vivimos juntos."]],
- vocab:[["город","ciudad"],["квартира","piso"],["страна","país"]]},
-{inf:"работать",es:"trabajar",aspect:"impf",freq:5,tense:"pres",
- conj:["работаю","работаешь","работает","работаем","работаете","работают"],
- case_:"Instrumental (кем) / в + Prep. (где)",caseNote:"работать кем-то (Instr.): работать инженером; где: работать в офисе.",
- ex:[["Я работаю в офисе.","Trabajo en una oficina."],["Он работает инженером.","Él trabaja como ingeniero."],["Мы работаем вместе.","Trabajamos juntos."]],
- vocab:[["офис","oficina"],["инженер","ingeniero"],["зарплата","salario"]]},
-{inf:"читать",es:"leer",aspect:"impf",freq:5,tense:"pres",
- conj:["читаю","читаешь","читает","читаем","читаете","читают"],
- case_:"Acusativo",caseNote:"читать + Acusativo: читаю книгу.",
- ex:[["Я читаю книгу.","Leo un libro."],["Он читает газету.","Él lee el periódico."],["Что ты читаешь?","¿Qué lees?"]],
- vocab:[["книга","libro"],["газета","periódico"],["статья","artículo"],["письмо","carta"],["новости","noticias"]]},
-{inf:"писать",es:"escribir",aspect:"impf",freq:5,tense:"pres",
- conj:["пишу","пишешь","пишет","пишем","пишете","пишут"],
- case_:"Acusativo / Dativo (кому)",caseNote:"писать что кому: пишу письмо другу.",
- ex:[["Я пишу письмо другу.","Escribo una carta a mi amigo."],["Она пишет книгу.","Ella escribe un libro."]],
- vocab:[["письмо","carta"],["ручка","bolígrafo"],["текст","texto"]]},
-{inf:"использовать",es:"usar",aspect:"impf/perf",freq:4,tense:"pres",
- conj:["использую","используешь","использует","используем","используете","используют"],
- case_:"Acusativo",caseNote:"использовать + Acusativo: использую словарь. Verbo bispecto (misma forma para impf y perf).",
- ex:[["Я использую словарь.","Uso un diccionario."],["Мы используем это приложение.","Usamos esta aplicación."]],
- vocab:[["словарь","diccionario"],["приложение","aplicación"]]},
-{inf:"любить",es:"amar / gustar mucho",aspect:"impf",freq:5,tense:"pres",
- conj:["люблю","любишь","любит","любим","любите","любят"],
- case_:"Acusativo",caseNote:"любить + Acusativo: люблю тебя, люблю музыку.",
- ex:[["Я люблю тебя.","Te amo."],["Он любит читать.","A él le encanta leer."],["Мы любим этот город.","Amamos esta ciudad."]],
- vocab:[["любовь","amor"],["сердце","corazón"],["счастье","felicidad"]]},
-{inf:"нравиться",es:"gustar",aspect:"impf",freq:5,tense:"pres",
- conj:["нравлюсь","нравишься","нравится","нравимся","нравитесь","нравятся"],
- case_:"Dativo (кому) + Nominativo (qué gusta)",caseNote:"Мне нравится музыка = 'a mí me gusta la música' (sujeto gramatical es lo que gusta).",
- ex:[["Мне нравится музыка.","Me gusta la música."],["Тебе нравится этот фильм?","¿Te gusta esta película?"],["Нам нравится Барселона.","Nos gusta Barcelona."]],
- vocab:[["вкус","gusto"],["интерес","interés"]]},
-{inf:"помогать",es:"ayudar",aspect:"impf",freq:5,tense:"pres",
- conj:["помогаю","помогаешь","помогает","помогаем","помогаете","помогают"],
- case_:"Dativo",caseNote:"помогать + Dativo: помогаю другу (NO 'моего друга').",
- ex:[["Я помогаю моему другу.","Ayudo a mi amigo."],["Ты можешь мне помочь?","¿Puedes ayudarme?"]],
- vocab:[["помощь","ayuda"],["поддержка","apoyo"]]},
-{inf:"ждать",es:"esperar",aspect:"impf",freq:4,tense:"pres",
- conj:["жду","ждёшь","ждёт","ждём","ждёте","ждут"],
- case_:"Genitivo / Acusativo (según objeto)",caseNote:"ждать автобус (Ac., concreto) / ждать письма (Gen., abstracto).",
- ex:[["Я жду автобус.","Espero el autobús."],["Он ждёт ответа.","Él espera una respuesta."]],
- vocab:[["автобус","autobús"],["очередь","cola/turno"]]},
-{inf:"становиться",es:"convertirse en / llegar a ser",aspect:"impf",freq:4,tense:"pres",
- conj:["становлюсь","становишься","становится","становимся","становитесь","становятся"],
- case_:"Instrumental",caseNote:"становиться + Instrumental: становлюсь врачом, становится холодно.",
- ex:[["Я становлюсь врачом.","Me convierto en médico."],["Становится холодно.","Se está poniendo frío."]],
- vocab:[["врач","médico"],["холодно","frío"]]},
-{inf:"брать",es:"tomar / coger",aspect:"impf",freq:4,tense:"pres",
- conj:["беру","берёшь","берёт","берём","берёте","берут"],
- case_:"Acusativo",caseNote:"брать + Acusativo: беру такси, беру книгу.",
- ex:[["Я беру такси.","Tomo un taxi."],["Возьми зонт.","Coge un paraguas."]],
- vocab:[["такси","taxi"],["зонт","paraguas"]]},
-{inf:"давать",es:"dar",aspect:"impf",freq:4,tense:"pres",
- conj:["даю","даёшь","даёт","даём","даёте","дают"],
- case_:"Dativo (кому) + Acusativo (что)",caseNote:"давать кому что: даю тебе книгу.",
- ex:[["Я даю тебе книгу.","Te doy un libro."],["Он даёт совет.","Él da un consejo."]],
- vocab:[["совет","consejo"],["подарок","regalo"]]},
-{inf:"получать",es:"recibir",aspect:"impf",freq:4,tense:"pres",
- conj:["получаю","получаешь","получает","получаем","получаете","получают"],
- case_:"Acusativo",caseNote:"получать + Acusativo: получаю письмо, получаю зарплату.",
- ex:[["Я получаю зарплату.","Recibo el salario."],["Он получил письмо.","Él recibió una carta."]],
- vocab:[["зарплата","salario"],["посылка","paquete"]]},
-{inf:"открывать",es:"abrir",aspect:"impf",freq:4,tense:"pres",
- conj:["открываю","открываешь","открывает","открываем","открываете","открывают"],
- case_:"Acusativo",caseNote:"открывать + Acusativo: открываю дверь, окно.",
- ex:[["Я открываю дверь.","Abro la puerta."],["Она открывает окно.","Ella abre la ventana."]],
- vocab:[["дверь","puerta"],["окно","ventana"]]},
-{inf:"закрывать",es:"cerrar",aspect:"impf",freq:3,tense:"pres",
- conj:["закрываю","закрываешь","закрывает","закрываем","закрываете","закрывают"],
- case_:"Acusativo",caseNote:"закрывать + Acusativo: закрываю магазин.",
- ex:[["Магазин закрывается в 8.","La tienda cierra a las 8."],["Закрой дверь, пожалуйста.","Cierra la puerta, por favor."]],
- vocab:[["магазин","tienda"],["время","hora"]]},
-{inf:"покупать",es:"comprar",aspect:"impf",freq:5,tense:"pres",
- conj:["покупаю","покупаешь","покупает","покупаем","покупаете","покупают"],
- case_:"Acusativo (+ Dativo opcional)",caseNote:"покупать что кому: покупаю подарок другу.",
- ex:[["Я покупаю продукты.","Compro comida."],["Она покупает подарок другу.","Ella compra un regalo para su amigo."]],
- vocab:[["магазин","tienda"],["продукты","comida/víveres"],["деньги","dinero"]]},
-{inf:"продавать",es:"vender",aspect:"impf",freq:3,tense:"pres",
- conj:["продаю","продаёшь","продаёт","продаём","продаёте","продают"],
- case_:"Acusativo + Dativo",caseNote:"продавать что кому: продаю машину соседу.",
- ex:[["Он продаёт машину.","Él vende el coche."],["Мы продаём квартиру.","Vendemos el piso."]],
- vocab:[["цена","precio"],["покупатель","comprador"]]},
-{inf:"есть",es:"comer",aspect:"impf",freq:5,tense:"pres",
- conj:["ем","ешь","ест","едим","едите","едят"],
- case_:"Acusativo",caseNote:"есть + Acusativo: ем суп, ем яблоко.",
- ex:[["Я ем суп.","Como sopa."],["Что ты ешь?","¿Qué comes?"],["Мы едим вместе.","Comemos juntos."]],
- vocab:[["суп","sopa"],["яблоко","manzana"],["хлеб","pan"]]},
-{inf:"пить",es:"beber",aspect:"impf",freq:5,tense:"pres",
- conj:["пью","пьёшь","пьёт","пьём","пьёте","пьют"],
- case_:"Acusativo",caseNote:"пить + Acusativo: пью воду, пью чай.",
- ex:[["Я пью чай.","Bebo té."],["Он пьёт воду.","Él bebe agua."]],
- vocab:[["вода","agua"],["чай","té"],["сок","zumo"]]},
-{inf:"находить",es:"encontrar",aspect:"impf",freq:3,tense:"pres",
- conj:["нахожу","находишь","находит","находим","находите","находят"],
- case_:"Acusativo",caseNote:"находить + Acusativo: нахожу решение.",
- ex:[["Я нахожу решение.","Encuentro la solución."],["Мы находим время.","Encontramos tiempo."]],
- vocab:[["решение","solución"],["время","tiempo"]]},
-{inf:"начинать",es:"empezar",aspect:"impf",freq:5,tense:"pres",
- conj:["начинаю","начинаешь","начинает","начинаем","начинаете","начинают"],
- case_:"Acusativo / + infinitivo",caseNote:"начинать что / начинать что-то делать: начинаю урок, начинаю работать.",
- ex:[["Я начинаю урок.","Empiezo la lección."],["Мы начинаем работать в 9.","Empezamos a trabajar a las 9."]],
- vocab:[["начало","comienzo"],["урок","lección"]]},
-{inf:"заканчивать",es:"terminar",aspect:"impf",freq:4,tense:"pres",
- conj:["заканчиваю","заканчиваешь","заканчивает","заканчиваем","заканчиваете","заканчивают"],
- case_:"Acusativo / + infinitivo",caseNote:"заканчивать что: заканчиваю работу в 6.",
- ex:[["Я заканчиваю работу в 6.","Termino de trabajar a las 6."],["Он заканчивает университет.","Él termina la universidad."]],
- vocab:[["конец","final"],["диплом","título/diploma"]]},
-{inf:"забывать",es:"olvidar",aspect:"impf",freq:4,tense:"pres",
- conj:["забываю","забываешь","забывает","забываем","забываете","забывают"],
- case_:"Acusativo / о + Prep.",caseNote:"забывать что / о чём: забываю ключи, забываю о встрече.",
- ex:[["Я забываю ключи.","Olvido las llaves."],["Не забудь о встрече!","¡No olvides la reunión!"]],
- vocab:[["ключи","llaves"],["встреча","reunión"]]},
-{inf:"носить",es:"llevar / vestir (habitual)",aspect:"impf",freq:3,tense:"pres",
- conj:["ношу","носишь","носит","носим","носите","носят"],
- case_:"Acusativo",caseNote:"носить + Acusativo: ношу очки, ношу куртку — hábito.",
- ex:[["Я ношу очки.","Llevo gafas."],["Она носит красивую одежду.","Ella lleva ropa bonita."]],
- vocab:[["очки","gafas"],["одежда","ropa"]]},
-{inf:"нести",es:"llevar (ahora, un objeto)",aspect:"impf",freq:3,tense:"pres",
- conj:["несу","несёшь","несёт","несём","несёте","несут"],
- case_:"Acusativo",caseNote:"нести + Acusativo, acción concreta en curso: несу сумку.",
- ex:[["Я несу сумку.","Llevo la bolsa."],["Он несёт коробку.","Él lleva una caja."]],
- vocab:[["сумка","bolsa"],["коробка","caja"]]}
-];
-
-// asignar id y módulo según MODULES
-let autoId = 1;
-const verbs = [];
-MODULES.forEach(mod=>{
-  mod.verbs.forEach(inf=>{
-    const v = verbsRaw.find(x=>x.inf===inf);
-    v.id = autoId++;
-    v.module = mod.n;
-    verbs.push(v);
-  });
-});
+// MODULES y verbs se cargan desde data-verbos.js (compartido con index.html para el buscador)
 
 /* ============ ESTADO (en memoria, sesión actual) ============ */
-const state = { srs:{}, history:[], xp:0, view:{name:'home'} };
+// srs (dominio por verbo 0-4) se carga/guarda vía azModule('verbos').srs.
+// history queda solo en memoria de la sesión; attempts/correct acumulados
+// sí persisten en azModule('verbos').stats para que "Precisión" sobreviva
+// a un reload.
+const state = { srs:{}, history:[], view:{name:'home'} };
 verbs.forEach(v=>state.srs[v.id]=0);
 function levelName(l){return ["Nuevo","Aprendido","En práctica","Dominado","Automático"][l];}
 function levelClass(l){return l===0?'s0':(l<3?'s1':'s2');}
 
-function speak(text){
-  try{
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang='ru-RU'; u.rate=0.85;
-    const rv=speechSynthesis.getVoices().find(v=>v.lang&&v.lang.toLowerCase().startsWith('ru'));
-    if(rv) u.voice=rv;
-    speechSynthesis.cancel(); speechSynthesis.speak(u);
-  }catch(e){console.warn('TTS no disponible',e);}
-}
+// speak() ya viene de core.js
 
 const app = document.getElementById('app');
-function updateXpPill(){document.getElementById('xpPill').textContent = state.xp+' XP';}
 
 function render(){
   const v = state.view;
@@ -453,7 +75,6 @@ function render(){
   else if(v.name==='fillblank') html=renderFillBlank();
   else if(v.name==='stats') html=renderStats();
   app.innerHTML = `<div class="view">${html}</div>`;
-  updateXpPill();
   attachHandlers();
 }
 
@@ -621,15 +242,13 @@ function renderStats(){
   const total=verbs.length;
   const mastered=verbs.filter(v=>state.srs[v.id]>=3).length;
   const inProgress=verbs.filter(v=>state.srs[v.id]>0&&state.srs[v.id]<3).length;
-  const attempts=state.history.length;
-  const correct=state.history.filter(h=>h.correct).length;
-  const acc=attempts?Math.round(correct/attempts*100):0;
+  const st = azModule('verbos').stats || {attempts:0,correct:0};
+  const acc=st.attempts?Math.round(st.correct/st.attempts*100):0;
   let out = `<div class="ey">Tu progreso</div><h1 class="pt">Estadísticas</h1>
   <div class="sr">
     <div class="sc"><span class="sv">${mastered}/${total}</span><span class="sl">Dominados</span></div>
     <div class="sc"><span class="sv">${inProgress}</span><span class="sl">En práctica</span></div>
     <div class="sc"><span class="sv">${acc}%</span><span class="sl">Precisión</span></div>
-    <div class="sc"><span class="sv">${state.xp}</span><span class="sl">XP total</span></div>
   </div>
   <div class="sh"><h2>Por módulo</h2></div>`;
   MODULES.forEach(mod=>{
@@ -637,14 +256,20 @@ function renderStats(){
     const avg = mv.reduce((a,v)=>a+state.srs[v.id],0)/mv.length;
     out += `<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>${mod.n}. ${mod.title}</span><span class="dim">${Math.round(avg/4*100)}%</span></div><div class="pb"><div style="width:${avg/4*100}%"></div></div></div>`;
   });
-  out += `<p class="err">El progreso se guarda solo durante esta sesión del navegador (sin almacenamiento persistente). Si cierras la pestaña, se reinicia.</p>`;
   return out;
 }
 
 function updateSRS(id, correct){
   state.history.push({id,correct});
-  if(correct){ state.srs[id]=Math.min(4,state.srs[id]+1); state.xp+=10; }
-  else { state.srs[id]=Math.max(0,state.srs[id]-1); state.xp+=2; }
+  if(correct){ state.srs[id]=Math.min(4,state.srs[id]+1); }
+  else { state.srs[id]=Math.max(0,state.srs[id]-1); }
+  const mod = azModule('verbos');
+  mod.srs = state.srs;
+  mod.stats = mod.stats || {attempts:0, correct:0};
+  mod.stats.attempts++;
+  if(correct) mod.stats.correct++;
+  azTouchStudied();
+  azSaveProgress();
 }
 
 function attachHandlers(){
@@ -687,11 +312,18 @@ function attachHandlers(){
 document.getElementById('nav-home').addEventListener('click',()=>{state.view={name:'home'};setActiveNav('nav-home');render();});
 document.getElementById('nav-practice').addEventListener('click',()=>{currentDrill=null;state.view={name:'practice'};setActiveNav('nav-practice');render();});
 document.getElementById('nav-stats').addEventListener('click',()=>{state.view={name:'stats'};setActiveNav('nav-stats');render();});
-document.getElementById('nav-theme').addEventListener('click',()=>{document.body.classList.toggle('light');});
+document.getElementById('nav-theme').addEventListener('click',azToggleTheme);
 function setActiveNav(id){document.querySelectorAll('#bnav .nb').forEach(b=>b.classList.remove('ac'));document.getElementById(id).classList.add('ac');}
 
-if(typeof speechSynthesis!=='undefined'){ speechSynthesis.onvoiceschanged=()=>{}; }
-render();
+(async () => {
+  await azInit({activeType:'module', activeId:'verbos'});
+  const saved = azModule('verbos').srs || {};
+  verbs.forEach(v=>{ if(saved[v.id]!==undefined) state.srs[v.id]=saved[v.id]; });
+  // Sumar los 50 verbos al buscador transversal de index.html
+  azRegisterSearchEntries('verbos', 'Verbos frecuentes', 'verbos.html',
+    verbs.map(v=>({ru:v.inf, es:v.es, tr:''})));
+  render();
+})();
 </script>
 </body>
 </html>
