@@ -24,11 +24,11 @@ const AZ_UNITS = [
   {id:12,title:"Consolidación B1",desc:"Repaso integral y examen final.",href:"azbuka-12.html"},
 ];
 const AZ_MODULES = [
-  {id:"abecedario",title:"Alfabeto cirílico",desc:"Letras, sonidos y caligrafía — consulta libre",href:"abecedario.html",icon:"orange",glyph:"Я"},
+  {id:"alfabeto",title:"Alfabeto",desc:"Letras, sonidos y caligrafía — consulta libre",href:"alfabeto.html",icon:"orange",glyph:"Я"},
   {id:"dialogos",title:"Diálogos",desc:"30 conversaciones con audio y vocabulario",href:"dialogos.html",icon:"yellow",glyph:"Ди"},
-  {id:"diccionario",title:"Diccionario temático",desc:"Vocabulario español–ruso por categorías",href:"diccionario.html",icon:"green",glyph:"Дс"},
-  {id:"verbos",title:"Verbos frecuentes",desc:"Los 50 verbos más usados, con conjugación",href:"verbos.html",icon:"blue",glyph:"Вб"},
-  {id:"casos",title:"Casos gramaticales",desc:"Declinaciones del ruso, los 6 casos",href:"casos.html",icon:"purple",glyph:"Пд"},
+  {id:"diccionario",title:"Diccionario",desc:"Vocabulario español–ruso por categorías",href:"diccionario.html",icon:"green",glyph:"Дс"},
+  {id:"verbos",title:"Verbos",desc:"Los 50 verbos más usados, con conjugación",href:"verbos.html",icon:"blue",glyph:"Вб"},
+  {id:"casos",title:"Casos",desc:"Declinaciones del ruso, los 6 casos",href:"casos.html",icon:"purple",glyph:"Пд"},
 ];
 const AZ_ALL_ENTRIES = [
   {kind:"unit", ...({})}, // placeholder, no usado directamente

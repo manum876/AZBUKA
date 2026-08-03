@@ -2,44 +2,60 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Азбука">
 <title>Азбука · Ruso</title>
 <link rel="stylesheet" href="core.css">
 <style>
-  /* Estilos específicos de esta página (no van en core.css porque
-     solo se usan acá: el header grande y la search bar de home) */
-  body{padding-bottom:calc(30px + env(safe-area-inset-bottom));}
-  header{padding:calc(32px + env(safe-area-inset-top)) 20px 20px;text-align:center;position:relative;max-width:700px;margin:0 auto;}
-  .theme-btn{position:absolute;top:calc(20px + env(safe-area-inset-top));right:16px;width:38px;height:38px;border-radius:10px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:17px;cursor:pointer;color:var(--text);}
+  /* Estilos específicos de esta página. Todo pensado para entrar en
+     una sola pantalla de celular sin scroll: paddings ajustados,
+     header compacto y cards bajas. */
+  html,body{height:100%;overflow:hidden;}
+  body{display:flex;flex-direction:column;}
+
+  header{padding:calc(14px + env(safe-area-inset-top)) 20px 10px;max-width:700px;margin:0 auto;width:100%;flex-shrink:0;}
+  .header-row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
+  .brand-title{font-family:var(--serif);font-size:30px;font-weight:800;letter-spacing:-0.01em;color:var(--gold);line-height:1;}
+  .tagline{margin-top:5px;color:var(--sub);font-size:13px;font-weight:500;}
+  .theme-btn{width:36px;height:36px;border-radius:10px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;color:var(--text);flex-shrink:0;}
   .theme-btn:active{background:var(--bg3);}
-  header .cyr{font-size:14px;letter-spacing:0.35em;color:var(--gold);text-transform:uppercase;font-weight:600;margin-bottom:8px;}
-  header h1{font-size:26px;font-weight:700;letter-spacing:-0.01em;color:var(--text);}
-  header p{margin-top:6px;color:var(--sub);font-size:14px;}
-  main{max-width:700px;margin:0 auto;padding:8px 16px 20px;}
-  .section-lbl{font-size:10.5px;letter-spacing:1.8px;text-transform:uppercase;color:var(--gold);margin:24px 0 10px;font-weight:600;}
-  a.card{display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--text);}
-  .card-text h2{margin:0 0 3px;font-size:16px;font-weight:600;}
-  .card-text p{margin:0;font-size:12.5px;color:var(--muted);line-height:1.35;}
-  .hint{max-width:700px;margin:20px auto 0;padding:0 20px;color:var(--muted);font-size:12px;line-height:1.5;text-align:center;}
+
+  main{max-width:700px;margin:0 auto;padding:6px 16px calc(10px + env(safe-area-inset-bottom));width:100%;flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;}
+  .section-lbl{font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:var(--gold);margin:14px 0 8px;font-weight:600;flex-shrink:0;}
+  .section-lbl:first-child{margin-top:2px;}
+
+  /* Cards horizontales y bajas: ícono+título en una fila, subtítulo abajo */
+  a.card{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:var(--text);padding:10px 12px;}
+  .card-row{display:flex;align-items:center;gap:9px;}
+  .card-row .icon{width:32px;height:32px;border-radius:9px;font-size:14px;flex-shrink:0;}
+  .card-row h2{margin:0;font-size:14.5px;font-weight:600;}
+  a.card p{margin:0;font-size:11.5px;color:var(--muted);line-height:1.3;}
+
+  .gsearch{margin-bottom:0;flex-shrink:0;}
+  .gsearch input{width:100%;box-sizing:border-box;}
+  #searchResults{overflow-y:auto;flex:1;min-height:0;}
+  #homeSections{overflow-y:auto;flex:1;min-height:0;display:flex;flex-direction:column;}
 </style>
 </head>
 <body>
 
 <header>
-  <button class="theme-btn" id="themeBtn" aria-label="Cambiar tema">🌙</button>
-  <div class="cyr">Азбука</div>
-  <h1>Ruso desde cero</h1>
-  <p>Elegí una app para empezar</p>
+  <div class="header-row">
+    <div>
+      <div class="brand-title">Азбука</div>
+      <p class="tagline">Ruso desde cero</p>
+    </div>
+    <button class="theme-btn" id="themeBtn" aria-label="Cambiar tema">🌙</button>
+  </div>
 </header>
 
 <main>
 
   <div class="gsearch">
     <span class="gsi">🔍</span>
-    <input type="text" id="globalSearch" placeholder="Buscar cualquier palabra, en cualquier módulo…" autocomplete="off">
+    <input type="text" id="globalSearch" placeholder="Buscar cualquier palabra…" autocomplete="off">
     <button class="gsc" id="gsClear">✕</button>
   </div>
   <div id="searchResults"></div>
@@ -48,23 +64,19 @@
     <div class="section-lbl">Curso principal</div>
     <div class="ugrid">
       <a class="card uc" href="azbuka-index.html">
-        <div class="icon red">А</div>
-        <div class="card-text">
+        <div class="card-row">
+          <div class="icon red">А</div>
           <h2>Curso Азбука</h2>
-          <p>12 unidades A1–B1, con progreso guardado</p>
         </div>
+        <p>12 unidades A1–B1, con progreso guardado</p>
       </a>
     </div>
 
-    <div class="section-lbl">Módulos independientes</div>
+    <div class="section-lbl">Herramientas</div>
     <div class="ugrid" id="modulesGrid"></div>
   </div>
 
 </main>
-
-<p class="hint">
-  El progreso se guarda automáticamente y es el mismo en todos los módulos y unidades.
-</p>
 
 <div id="toast"></div>
 
@@ -76,11 +88,11 @@ function renderModulesGrid(){
   const grid = document.getElementById('modulesGrid');
   grid.innerHTML = AZ_MODULES.map(m=>`
     <a class="card uc" href="${m.href}">
-      <div class="icon ${m.icon}">${m.glyph}</div>
-      <div class="card-text">
+      <div class="card-row">
+        <div class="icon ${m.icon}">${m.glyph}</div>
         <h2>${m.title}</h2>
-        <p>${m.desc}</p>
       </div>
+      <p>${m.desc}</p>
     </a>`).join('');
 }
 
@@ -90,12 +102,14 @@ function renderSearchResults(query){
   const clearBtn = document.getElementById('gsClear');
   if(!query){
     box.innerHTML = '';
+    box.style.display = 'none';
     homeSections.style.display = '';
     clearBtn.style.display = 'none';
     return;
   }
   clearBtn.style.display = 'block';
   homeSections.style.display = 'none';
+  box.style.display = '';
   const results = azSearch(query);
   if(results.length === 0){
     box.innerHTML = '<div class="empty">Sin resultados. El índice de búsqueda se completa a medida que sumamos módulos.</div>';
