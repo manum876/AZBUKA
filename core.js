@@ -165,7 +165,7 @@ function azRenderDrawer(activeType, activeId){
     const ac = activeType==='unit' && Number(activeId)===u.id;
     html += `<a class="d-u${ac?' ac':''}" href="${u.href}"><span class="d-n">${String(u.id).padStart(2,'0')}</span><span>${u.title}</span></a>`;
   });
-  html += '<div class="d-lbl" style="margin-top:12px;">Módulos independientes</div>';
+  html += '<div class="d-lbl" style="margin-top:12px;">Herramientas</div>';
   AZ_MODULES.forEach(m=>{
     const ac = activeType==='module' && activeId===m.id;
     html += `<a class="d-u${ac?' ac':''}" href="${m.href}"><span class="d-n">${m.glyph}</span><span>${m.title}</span></a>`;
@@ -190,11 +190,14 @@ function azWireDrawer(activeType, activeId){
    vía az-search-index.js (se arma en la siguiente etapa). */
 window.AZ_SEARCH_INDEX = window.AZ_SEARCH_INDEX || [];
 function azRegisterSearchEntries(moduleId, moduleLabel, href, entries){
-  // entries: [{ru, es, tr?}]
+  // entries: [{ru, es, tr?, pairEs?, pairRu?}]
+  // pairEs/pairRu: contraparte de género opuesto (ej. gato/кот ↔ gata/кошка),
+  // se muestra como "También: ..." debajo del resultado si existe.
   entries.forEach(e=>{
     window.AZ_SEARCH_INDEX.push({
       module: moduleId, moduleLabel, href,
-      ru: e.ru, es: e.es, tr: e.tr || ''
+      ru: e.ru, es: e.es, tr: e.tr || '',
+      pairEs: e.pairEs || null, pairRu: e.pairRu || null
     });
   });
 }
