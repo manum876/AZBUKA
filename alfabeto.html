@@ -60,10 +60,11 @@ function App() {
   });
   const [quizAnswer, setQuizAnswer] = useState(null);
   const [activeWord, setActiveWord] = useState(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const searchRef = useRef(null);
 
   // Progreso y tema compartidos con azbuka-1.html (Unidad 1, sección Alfabeto)
-  // vía core.js + window.storage — mismo bucket az_progress.modules.alfabeto
+  // vía core.js + localStorage — mismo bucket az_progress.modules.alfabeto
   // porque ambos archivos usan el mismo data-alphabet.js.
   useEffect(() => {
     (async () => {
@@ -206,10 +207,74 @@ function App() {
         input { font-family: inherit; }
         input:focus { outline: none; border-color: ${gold} !important; }
         @media (max-width: 600px) {
-          .letter-grid { grid-template-columns: repeat(4, 1fr) !important; }
+          .letter-grid { grid-template-columns: repeat(3, 1fr) !important; }
           .detail-grid { grid-template-columns: 1fr !important; }
         }
-      `), /*#__PURE__*/React.createElement("header", {
+      `), drawerOpen && /*#__PURE__*/React.createElement("div", {
+    onClick: () => setDrawerOpen(false),
+    style: {
+      position: "fixed", inset: 0, background: "rgba(0,0,0,.55)", zIndex: 200
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "fixed", left: 0, top: 0, bottom: 0, width: 290, zIndex: 210,
+      background: bg2, borderRight: `1px solid ${border}`,
+      display: "flex", flexDirection: "column",
+      transform: drawerOpen ? "translateX(0)" : "translateX(-100%)",
+      transition: "transform .28s cubic-bezier(.4,0,.2,1)"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: { padding: "18px 16px 6px" }
+  }, /*#__PURE__*/React.createElement("input", {
+    ref: searchRef,
+    value: search,
+    onChange: e => setSearch(e.target.value),
+    placeholder: "Buscar",
+    style: {
+      width: "100%", boxSizing: "border-box", background: bg3,
+      border: `1px solid ${border}`, borderRadius: 9,
+      padding: "9px 12px", color: text, fontSize: 13.5
+    }
+  })), /*#__PURE__*/React.createElement("div", {
+    style: { flex: 1, overflowY: "auto", padding: "10px 8px" }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: { fontSize: 10, letterSpacing: 1.5, textTransform: "uppercase", color: textMuted, padding: "10px 10px 6px" }
+  }, "Curso \u0410\u0437\u0431\u0443\u043A\u0430"),
+  AZ_UNITS.map(u => /*#__PURE__*/React.createElement("a", {
+    key: u.id, href: u.href,
+    style: {
+      display: "flex", alignItems: "center", gap: 8, padding: "9px 12px",
+      borderRadius: 10, color: textSub, fontSize: 13.5, textDecoration: "none"
+    }
+  }, /*#__PURE__*/React.createElement("span", { style: { fontSize: 11, color: textMuted, minWidth: 18 } }, String(u.id).padStart(2, "0")), u.title)),
+  /*#__PURE__*/React.createElement("div", {
+    style: { fontSize: 10, letterSpacing: 1.5, textTransform: "uppercase", color: textMuted, padding: "16px 10px 6px" }
+  }, "Herramientas"),
+  AZ_MODULES.map(m => /*#__PURE__*/React.createElement("a", {
+    key: m.id, href: m.href,
+    style: {
+      display: "flex", alignItems: "center", gap: 8, padding: "9px 12px",
+      borderRadius: 10, color: m.id === "alfabeto" ? gold : textSub, fontWeight: m.id === "alfabeto" ? 600 : 400,
+      background: m.id === "alfabeto" ? bg3 : "transparent", fontSize: 13.5, textDecoration: "none"
+    }
+  }, /*#__PURE__*/React.createElement("span", { style: { fontSize: 11, color: textMuted, minWidth: 18 } }, m.glyph), m.title))),
+  /*#__PURE__*/React.createElement("div", {
+    style: { padding: "12px 16px calc(80px + 12px)", borderTop: `1px solid ${border}`, display: "flex", flexDirection: "column", gap: 8 }
+  }, /*#__PURE__*/React.createElement("a", {
+    href: "index.html",
+    style: {
+      display: "flex", alignItems: "center", gap: 8, background: "none",
+      border: `1px solid ${border}`, borderRadius: 10, padding: "10px 16px",
+      color: text, fontSize: 14.5, textDecoration: "none"
+    }
+  }, "🏠 Volver al inicio"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => { setDarkMode(!dark); azSet('az_theme', dark ? 'light' : 'dark'); },
+    style: {
+      display: "flex", alignItems: "center", gap: 8, background: "none",
+      border: `1px solid ${border}`, borderRadius: 10, padding: "10px 16px",
+      color: text, fontSize: 14.5, cursor: "pointer", fontFamily: "inherit"
+    }
+  }, dark ? "☀ Modo claro" : "☾ Modo oscuro"))), /*#__PURE__*/React.createElement("header", {
     style: {
       padding: "0 24px",
       borderBottom: `1px solid ${border}`,
@@ -224,92 +289,31 @@ function App() {
       maxWidth: 960,
       margin: "0 auto",
       display: "flex",
-      alignItems: "center",
-      gap: 16,
-      height: 60
+      flexDirection: "column",
+      justifyContent: "center",
+      padding: "10px 0"
     }
-  }, /*#__PURE__*/React.createElement("a", {
-    href: "index.html",
-    className: "btn",
-    style: {
-      background: "none",
-      color: textMuted,
-      fontSize: 13,
-      textDecoration: "none",
-      padding: "4px 0",
-      marginRight: -6
-    }
-  }, "← Inicio"), /*#__PURE__*/React.createElement("button", {
-    className: "btn",
-    onClick: () => {
-      setView("grid");
-      setSelected(null);
-    },
+  }, /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
-      alignItems: "center",
-      gap: 10,
-      background: "none",
-      padding: "4px 0"
+      alignItems: "baseline",
+      gap: 10
     }
   }, /*#__PURE__*/React.createElement("span", {
     style: {
-      fontSize: 26,
+      fontSize: 24,
       color: gold,
       fontWeight: 900,
       letterSpacing: -1
     }
-  }, "\u042F\u0437"), /*#__PURE__*/React.createElement("span", {
+  }, "\u0410\u0437\u0431\u0443\u043A\u0430")), /*#__PURE__*/React.createElement("p", {
     style: {
-      fontSize: 15,
-      fontWeight: 700,
-      color: text,
-      letterSpacing: 0.5
-    }
-  }, "\u0410\u0437\u0431\u0443\u043A\u0430")), /*#__PURE__*/React.createElement("div", {
-    style: {
-      flex: 1
-    }
-  }), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: "flex",
-      alignItems: "center",
-      gap: 8
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      width: 80,
-      height: 4,
-      background: border,
-      borderRadius: 2,
-      overflow: "hidden"
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      width: `${progressPct}%`,
-      height: "100%",
-      background: gold,
-      borderRadius: 2,
-      transition: "width 0.5s"
-    }
-  })), /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: 12,
+      margin: "3px 0 0",
+      fontSize: 12.5,
       color: textMuted,
-      minWidth: 28
+      fontWeight: 500
     }
-  }, progressPct, "%")), /*#__PURE__*/React.createElement("button", {
-    className: "btn toggle",
-    onClick: () => { setDarkMode(!dark); azSet('az_theme', dark ? 'light' : 'dark'); },
-    style: {
-      background: bg3,
-      border: `1px solid ${border}`,
-      borderRadius: 20,
-      padding: "6px 12px",
-      fontSize: 16,
-      color: text
-    }
-  }, dark ? "☀️" : "🌙"))), /*#__PURE__*/React.createElement("main", {
+  }, "Alfabeto cirílico"))), /*#__PURE__*/React.createElement("main", {
     style: {
       maxWidth: 960,
       margin: "0 auto",
@@ -350,10 +354,10 @@ function App() {
     }
   }, "33 letras \xB7 Aprende su pronunciaci\xF3n, escritura y uso real")), /*#__PURE__*/React.createElement("div", {
     style: {
-      display: "flex",
-      gap: 12,
-      marginBottom: 24,
-      justifyContent: "center"
+      display: "grid",
+      gridTemplateColumns: "repeat(3, 1fr)",
+      gap: 10,
+      marginBottom: 12
     }
   }, [{
     label: "Total",
@@ -371,9 +375,8 @@ function App() {
     key: stat.label,
     style: {
       ...s.card,
-      padding: "10px 20px",
-      textAlign: "center",
-      minWidth: 80
+      padding: "10px 8px",
+      textAlign: "center"
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
@@ -390,26 +393,41 @@ function App() {
   }, stat.label)))), /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
+      alignItems: "center",
+      gap: 8,
+      marginBottom: 20
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1,
+      height: 5,
+      background: border,
+      borderRadius: 3,
+      overflow: "hidden"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: `${progressPct}%`,
+      height: "100%",
+      background: gold,
+      borderRadius: 3,
+      transition: "width 0.5s"
+    }
+  })), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 12,
+      color: textMuted,
+      minWidth: 30
+    }
+  }, progressPct, "%")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
       flexWrap: "wrap",
       gap: 10,
       marginBottom: 20,
       alignItems: "center"
     }
-  }, /*#__PURE__*/React.createElement("input", {
-    ref: searchRef,
-    value: search,
-    onChange: e => setSearch(e.target.value),
-    placeholder: "Buscar letra...",
-    style: {
-      flex: "1 1 160px",
-      background: bg2,
-      border: `1px solid ${border}`,
-      borderRadius: 10,
-      padding: "9px 14px",
-      color: text,
-      fontSize: 14
-    }
-  }), /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement("button", {
     className: "btn toggle",
     onClick: () => setShowPronun(!showPronun),
     style: {
@@ -1103,7 +1121,15 @@ function App() {
       display: "flex",
       justifyContent: "space-around"
     }
-  }, [{
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => setDrawerOpen(true),
+    style: {
+      background: "none", border: "none", padding: "6px 20px", borderRadius: 10,
+      display: "flex", flexDirection: "column", alignItems: "center", gap: 3,
+      color: textMuted, cursor: "pointer", fontFamily: "inherit"
+    }
+  }, /*#__PURE__*/React.createElement("span", { style: { fontSize: 20 } }, "☰"),
+     /*#__PURE__*/React.createElement("span", { style: { fontSize: 11, fontWeight: 600 } }, "Menú")), [{
     id: "grid",
     icon: "⊞",
     label: "Alfabeto"
