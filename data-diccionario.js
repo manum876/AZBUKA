@@ -329,7 +329,8 @@ const DATA=[
 ]},{id:"naturaleza",label:"Naturaleza",labelRu:"Природа",icon:"🌿",subcats:[
 {title:"Animales",words:[
 ["perro","собака","sa-BA-ka","f"],
-["gato","кошка","KOSH-ka","f"],
+["gato","кот","kot","m","gata","кошка"],
+["gata","кошка","KOSH-ka","f","gato","кот"],
 ["caballo","лошадь","LO-shad","f"],
 ["vaca","корова","ka-RO-va","f"],
 ["cerdo","свинья","svin-YA","f"],
@@ -466,7 +467,7 @@ const DATA=[
 function getAllDiccionarioWords(){
   const w=[];
   DATA.forEach(c=>c.subcats.forEach(s=>s.words.forEach(x=>
-    w.push({es:x[0],ru:x[1],pronun:x[2],gender:x[3],cat:c.label})
+    w.push({es:x[0],ru:x[1],pronun:x[2],gender:x[3],cat:c.label,pairEs:x[4],pairRu:x[5]})
   )));
   return w;
 }

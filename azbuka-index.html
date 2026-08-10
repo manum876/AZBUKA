@@ -2,44 +2,54 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Азбука">
 <title>Азбука — Ruso desde cero</title>
 <link rel="stylesheet" href="core.css">
 <style>
-  /* Específico de esta página: header con back-btn (no usa drawer/bnav
-     porque esta es la portada del curso, no una unidad individual) */
-  body{padding-bottom:calc(30px + env(safe-area-inset-bottom));}
-  header{padding:calc(28px + env(safe-area-inset-top)) 20px 18px;position:relative;max-width:700px;margin:0 auto;}
-  .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
-  .back-btn{display:inline-flex;align-items:center;gap:6px;background:none;border:none;color:var(--muted);font-family:inherit;font-size:13.5px;text-decoration:none;padding:0;}
-  .back-btn:hover{color:var(--gold);}
-  header p{color:var(--sub);font-size:14px;line-height:1.6;max-width:520px;}
-  main{max-width:700px;margin:0 auto;padding:8px 16px 20px;}
+  /* Específico de esta página */
   @media(max-width:560px){.ugrid{grid-template-columns:1fr 1fr;}}
+  .drawer-search{padding:14px 16px 6px;}
+  .drawer-search input{width:100%;box-sizing:border-box;padding:9px 12px;border-radius:9px;border:1px solid var(--border);background:var(--bg3);color:var(--text);font-size:13.5px;}
+  .drawer-search input:focus{outline:none;border-color:var(--gold);}
 </style>
 </head>
 <body>
 
-<header>
-  <div class="topbar">
-    <a class="back-btn" href="index.html">← Volver</a>
-    <button class="theme-btn" id="themeBtn" aria-label="Cambiar tema">🌙</button>
+<div id="overlay"></div>
+<div id="drawer">
+  <div class="drawer-search">
+    <input type="text" id="drawerSearch" placeholder="Buscar…" autocomplete="off">
   </div>
-  <div class="ey">Ruso desde cero · A1 → B1</div>
-  <h1 class="pt" style="font-size:26px;">Твой курс русского</h1>
-  <p>12 unidades pensadas para un mes cada una. Empezá por el alfabeto: todo lo demás se construye sobre esto.</p>
-</header>
+  <div id="drawerUnits"></div>
+  <div id="drawerFoot">
+    <button id="homeBtnDrawer">🏠 Ir al inicio general</button>
+    <button id="themeBtnDrawer">☾ Modo claro / oscuro</button>
+  </div>
+</div>
 
-<main>
-  <div class="ugrid" id="unitsGrid"></div>
-</main>
+<div id="content">
+  <div class="inner">
+    <div class="ey">Ruso desde cero · A1 → B1</div>
+    <h1 class="pt" style="font-size:26px;">Твой курс русского</h1>
+    <p class="ps">12 unidades pensadas para un mes cada una. Empezá por el alfabeto: todo lo demás se construye sobre esto.</p>
+
+    <div class="ugrid" id="unitsGrid"></div>
+  </div>
+</div>
+
+<nav id="bnav">
+  <button class="nb ac" id="menuBtn"><span class="ni">☰</span><span>Menú</span></button>
+  <div id="navMid"><b>Curso Азбука</b><span>12 unidades</span></div>
+</nav>
 
 <div id="toast"></div>
 
 <script src="core.js"></script>
+<script src="data-diccionario.js"></script>
+<script src="data-verbos.js"></script>
 <script>
 function unitProgressPct(id){
   // Progreso simple y honesto: cuántos ejercicios reales se hicieron,
@@ -61,9 +71,34 @@ function renderUnitsGrid(){
   }).join('');
 }
 
+// Búsqueda en el drawer: mientras hay texto, reemplaza la lista de
+// unidades/herramientas por resultados, igual que en index.html.
+function renderDrawerSearch(query){
+  const el = document.getElementById('drawerUnits');
+  const q = (query||'').trim();
+  if(!q){ azRenderDrawer(null, null); return; }
+  const results = azSearch(q);
+  if(results.length===0){
+    el.innerHTML = '<div class="empty">Sin resultados.</div>';
+    return;
+  }
+  el.innerHTML = '<div class="d-lbl">Resultados</div>' + results.map(r=>`
+    <a class="d-u" href="${r.href}" style="flex-direction:column;align-items:flex-start;gap:2px;">
+      <span style="font-family:var(--serif);color:var(--gold);">${r.ru}</span>
+      <span style="font-size:11.5px;">${r.es} · ${r.moduleLabel}</span>
+      ${r.pairRu?`<span style="font-size:10.5px;color:var(--muted);">También: ${r.pairRu} (${r.pairEs})</span>`:''}
+    </a>`).join('');
+}
+document.getElementById('drawerSearch').addEventListener('input', e=>renderDrawerSearch(e.target.value));
+
 (async () => {
-  await azInit({activeType:null, activeId:null}); // portada, sin unidad activa en el drawer
+  await azInit({activeType:null, activeId:null}); // portada de unidades, sin unidad puntual activa
+  document.getElementById('homeBtnDrawer').addEventListener('click', ()=>{ window.location.href='index.html'; });
   renderUnitsGrid();
+  azRegisterSearchEntries('diccionario', 'Diccionario temático', 'diccionario.html',
+    getAllDiccionarioWords().map(w=>({ru:w.ru, es:w.es, tr:w.pronun, pairEs:w.pairEs, pairRu:w.pairRu})));
+  azRegisterSearchEntries('verbos', 'Verbos frecuentes', 'verbos.html',
+    verbs.map(v=>({ru:v.inf, es:v.es, tr:''})));
 })();
 </script>
 
