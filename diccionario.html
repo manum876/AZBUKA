@@ -106,17 +106,29 @@
 
 </head>
 <body>
+
+<div id="overlay"></div>
+<div id="drawer">
+  <div class="dh"><a id="homeBtnDrawer" href="index.html">🏠 Inicio</a></div>
+  <div class="drawer-search">
+    <input type="text" id="drawerSearch" placeholder="Buscar…" autocomplete="off">
+  </div>
+  <div id="drawerUnits"></div>
+  <div id="drawerFoot">
+    <button id="themeBtnDrawer" aria-label="Cambiar tema"></button>
+  </div>
+</div>
+
 <header>
   <div class="header-top">
     <div class="logo">
-      <a href="index.html" style="color:var(--muted);text-decoration:none;font-size:13px;margin-right:10px;">← Inicio</a>
+      <button id="menuBtn" aria-label="Menú" style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;width:30px;height:30px;color:var(--text);font-size:14px;margin-right:10px;cursor:pointer;">☰</button>
       <span class="logo-es">Español</span>
       <span class="logo-arrow">→</span>
       <span class="logo-ru">Русский</span>
     </div>
     <div style="display:flex;align-items:center;gap:10px;">
       <div class="stats" id="stats"></div>
-      <button class="theme-btn" id="themeBtn" aria-label="Cambiar tema" style="width:32px;height:32px;border-radius:8px;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:14px;">🌙</button>
     </div>
   </div>
   <div class="search-wrap">
