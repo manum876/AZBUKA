@@ -10,11 +10,13 @@
 
 <div id="overlay"></div>
 <div id="drawer">
-  <div class="dh"><button id="toHomeBtn">← Inicio</button></div>
+  <div class="dh"><a id="homeBtnDrawer" href="index.html">🏠 Inicio</a></div>
+  <div class="drawer-search">
+    <input type="text" id="drawerSearch" placeholder="Buscar…" autocomplete="off">
+  </div>
   <div id="drawerUnits"></div>
   <div id="drawerFoot">
-    <button id="homeBtnDrawer">🏠 Volver al inicio</button>
-    <button id="themeBtnDrawer">☾ Modo claro / oscuro</button>
+    <button id="themeBtnDrawer" aria-label="Cambiar tema"></button>
   </div>
 </div>
 
@@ -262,8 +264,6 @@ function updateNav(){
   pb.disabled=false;nb2.disabled=false;
   renderU3Tabs();
 }
-document.getElementById('toHomeBtn').addEventListener('click',()=>{window.location.href='azbuka-index.html';});
-document.getElementById('homeBtnDrawer').addEventListener('click',()=>{window.location.href='azbuka-index.html';});
 document.getElementById('prevBtn').addEventListener('click',()=>{
   if(CURR_SEC===0)window.location.href='azbuka-index.html';
   else navTo('unit3',CURR_SEC-1);

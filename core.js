@@ -102,9 +102,10 @@ function azAddNote(text, moduleId){
 /* ── TEMA ─────────────────────────────────────────────────── */
 function azApplyTheme(t){
   document.body.classList.toggle('light', t === 'light');
+  // #themeBtnDrawer ahora es un botón cuadrado chico, solo ícono (sin texto)
   const btn = document.getElementById('themeBtnDrawer');
-  if(btn) btn.textContent = t === 'light' ? '☀ Modo oscuro' : '☾ Modo claro';
-  const topBtn = document.getElementById('themeBtn'); // botones sueltos tipo index.html
+  if(btn) btn.textContent = t === 'light' ? '☀️' : '🌙';
+  const topBtn = document.getElementById('themeBtn'); // botones sueltos legacy, si quedara alguno
   if(topBtn) topBtn.textContent = t === 'light' ? '☀️' : '🌙';
 }
 async function azToggleTheme(){
@@ -152,15 +153,23 @@ function azToast(msg){
 }
 
 /* ── DRAWER GLOBAL ───────────────────────────────────────────
-   Cada módulo/unidad pasa su propio id activo para resaltarlo.
+   Estructura canónica, igual en TODAS las páginas:
+   1. #homeBtnDrawer — <a href="index.html"> arriba del todo, va al hub general
+   2. #drawerSearch — buscador, dentro del drawer
+   3. #drawerUnits — arranca con "Índice" (link a azbuka-index.html),
+      después las 12 unidades, después "Herramientas" con los módulos
+   4. #themeBtnDrawer — botón cuadrado chico (solo ícono) al fondo
+   Cada módulo/unidad pasa su propio id activo para resaltarlo en la lista.
    activeType: 'unit' | 'module' | null    activeId: number|string */
 function azOpenDrawer(){ document.getElementById('drawer')?.classList.add('open'); document.getElementById('overlay')?.classList.add('show'); }
 function azCloseDrawer(){ document.getElementById('drawer')?.classList.remove('open'); document.getElementById('overlay')?.classList.remove('show'); }
 
+let AZ_DRAWER_ACTIVE = {type:null, id:null};
+
 function azRenderDrawer(activeType, activeId){
   const el = document.getElementById('drawerUnits');
   if(!el) return;
-  let html = '<div class="d-lbl">Curso Азбука</div>';
+  let html = '<a class="d-lbl-link" href="azbuka-index.html">Índice</a>';
   AZ_UNITS.forEach(u=>{
     const ac = activeType==='unit' && Number(activeId)===u.id;
     html += `<a class="d-u${ac?' ac':''}" href="${u.href}"><span class="d-n">${String(u.id).padStart(2,'0')}</span><span>${u.title}</span></a>`;
@@ -173,12 +182,36 @@ function azRenderDrawer(activeType, activeId){
   el.innerHTML = html;
 }
 
+/* Búsqueda dentro del drawer: mientras hay texto, reemplaza la lista de
+   unidades/herramientas por resultados en el mismo contenedor. Al borrar
+   el texto, vuelve a mostrar la lista normal (recordando cuál era la
+   unidad/módulo activo para no perder el resaltado). */
+function azRenderDrawerSearch(query){
+  const el = document.getElementById('drawerUnits');
+  if(!el) return;
+  const q = (query||'').trim();
+  if(!q){ azRenderDrawer(AZ_DRAWER_ACTIVE.type, AZ_DRAWER_ACTIVE.id); return; }
+  const results = azSearch(q);
+  if(results.length===0){
+    el.innerHTML = '<div class="empty">Sin resultados.</div>';
+    return;
+  }
+  el.innerHTML = results.map(r=>`
+    <a class="d-u" href="${r.href}" style="flex-direction:column;align-items:flex-start;gap:2px;">
+      <span style="font-family:var(--serif);color:var(--gold);">${r.ru}</span>
+      <span style="font-size:11.5px;">${r.es} · ${r.moduleLabel}</span>
+      ${r.pairRu?`<span style="font-size:10.5px;color:var(--muted);">También: ${r.pairRu} (${r.pairEs})</span>`:''}
+    </a>`).join('');
+}
+
 /* Wire-up genérico de los controles del drawer — llamar una vez en init() */
 function azWireDrawer(activeType, activeId){
+  AZ_DRAWER_ACTIVE = {type: activeType, id: activeId};
   azRenderDrawer(activeType, activeId);
   document.getElementById('overlay')?.addEventListener('click', azCloseDrawer);
   document.getElementById('menuBtn')?.addEventListener('click', azOpenDrawer);
   document.getElementById('themeBtnDrawer')?.addEventListener('click', azToggleTheme);
+  document.getElementById('drawerSearch')?.addEventListener('input', e=>azRenderDrawerSearch(e.target.value));
   const themeBtn = document.getElementById('themeBtn');
   if(themeBtn) themeBtn.addEventListener('click', azToggleTheme);
 }

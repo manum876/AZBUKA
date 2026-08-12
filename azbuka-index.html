@@ -11,22 +11,20 @@
 <style>
   /* Específico de esta página */
   @media(max-width:560px){.ugrid{grid-template-columns:1fr 1fr;}}
-  .drawer-search{padding:14px 16px 6px;}
-  .drawer-search input{width:100%;box-sizing:border-box;padding:9px 12px;border-radius:9px;border:1px solid var(--border);background:var(--bg3);color:var(--text);font-size:13.5px;}
-  .drawer-search input:focus{outline:none;border-color:var(--gold);}
+  /* Estilos del drawer ahora viven en core.css */
 </style>
 </head>
 <body>
 
 <div id="overlay"></div>
 <div id="drawer">
+  <div class="dh"><a id="homeBtnDrawer" href="index.html">🏠 Inicio</a></div>
   <div class="drawer-search">
     <input type="text" id="drawerSearch" placeholder="Buscar…" autocomplete="off">
   </div>
   <div id="drawerUnits"></div>
   <div id="drawerFoot">
-    <button id="homeBtnDrawer">🏠 Ir al inicio general</button>
-    <button id="themeBtnDrawer">☾ Modo claro / oscuro</button>
+    <button id="themeBtnDrawer" aria-label="Cambiar tema"></button>
   </div>
 </div>
 
@@ -52,10 +50,8 @@
 <script src="data-verbos.js"></script>
 <script>
 function unitProgressPct(id){
-  // Progreso simple y honesto: cuántos ejercicios reales se hicieron,
-  // sin inventar un % ficticio de "completitud" del temario.
   const u = azUnit(id);
-  return u.exDone ? Math.min(100, u.exDone) : 0; // barra visual liviana, no una métrica exacta
+  return u.exDone ? Math.min(100, u.exDone) : 0;
 }
 function renderUnitsGrid(){
   const grid = document.getElementById('unitsGrid');
@@ -71,29 +67,8 @@ function renderUnitsGrid(){
   }).join('');
 }
 
-// Búsqueda en el drawer: mientras hay texto, reemplaza la lista de
-// unidades/herramientas por resultados, igual que en index.html.
-function renderDrawerSearch(query){
-  const el = document.getElementById('drawerUnits');
-  const q = (query||'').trim();
-  if(!q){ azRenderDrawer(null, null); return; }
-  const results = azSearch(q);
-  if(results.length===0){
-    el.innerHTML = '<div class="empty">Sin resultados.</div>';
-    return;
-  }
-  el.innerHTML = '<div class="d-lbl">Resultados</div>' + results.map(r=>`
-    <a class="d-u" href="${r.href}" style="flex-direction:column;align-items:flex-start;gap:2px;">
-      <span style="font-family:var(--serif);color:var(--gold);">${r.ru}</span>
-      <span style="font-size:11.5px;">${r.es} · ${r.moduleLabel}</span>
-      ${r.pairRu?`<span style="font-size:10.5px;color:var(--muted);">También: ${r.pairRu} (${r.pairEs})</span>`:''}
-    </a>`).join('');
-}
-document.getElementById('drawerSearch').addEventListener('input', e=>renderDrawerSearch(e.target.value));
-
 (async () => {
-  await azInit({activeType:null, activeId:null}); // portada de unidades, sin unidad puntual activa
-  document.getElementById('homeBtnDrawer').addEventListener('click', ()=>{ window.location.href='index.html'; });
+  await azInit({activeType:null, activeId:null});
   renderUnitsGrid();
   azRegisterSearchEntries('diccionario', 'Diccionario temático', 'diccionario.html',
     getAllDiccionarioWords().map(w=>({ru:w.ru, es:w.es, tr:w.pronun, pairEs:w.pairEs, pairRu:w.pairRu})));

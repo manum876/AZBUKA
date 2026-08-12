@@ -224,7 +224,16 @@ function App() {
       transition: "transform .28s cubic-bezier(.4,0,.2,1)"
     }
   }, /*#__PURE__*/React.createElement("div", {
-    style: { padding: "18px 16px 6px" }
+    style: { padding: "16px 16px 4px" }
+  }, /*#__PURE__*/React.createElement("a", {
+    href: "index.html",
+    style: {
+      display: "flex", alignItems: "center", gap: 8, background: "none",
+      border: `1px solid ${border}`, borderRadius: 10, padding: "10px 16px",
+      color: text, fontSize: 14.5, textDecoration: "none", boxSizing: "border-box"
+    }
+  }, "🏠 Inicio")), /*#__PURE__*/React.createElement("div", {
+    style: { padding: "12px 16px 6px" }
   }, /*#__PURE__*/React.createElement("input", {
     ref: searchRef,
     value: search,
@@ -236,10 +245,11 @@ function App() {
       padding: "9px 12px", color: text, fontSize: 13.5
     }
   })), /*#__PURE__*/React.createElement("div", {
-    style: { flex: 1, overflowY: "auto", padding: "10px 8px" }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: { fontSize: 10, letterSpacing: 1.5, textTransform: "uppercase", color: textMuted, padding: "10px 10px 6px" }
-  }, "Curso \u0410\u0437\u0431\u0443\u043A\u0430"),
+    style: { flex: 1, overflowY: "auto", padding: "6px 8px" }
+  }, /*#__PURE__*/React.createElement("a", {
+    href: "azbuka-index.html",
+    style: { display: "block", fontSize: 10, letterSpacing: 1.5, textTransform: "uppercase", color: gold, fontWeight: 700, padding: "10px 10px 6px", textDecoration: "none" }
+  }, "Índice"),
   AZ_UNITS.map(u => /*#__PURE__*/React.createElement("a", {
     key: u.id, href: u.href,
     style: {
@@ -259,22 +269,15 @@ function App() {
     }
   }, /*#__PURE__*/React.createElement("span", { style: { fontSize: 11, color: textMuted, minWidth: 18 } }, m.glyph), m.title))),
   /*#__PURE__*/React.createElement("div", {
-    style: { padding: "12px 16px calc(80px + 12px)", borderTop: `1px solid ${border}`, display: "flex", flexDirection: "column", gap: 8 }
-  }, /*#__PURE__*/React.createElement("a", {
-    href: "index.html",
-    style: {
-      display: "flex", alignItems: "center", gap: 8, background: "none",
-      border: `1px solid ${border}`, borderRadius: 10, padding: "10px 16px",
-      color: text, fontSize: 14.5, textDecoration: "none"
-    }
-  }, "🏠 Volver al inicio"), /*#__PURE__*/React.createElement("button", {
+    style: { padding: "12px 16px calc(80px + 12px)", borderTop: `1px solid ${border}`, display: "flex" }
+  }, /*#__PURE__*/React.createElement("button", {
     onClick: () => { setDarkMode(!dark); azSet('az_theme', dark ? 'light' : 'dark'); },
     style: {
-      display: "flex", alignItems: "center", gap: 8, background: "none",
-      border: `1px solid ${border}`, borderRadius: 10, padding: "10px 16px",
-      color: text, fontSize: 14.5, cursor: "pointer", fontFamily: "inherit"
+      width: 36, height: 36, borderRadius: 10, background: bg3,
+      border: `1px solid ${border}`, display: "flex", alignItems: "center", justifyContent: "center",
+      fontSize: 16, cursor: "pointer", padding: 0
     }
-  }, dark ? "☀ Modo claro" : "☾ Modo oscuro"))), /*#__PURE__*/React.createElement("header", {
+  }, dark ? "🌙" : "☀️"))), /*#__PURE__*/React.createElement("header", {
     style: {
       padding: "0 24px",
       borderBottom: `1px solid ${border}`,
