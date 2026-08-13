@@ -76,6 +76,7 @@
 <script src="core.js"></script>
 <script src="data-diccionario.js"></script>
 <script src="data-verbos.js"></script>
+<script src="data-casos.js"></script>
 <script>
 function renderModulesGrid(){
   const grid = document.getElementById('modulesGrid');
@@ -97,6 +98,7 @@ azRegisterSearchEntries('diccionario', 'Diccionario temático', 'diccionario.htm
   getAllDiccionarioWords().map(w=>({ru:w.ru, es:w.es, tr:w.pronun, pairEs:w.pairEs, pairRu:w.pairRu})));
 azRegisterSearchEntries('verbos', 'Verbos frecuentes', 'verbos.html',
   verbs.map(v=>({ru:v.inf, es:v.es, tr:''})));
+azRegisterSearchEntries('casos', 'Casos', 'casos.html', getAllCasosWords());
 </script>
 
 </body>
