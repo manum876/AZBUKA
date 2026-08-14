@@ -169,7 +169,9 @@ let AZ_DRAWER_ACTIVE = {type:null, id:null};
 function azRenderDrawer(activeType, activeId){
   const el = document.getElementById('drawerUnits');
   if(!el) return;
-  let html = '<a class="d-lbl-link" href="azbuka-index.html">Índice</a>';
+  let html = '<div class="d-lbl">Azbuka</div>';
+  const idxAc = activeType==='index';
+  html += `<a class="d-u${idxAc?' ac':''}" href="azbuka-index.html"><span class="d-n">00</span><span>Índice</span></a>`;
   AZ_UNITS.forEach(u=>{
     const ac = activeType==='unit' && Number(activeId)===u.id;
     html += `<a class="d-u${ac?' ac':''}" href="${u.href}"><span class="d-n">${String(u.id).padStart(2,'0')}</span><span>${u.title}</span></a>`;
@@ -242,6 +244,31 @@ function azSearch(query){
   ).slice(0, 40);
 }
 
+/* Registro automático de TODOS los datasets compartidos que la página
+   haya cargado por <script src="data-*.js">. Se llama solo, dentro de
+   azInit(), en TODA página — así el buscador es transversal de verdad:
+   no importa en qué módulo o unidad estés, encontrás lo mismo que en
+   index.html. Cada bloque chequea que su data-*.js esté presente
+   (typeof) antes de registrar, así no rompe si algún archivo no lo
+   carga. Al agregar un data-*.js nuevo al proyecto, sumar acá su
+   bloque UNA vez — no hace falta tocar cada página individualmente. */
+function azRegisterAllKnownSearchIndexes(){
+  if(typeof DATA!=='undefined' && typeof getAllDiccionarioWords==='function'){
+    azRegisterSearchEntries('diccionario','Diccionario temático','diccionario.html',
+      getAllDiccionarioWords().map(w=>({ru:w.ru, es:w.es, tr:w.pronun, pairEs:w.pairEs, pairRu:w.pairRu})));
+  }
+  if(typeof verbs!=='undefined'){
+    azRegisterSearchEntries('verbos','Verbos frecuentes','verbos.html',
+      verbs.map(v=>({ru:v.inf, es:v.es, tr:''})));
+  }
+  if(typeof WORDS!=='undefined' && typeof getAllCasosWords==='function'){
+    azRegisterSearchEntries('casos','Casos','casos.html', getAllCasosWords());
+  }
+  if(typeof ALPHABET!=='undefined' && typeof getAllAlphabetWords==='function'){
+    azRegisterSearchEntries('alfabeto','Alfabeto','alfabeto.html', getAllAlphabetWords());
+  }
+}
+
 /* ── UTILIDADES DE EJERCICIOS (compartidas por los motores de quiz) ─ */
 function azRnd(a){ return a[Math.floor(Math.random()*a.length)]; }
 function azShuf(a){ return [...a].sort(()=>Math.random()-.5); }
@@ -255,4 +282,5 @@ async function azInit({activeType=null, activeId=null} = {}){
   await azInitTheme();
   await azLoadProgress();
   azWireDrawer(activeType, activeId);
+  azRegisterAllKnownSearchIndexes();
 }

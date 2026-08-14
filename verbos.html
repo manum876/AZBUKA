@@ -2,15 +2,17 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Азбука">
 <title>50 Verbos — Ruso por temas</title>
 <link rel="stylesheet" href="core.css">
 <style>
-  /* Específico de este módulo: header propio (sin drawer), flashcards,
-     menú de práctica y detalle de conjugación — no están en core.css
-     porque son patrones únicos de esta app. */
-  header{position:sticky;top:0;background:var(--bg);z-index:10;border-bottom:1px solid var(--border);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;}
-  header h1{font-family:var(--serif);font-size:17px;font-weight:600;}
+  /* Específico de este módulo: flashcards, menú de práctica y detalle
+     de conjugación — no están en core.css porque son patrones únicos
+     de esta app. Sin header propio: el título vive en el contenido
+     (renderHome) y el ☰ vive en el nav inferior, igual que Alfabeto. */
   .conjrow{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);font-size:13.5px;}
   .conjrow:last-child{border-bottom:none;}
   .pron{color:var(--muted);font-size:12px;}
@@ -40,14 +42,10 @@
   </div>
 </div>
 
-<header>
-  <button id="menuBtn" aria-label="Menú" style="width:32px;height:32px;border-radius:8px;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:15px;cursor:pointer;">☰</button>
-  <h1>Ру · 50 Verbos por temas</h1>
-  <span style="width:32px;"></span>
-</header>
 <div id="content"><div class="inner" id="app"></div></div>
 
 <nav id="bnav">
+  <button class="nb" id="menuBtn"><span class="ni">☰</span><span>Menú</span></button>
   <button class="nb ac" id="nav-home"><span class="ni">🏠</span><span>Módulos</span></button>
   <button class="nb" id="nav-practice"><span class="ni">🎯</span><span>Practicar</span></button>
   <button class="nb" id="nav-stats"><span class="ni">📊</span><span>Progreso</span></button>
@@ -55,7 +53,10 @@
 
 <div id="toast"></div>
 <script src="core.js"></script>
+<script src="data-alphabet.js"></script>
+<script src="data-diccionario.js"></script>
 <script src="data-verbos.js"></script>
+<script src="data-casos.js"></script>
 <script>
 // MODULES y verbs se cargan desde data-verbos.js (compartido con index.html para el buscador)
 
@@ -328,9 +329,6 @@ function setActiveNav(id){document.querySelectorAll('#bnav .nb').forEach(b=>b.cl
   await azInit({activeType:'module', activeId:'verbos'});
   const saved = azModule('verbos').srs || {};
   verbs.forEach(v=>{ if(saved[v.id]!==undefined) state.srs[v.id]=saved[v.id]; });
-  // Sumar los 50 verbos al buscador transversal de index.html
-  azRegisterSearchEntries('verbos', 'Verbos frecuentes', 'verbos.html',
-    verbs.map(v=>({ru:v.inf, es:v.es, tr:''})));
   render();
 })();
 </script>

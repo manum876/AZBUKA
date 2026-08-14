@@ -2,7 +2,10 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Азбука">
 <title>Español → Ruso</title>
 <link rel="stylesheet" href="core.css">
 <style>
@@ -17,7 +20,7 @@
   button{font-family:inherit;cursor:pointer;}
   :focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
 
-  header{background:var(--bg2);border-bottom:1px solid var(--border);padding:16px 20px 12px;flex-shrink:0;z-index:100;}
+  header{background:var(--bg2);border-bottom:1px solid var(--border);padding:calc(16px + env(safe-area-inset-top)) 20px 12px;flex-shrink:0;z-index:100;}
   .header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
   .logo{display:flex;align-items:baseline;gap:8px;}
   .logo-es{font-family:var(--sans);font-size:19px;font-weight:700;color:var(--gold);letter-spacing:-.2px;}
@@ -32,7 +35,7 @@
   .clear-btn{position:absolute;right:9px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;font-size:15px;padding:4px;display:none;}
   .clear-btn:hover{color:var(--gold);}
 
-  .layout{display:flex;flex:1;overflow:hidden;}
+  .layout{display:flex;flex:1;overflow:hidden;padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom));}
   .sidebar{background:var(--bg2);border-right:1px solid var(--border);padding:14px 0;width:180px;flex-shrink:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent;}
   .sidebar-label{font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;padding:0 14px 8px;}
   .cat-btn{display:flex;align-items:center;gap:8px;width:100%;padding:9px 14px;background:none;border:none;color:var(--sub);font-size:12.5px;cursor:pointer;text-align:left;transition:background .15s,color .15s;border-left:3px solid transparent;}
@@ -122,7 +125,6 @@
 <header>
   <div class="header-top">
     <div class="logo">
-      <button id="menuBtn" aria-label="Menú" style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;width:30px;height:30px;color:var(--text);font-size:14px;margin-right:10px;cursor:pointer;">☰</button>
       <span class="logo-es">Español</span>
       <span class="logo-arrow">→</span>
       <span class="logo-ru">Русский</span>
@@ -139,11 +141,19 @@
 </header>
 <div class="layout">
   <nav class="sidebar" id="sidebar"></nav>
-  <main class="content" id="content"></main>
+  <main class="content" id="dictBody"></main>
 </div>
+
+<nav id="bnav">
+  <button class="nb ac" id="menuBtn"><span class="ni">☰</span><span>Menú</span></button>
+</nav>
+
 <div id="toast"></div>
 <script src="core.js"></script>
+<script src="data-alphabet.js"></script>
 <script src="data-diccionario.js"></script>
+<script src="data-verbos.js"></script>
+<script src="data-casos.js"></script>
 <script>
 // Pronunciación en letras latinas (fonética aproximada para hispanohablantes)
 // DATA (categorías + palabras) se carga desde data-diccionario.js
@@ -165,7 +175,7 @@ function selectCat(id){currentCat=id;mode='browse';revealAll=false;document.getE
 function renderContent(){
   const cat=DATA.find(c=>c.id===currentCat);
   if(!cat)return;
-  const el=document.getElementById('content');
+  const el=document.getElementById('dictBody');
   const pronunBtn=`<button class="ctrl-btn ${showPronun?'active2':''}" onclick="togglePronun()">${showPronun?'🔤 Ocultar pronunc.':'🔤 Ver pronunc.'}</button>`;
   const controls=`<div class="controls">
     <button class="ctrl-btn ${mode==='browse'?'active':''}" onclick="setMode('browse')">📖 Explorar</button>
@@ -218,7 +228,7 @@ function bindQuizEvents(){document.querySelectorAll('.quiz-opt').forEach(b=>b.ad
 function nextQ(){quizState.index++;quizState.answered=false;renderContent();}
 
 function doSearch(q){
-  const el=document.getElementById('content');
+  const el=document.getElementById('dictBody');
   if(!q){renderContent();return;}
   const res=getAllWords().filter(w=>w.es.toLowerCase().includes(q)||w.ru.includes(q)||w.pronun.toLowerCase().includes(q));
   if(!res.length){el.innerHTML=`<div class="empty">Sin resultados para "<strong>${q}</strong>"</div>`;return;}
@@ -233,9 +243,6 @@ document.getElementById('searchInput').addEventListener('input',function(){const
   await azInit({activeType:'module', activeId:'diccionario'});
   renderSidebar();
   renderContent();
-  // Sumar las ~350 palabras al buscador transversal de index.html
-  azRegisterSearchEntries('diccionario', 'Diccionario temático', 'diccionario.html',
-    getAllWords().map(w=>({ru:w.ru, es:w.es, tr:w.pronun})));
 })();
 </script>
 </body>

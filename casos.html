@@ -3,14 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Азбука">
 <title>Падежи — Los 6 casos del ruso</title>
 <link rel="stylesheet" href="core.css">
 <style>
   /* Específico de este módulo: rueda de progreso por caso (grilla),
      y la tabla de declinación dentro del diccionario. Todo lo demás
      (cards, botones, ejercicios, drawer) reutiliza core.css tal cual. */
-  header{position:sticky;top:0;background:var(--bg);z-index:10;border-bottom:1px solid var(--border);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;}
-  header h1{font-family:var(--serif);font-size:17px;font-weight:600;}
+  /* Específico de este módulo: tabla de declinación dentro del
+     diccionario. Todo lo demás (cards, botones, ejercicios, drawer,
+     nav inferior) reutiliza core.css tal cual. Sin header propio: el
+     título vive en el contenido y el ☰ vive en el nav inferior. */
   .casecard .un{color:var(--case-color,var(--gold));}
   .casetbl{width:100%;border-collapse:collapse;margin-top:10px;font-size:13px;}
   .casetbl td{padding:7px 6px;border-bottom:1px solid var(--border);}
@@ -40,14 +45,10 @@
   </div>
 </div>
 
-<header>
-  <button id="menuBtn" aria-label="Menú" style="width:32px;height:32px;border-radius:8px;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:15px;cursor:pointer;">☰</button>
-  <h1>Падежи · Casos</h1>
-  <span style="width:32px;"></span>
-</header>
 <div id="content"><div class="inner" id="app"></div></div>
 
 <nav id="bnav">
+  <button class="nb" id="menuBtn"><span class="ni">☰</span><span>Menú</span></button>
   <button class="nb ac" id="nav-home"><span class="ni">🏠</span><span>Casos</span></button>
   <button class="nb" id="nav-practice"><span class="ni">🎯</span><span>Practicar</span></button>
   <button class="nb" id="nav-dict"><span class="ni">📖</span><span>Diccionario</span></button>
@@ -56,6 +57,9 @@
 
 <div id="toast"></div>
 <script src="core.js"></script>
+<script src="data-alphabet.js"></script>
+<script src="data-diccionario.js"></script>
+<script src="data-verbos.js"></script>
 <script src="data-casos.js"></script>
 <script>
 // CASE_META, CASE_ORDER, GENDER_LABEL, WORDS, TEMPLATES, approxPron → data-casos.js
@@ -473,7 +477,6 @@ document.getElementById('nav-progress').addEventListener('click',()=>go('progres
 
 (async () => {
   await azInit({activeType:'module', activeId:'casos'});
-  azRegisterSearchEntries('casos', 'Casos', 'casos.html', getAllCasosWords());
   render();
 })();
 </script>

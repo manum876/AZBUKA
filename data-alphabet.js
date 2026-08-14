@@ -1197,6 +1197,14 @@ const ALPHABET=[{
     note: "Я palataliza 'л' final"
   }]
 }];
+/* Aplana ALPHABET a su lista de palabras de ejemplo — usado por el
+   buscador transversal (azRegisterAllKnownSearchIndexes en core.js).
+   Mismo patrón que getAllDiccionarioWords() y getAllCasosWords(). */
+function getAllAlphabetWords(){
+  const out=[];
+  ALPHABET.forEach(l=>l.words.forEach(w=>out.push({ru:w.cyrillic, es:w.meaning, tr:w.translit})));
+  return out;
+}
 function generateQuizQuestion(letter, allLetters) {
   const types = ["sound", "letter", "word"];
   const type = types[Math.floor(Math.random() * types.length)];

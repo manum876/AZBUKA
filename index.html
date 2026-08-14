@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="core.css">
 <style>
   /* Específico de esta página */
-  .home-header{padding:18px 16px 4px;max-width:700px;margin:0 auto;}
+  .home-header{padding:calc(18px + env(safe-area-inset-top)) 16px 4px;max-width:700px;margin:0 auto;}
   .brand-title{font-family:var(--serif);font-size:26px;font-weight:800;letter-spacing:-0.01em;color:var(--gold);line-height:1;}
   .tagline{margin-top:4px;color:var(--sub);font-size:13px;font-weight:500;}
 
@@ -74,6 +74,7 @@
 <div id="toast"></div>
 
 <script src="core.js"></script>
+<script src="data-alphabet.js"></script>
 <script src="data-diccionario.js"></script>
 <script src="data-verbos.js"></script>
 <script src="data-casos.js"></script>
@@ -91,14 +92,10 @@ function renderModulesGrid(){
 }
 
 renderModulesGrid();
-azInit({activeType:null, activeId:null}); // home, sin unidad/módulo activo en el drawer
-
-// Poblar el buscador global con los módulos que ya exponen sus datos.
-azRegisterSearchEntries('diccionario', 'Diccionario temático', 'diccionario.html',
-  getAllDiccionarioWords().map(w=>({ru:w.ru, es:w.es, tr:w.pronun, pairEs:w.pairEs, pairRu:w.pairRu})));
-azRegisterSearchEntries('verbos', 'Verbos frecuentes', 'verbos.html',
-  verbs.map(v=>({ru:v.inf, es:v.es, tr:''})));
-azRegisterSearchEntries('casos', 'Casos', 'casos.html', getAllCasosWords());
+// home: sin unidad/módulo activo en el drawer. El registro del buscador
+// transversal (diccionario/verbos/casos/alfabeto) ahora es automático,
+// azInit() lo hace por su cuenta con azRegisterAllKnownSearchIndexes().
+azInit({activeType:null, activeId:null});
 </script>
 
 </body>

@@ -46,6 +46,7 @@
 <div id="toast"></div>
 
 <script src="core.js"></script>
+<script src="data-alphabet.js"></script>
 <script src="data-diccionario.js"></script>
 <script src="data-verbos.js"></script>
 <script src="data-casos.js"></script>
@@ -69,13 +70,11 @@ function renderUnitsGrid(){
 }
 
 (async () => {
-  await azInit({activeType:null, activeId:null});
+  // activeType:'index' resalta la fila "00 · Índice" en el drawer. El
+  // registro del buscador transversal ahora es automático (azInit lo
+  // hace vía azRegisterAllKnownSearchIndexes en core.js).
+  await azInit({activeType:'index', activeId:null});
   renderUnitsGrid();
-  azRegisterSearchEntries('diccionario', 'Diccionario temático', 'diccionario.html',
-    getAllDiccionarioWords().map(w=>({ru:w.ru, es:w.es, tr:w.pronun, pairEs:w.pairEs, pairRu:w.pairRu})));
-  azRegisterSearchEntries('verbos', 'Verbos frecuentes', 'verbos.html',
-    verbs.map(v=>({ru:v.inf, es:v.es, tr:''})));
-  azRegisterSearchEntries('casos', 'Casos', 'casos.html', getAllCasosWords());
 })();
 </script>
 
