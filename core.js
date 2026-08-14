@@ -267,6 +267,12 @@ function azRegisterAllKnownSearchIndexes(){
   if(typeof ALPHABET!=='undefined' && typeof getAllAlphabetWords==='function'){
     azRegisterSearchEntries('alfabeto','Alfabeto','alfabeto.html', getAllAlphabetWords());
   }
+  if(typeof MODULES2!=='undefined' && typeof getAllAzbuka2Words==='function'){
+    azRegisterSearchEntries('azbuka-2','Unidad 2 · Presentaciones','azbuka-2.html', getAllAzbuka2Words());
+  }
+  if(typeof NOUNS!=='undefined' && typeof getAllAzbuka3Words==='function'){
+    azRegisterSearchEntries('azbuka-3','Unidad 3 · Sustantivos','azbuka-3.html', getAllAzbuka3Words());
+  }
 }
 
 /* ── UTILIDADES DE EJERCICIOS (compartidas por los motores de quiz) ─ */
