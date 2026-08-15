@@ -9,8 +9,7 @@
   <title>Азбука — Diálogos</title>
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
-    html,body{width:100%;min-height:100%;overflow-x:hidden}
-    body{font-family:-apple-system,"Inter","Helvetica Neue",Arial,sans-serif;background:#F7F5F0}
+    body{font-family:-apple-system,"Inter","Helvetica Neue",Arial,sans-serif}
     #root{min-height:100vh}
   </style>
 </head>
@@ -467,7 +466,6 @@ function App() {
       fontFamily: FONT,
       background: T.bg,
       minHeight: "100vh",
-      width: "100%",
       maxWidth: 520,
       margin: "0 auto",
       color: T.text,
@@ -476,7 +474,7 @@ function App() {
     header: {
       background: `linear-gradient(150deg,${T.bg2},${T.bg3})`,
       color: T.text,
-      padding: "6vh 3vw 0",
+      padding: "16px 16px 0",
       position: "relative",
       borderBottom: `1px solid ${T.border}`
     },
@@ -486,7 +484,7 @@ function App() {
       marginTop: 10
     },
     content: {
-      padding: "18px 3vw 96px"
+      padding: "18px 14px 96px"
     },
     card: {
       background: T.card,
@@ -554,10 +552,6 @@ function App() {
       transition: ".15s"
     }
   };
-  React.useEffect(() => {
-    document.documentElement.style.background = T.bg;
-    document.body.style.background = T.bg;
-  }, [dark]);
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     onClick: () => setDrawerOpen(false),
     style: {
@@ -583,7 +577,7 @@ function App() {
       transition: "transform .28s cubic-bezier(.4,0,.2,1)"
     }
   }, /*#__PURE__*/React.createElement("div", {
-    style: { padding: "6vh 3vw 4px" }
+    style: { padding: "calc(16px + env(safe-area-inset-top)) 16px 4px" }
   }, /*#__PURE__*/React.createElement("a", {
     href: "index.html",
     style: {
@@ -593,7 +587,7 @@ function App() {
       color: T.text, fontSize: 14.5, textDecoration: "none", boxSizing: "border-box"
     }
   }, "🏠 Inicio")), /*#__PURE__*/React.createElement("div", {
-    style: { padding: "12px 3vw 6px" }
+    style: { padding: "12px 16px 6px" }
   }, /*#__PURE__*/React.createElement("input", {
     placeholder: "Buscar…",
     autoComplete: "off",
@@ -625,7 +619,7 @@ function App() {
       fontSize: 13.5, textDecoration: "none"
     }
   }, /*#__PURE__*/React.createElement("span", { style: { fontSize: 11, color: T.muted, minWidth: 18 } }, m.glyph), m.title))), /*#__PURE__*/React.createElement("div", {
-    style: { padding: "12px 3vw 12px", borderTop: `1px solid ${T.border}`, display: "flex" }
+    style: { padding: "12px 16px 12px", borderTop: `1px solid ${T.border}`, display: "flex" }
   }, /*#__PURE__*/React.createElement("button", {
     onClick: async () => {
       await azToggleTheme();
@@ -1199,7 +1193,6 @@ function App() {
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
-      width: "100%",
       maxWidth: 520,
       margin: "0 auto",
       display: "flex",
@@ -1222,7 +1215,7 @@ function App() {
       color: tab === t ? T.gold : T.muted, cursor: "pointer", fontFamily: "inherit"
     }
   }, /*#__PURE__*/React.createElement("span", { style: { fontSize: 20 } }, icon), /*#__PURE__*/React.createElement("span", { style: { fontSize: 11, fontWeight: 600 } }, label)))), /*#__PURE__*/React.createElement("div", {
-    style: { height: "76px" }
+    style: { height: 76 }
   }))));
 }ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
 </script>
