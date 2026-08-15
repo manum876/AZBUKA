@@ -9,8 +9,8 @@
   <title>Азбука — Diálogos</title>
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
-    html,body{overflow-x:hidden}
-    body{font-family:-apple-system,"Inter","Helvetica Neue",Arial,sans-serif}
+    html,body{width:100%;min-height:100%;overflow-x:hidden}
+    body{font-family:-apple-system,"Inter","Helvetica Neue",Arial,sans-serif;background:#F7F5F0}
     #root{min-height:100vh}
   </style>
 </head>
@@ -466,17 +466,17 @@ function App() {
     app: {
       fontFamily: FONT,
       background: T.bg,
-      width: "90vw",
-      minHeight: "90vh",
-      maxWidth: "none",
-      margin: "5vh auto",
+      minHeight: "100vh",
+      width: "100%",
+      maxWidth: 520,
+      margin: "0 auto",
       color: T.text,
       transition: "background .3s,color .3s"
     },
     header: {
       background: `linear-gradient(150deg,${T.bg2},${T.bg3})`,
       color: T.text,
-      padding: "16px 16px 0",
+      padding: "6vh 3vw 0",
       position: "relative",
       borderBottom: `1px solid ${T.border}`
     },
@@ -486,7 +486,7 @@ function App() {
       marginTop: 10
     },
     content: {
-      padding: "18px 14px 96px"
+      padding: "18px 3vw 96px"
     },
     card: {
       background: T.card,
@@ -554,6 +554,10 @@ function App() {
       transition: ".15s"
     }
   };
+  React.useEffect(() => {
+    document.documentElement.style.background = T.bg;
+    document.body.style.background = T.bg;
+  }, [dark]);
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     onClick: () => setDrawerOpen(false),
     style: {
@@ -589,7 +593,7 @@ function App() {
       color: T.text, fontSize: 14.5, textDecoration: "none", boxSizing: "border-box"
     }
   }, "🏠 Inicio")), /*#__PURE__*/React.createElement("div", {
-    style: { padding: "12px 16px 6px" }
+    style: { padding: "12px 3vw 6px" }
   }, /*#__PURE__*/React.createElement("input", {
     placeholder: "Buscar…",
     autoComplete: "off",
@@ -621,7 +625,7 @@ function App() {
       fontSize: 13.5, textDecoration: "none"
     }
   }, /*#__PURE__*/React.createElement("span", { style: { fontSize: 11, color: T.muted, minWidth: 18 } }, m.glyph), m.title))), /*#__PURE__*/React.createElement("div", {
-    style: { padding: "12px 3vw 0", borderTop: `1px solid ${T.border}`, display: "flex" }
+    style: { padding: "12px 3vw 12px", borderTop: `1px solid ${T.border}`, display: "flex" }
   }, /*#__PURE__*/React.createElement("button", {
     onClick: async () => {
       await azToggleTheme();
@@ -1190,11 +1194,12 @@ function App() {
       background: dark ? "#0F0F14EE" : "#F7F5F0EE",
       backdropFilter: "blur(12px)",
       borderTop: `1px solid ${T.border}`,
-      padding: "10px 2vw",
+      padding: "10px 8px",
       zIndex: 100
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
+      width: "100%",
       maxWidth: 520,
       margin: "0 auto",
       display: "flex",
@@ -1217,7 +1222,7 @@ function App() {
       color: tab === t ? T.gold : T.muted, cursor: "pointer", fontFamily: "inherit"
     }
   }, /*#__PURE__*/React.createElement("span", { style: { fontSize: 20 } }, icon), /*#__PURE__*/React.createElement("span", { style: { fontSize: 11, fontWeight: 600 } }, label)))), /*#__PURE__*/React.createElement("div", {
-    style: { height: "calc(76px + 5vh)" }
+    style: { height: "76px" }
   }))));
 }ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
 </script>
