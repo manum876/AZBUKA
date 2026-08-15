@@ -59,9 +59,9 @@
 <script src="data-casos.js"></script>
 <script src="data-azbuka2.js"></script>
 <script src="data-azbuka3.js"></script>
-<script src="data-dialogos.js"></script>
 <script>
 // MODULES y verbs se cargan desde data-verbos.js (compartido con index.html para el buscador)
+// El SRS usa el infinitivo como identidad persistente estable; no requiere cambios en data-verbos.js.
 
 /* ============ ESTADO (en memoria, sesión actual) ============ */
 // srs (dominio por verbo 0-4) se carga/guarda vía azModule('verbos').srs.
@@ -69,7 +69,10 @@
 // sí persisten en azModule('verbos').stats para que "Precisión" sobreviva
 // a un reload.
 const state = { srs:{}, history:[], view:{name:'home'} };
-verbs.forEach(v=>state.srs[v.id]=0);
+// Identidad persistente estable: el infinitivo ruso no depende del orden de MODULES.
+// Los ids numéricos siguen usándose para navegación dentro de la página, pero no para SRS.
+function verbKey(v){ return v.inf; }
+verbs.forEach(v=>state.srs[verbKey(v)]=0);
 function levelName(l){return ["Nuevo","Aprendido","En práctica","Dominado","Automático"][l];}
 function levelClass(l){return l===0?'s0':(l<3?'s1':'s2');}
 
@@ -98,7 +101,7 @@ function renderHome(){
   <div class="ugrid">`;
   MODULES.forEach(mod=>{
     const mv = verbs.filter(x=>x.module===mod.n);
-    const avg = mv.reduce((a,x)=>a+state.srs[x.id],0)/mv.length;
+    const avg = mv.reduce((a,x)=>a+state.srs[verbKey(x)],0)/mv.length;
     out += `<div class="uc" data-mod="${mod.n}">
       <span class="un">${mod.n}</span>
       <div class="ut">${mod.title}</div>
@@ -123,7 +126,7 @@ function renderModule(n){
         <div class="wru">${v.inf}</div>
         <div class="wes">${v.es}</div>
       </div>
-      <span class="stb ${levelClass(state.srs[v.id])}">${levelName(state.srs[v.id])}</span>
+      <span class="stb ${levelClass(state.srs[verbKey(v)])}">${levelName(state.srs[verbKey(v)])}</span>
     </div>`;
   });
   return out;
@@ -140,7 +143,7 @@ function renderVerb(id){
       <h3>${v.es}</h3>
       <span class="pch">${'★'.repeat(v.freq)}${'☆'.repeat(5-v.freq)}</span>
       <span class="pch">${v.aspect==='impf'?'Imperfectivo':v.aspect==='perf'?'Perfectivo':'Bispecto'}</span>
-      <span class="pch">${levelName(state.srs[v.id])}</span>
+      <span class="pch">${levelName(state.srs[verbKey(v)])}</span>
     </div>
     <button class="psm" data-speak="${v.inf}">🔊</button>
   </div>
@@ -177,7 +180,7 @@ function renderPracticeMenu(){
 }
 
 function pickVerbWeighted(){
-  const weights = verbs.map(v=>5-state.srs[v.id]+0.5);
+  const weights = verbs.map(v=>5-state.srs[verbKey(v)]+0.5);
   const total = weights.reduce((a,b)=>a+b,0);
   let r=Math.random()*total;
   for(let i=0;i<verbs.length;i++){ r-=weights[i]; if(r<=0) return verbs[i]; }
@@ -254,8 +257,8 @@ function renderFillBlank(){
 
 function renderStats(){
   const total=verbs.length;
-  const mastered=verbs.filter(v=>state.srs[v.id]>=3).length;
-  const inProgress=verbs.filter(v=>state.srs[v.id]>0&&state.srs[v.id]<3).length;
+  const mastered=verbs.filter(v=>state.srs[verbKey(v)]>=3).length;
+  const inProgress=verbs.filter(v=>state.srs[verbKey(v)]>0&&state.srs[verbKey(v)]<3).length;
   const st = azModule('verbos').stats || {attempts:0,correct:0};
   const acc=st.attempts?Math.round(st.correct/st.attempts*100):0;
   let out = `<div class="ey">Tu progreso</div><h1 class="pt">Estadísticas</h1>
@@ -267,16 +270,17 @@ function renderStats(){
   <div class="sh"><h2>Por módulo</h2></div>`;
   MODULES.forEach(mod=>{
     const mv = verbs.filter(v=>v.module===mod.n);
-    const avg = mv.reduce((a,v)=>a+state.srs[v.id],0)/mv.length;
+    const avg = mv.reduce((a,v)=>a+state.srs[verbKey(v)],0)/mv.length;
     out += `<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>${mod.n}. ${mod.title}</span><span class="dim">${Math.round(avg/4*100)}%</span></div><div class="pb"><div style="width:${avg/4*100}%"></div></div></div>`;
   });
   return out;
 }
 
-function updateSRS(id, correct){
-  state.history.push({id,correct});
-  if(correct){ state.srs[id]=Math.min(4,state.srs[id]+1); }
-  else { state.srs[id]=Math.max(0,state.srs[id]-1); }
+function updateSRS(verb, correct){
+  const key = verbKey(verb);
+  state.history.push({id:key,correct});
+  if(correct){ state.srs[key]=Math.min(4,state.srs[key]+1); }
+  else { state.srs[key]=Math.max(0,state.srs[key]-1); }
   const mod = azModule('verbos');
   mod.srs = state.srs;
   mod.stats = mod.stats || {attempts:0, correct:0};
@@ -304,21 +308,21 @@ function attachHandlers(){
   const fc=document.getElementById('flashcard');
   if(fc) fc.addEventListener('click',()=>{currentDrill.revealed=true;render();});
   document.querySelectorAll('[data-drill-answer]').forEach(el=>el.addEventListener('click',()=>{
-    updateSRS(currentDrill.verb.id, el.dataset.drillAnswer==='know');
+    updateSRS(currentDrill.verb, el.dataset.drillAnswer==='know');
     newFlashcard(); render();
   }));
   document.querySelectorAll('[data-case-pick]').forEach(el=>el.addEventListener('click',()=>{
     if(currentDrill.answered) return;
     const pick=el.dataset.casePick;
     currentDrill.answered=true; currentDrill.picked=pick;
-    updateSRS(currentDrill.verb.id, pick===currentDrill.verb.case_);
+    updateSRS(currentDrill.verb, pick===currentDrill.verb.case_);
     render();
   }));
   document.querySelectorAll('[data-fill-pick]').forEach(el=>el.addEventListener('click',()=>{
     if(currentDrill.answered) return;
     const pick=el.dataset.fillPick;
     currentDrill.answered=true; currentDrill.picked=pick;
-    updateSRS(currentDrill.verb.id, pick===currentDrill.correct);
+    updateSRS(currentDrill.verb, pick===currentDrill.correct);
     render();
   }));
 }
@@ -331,7 +335,16 @@ function setActiveNav(id){document.querySelectorAll('#bnav .nb').forEach(b=>b.cl
 (async () => {
   await azInit({activeType:'module', activeId:'verbos'});
   const saved = azModule('verbos').srs || {};
-  verbs.forEach(v=>{ if(saved[v.id]!==undefined) state.srs[v.id]=saved[v.id]; });
+  // Compatibilidad con el formato anterior: si existe SRS numérico, se migra
+  // al infinitivo estable. Las claves antiguas no se eliminan.
+  verbs.forEach(v=>{
+    const key = verbKey(v);
+    if(saved[key]!==undefined) state.srs[key]=saved[key];
+    else if(saved[v.id]!==undefined) state.srs[key]=saved[v.id];
+  });
+  const mod = azModule('verbos');
+  mod.srs = state.srs;
+  azSaveProgress();
   render();
 })();
 </script>
