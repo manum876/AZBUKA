@@ -59,6 +59,7 @@
 <script src="data-casos.js"></script>
 <script src="data-azbuka2.js"></script>
 <script src="data-azbuka3.js"></script>
+<script src="data-dialogos.js"></script>
 <script>
 // MODULES y verbs se cargan desde data-verbos.js (compartido con index.html para el buscador)
 // El SRS usa el infinitivo como identidad persistente estable; no requiere cambios en data-verbos.js.
@@ -200,7 +201,7 @@ function renderFlashcards(){
   const front = dir==='ru-es'?verb.inf:verb.es;
   const back = dir==='ru-es'?verb.es:verb.inf;
   return `<button class="abk" data-go="practice">← Practicar</button>
-  <div class="qh">Nivel: ${levelName(state.srs[verb.id])} · Módulo ${verb.module}</div>
+  <div class="qh">Nivel: ${levelName(state.srs[verbKey(verb)])} · Módulo ${verb.module}</div>
   <div class="flash" id="flashcard">
     <div class="big">${front}</div>
     ${revealed?`<div class="small">${back}</div>`:'<div class="small">Toca para revelar</div>'}
