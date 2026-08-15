@@ -29,6 +29,21 @@
   .pmc b{display:block;font-size:14.5px;}
   .pmc span{font-size:12px;color:var(--muted);}
   .dim{color:var(--muted);font-size:13px;}
+  .case-home-tip{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;margin:0 0 18px;}
+  .case-home-tip .tip-ic{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--goldD);font-size:20px;flex-shrink:0;}
+  .case-home-tip .tip-txt{font-size:14px;line-height:1.55;color:var(--sub);}
+  .case-home-tip .tip-txt b{color:var(--text);}
+  .case-home-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+  .case-home-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;cursor:pointer;position:relative;overflow:hidden;transition:.2s;text-decoration:none;color:var(--text);display:block;min-height:178px;}
+  .case-home-card:hover{border-color:var(--gold);transform:translateY(-2px);}
+  .case-home-icon{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:8px;background:color-mix(in srgb,var(--case-color) 18%,var(--card));}
+  .case-home-short{font-family:var(--serif);font-size:34px;line-height:1;position:absolute;right:10px;top:5px;color:var(--case-color);}
+  .case-home-title{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .case-home-desc{font-size:12.5px;color:var(--sub);line-height:1.45;min-height:54px;}
+  .case-home-progress{height:4px;border-radius:4px;background:var(--bg3);overflow:hidden;margin-top:10px;}
+  .case-home-progress>div{height:100%;background:var(--gold);border-radius:4px;}
+  .case-home-start{display:block;margin-top:8px;font-size:12px;color:var(--gold);font-weight:600;}
+  @media(max-width:560px){.case-home-card{min-height:168px;padding:14px;}.case-home-short{font-size:32px;}.case-home-desc{font-size:12px;}.case-home-tip{padding:12px 14px;}}
 </style>
 </head>
 <body>
@@ -258,18 +273,21 @@ function setActiveNav(){
 
 /* ── HOME: grilla de los 6 casos ───────────────────────────── */
 function renderHome(){
+  const icons={nom:'👤',acc:'🎯',gen:'🍃',dat:'📍',inst:'🛠️',prep:'🔗'};
   let out=`<div class="ey">Gramática</div><h1 class="pt">Los 6 casos del ruso</h1>
   <p class="ps">En ruso, la terminación de cada sustantivo cambia según su función en la frase. Elegí un caso para ver la regla y practicar.</p>
-  <div class="ugrid">`;
+  <div class="case-home-tip"><div class="tip-ic">💡</div><div class="tip-txt"><b>Consejo:</b> cada caso responde a una pregunta clave. Aprender cuándo usar cada uno te ayudará a construir frases correctas.</div></div>
+  <div class="case-home-grid">`;
   CASE_ORDER.forEach(c=>{
     const meta=CASE_META[c];
     const acc=bestAccFor(c);
-    out+=`<a class="uc" data-case="${c}" style="cursor:pointer;">
-      <div class="un" style="color:${meta.color};">${meta.short}</div>
-      <div class="ut">${meta.es}</div>
-      <div class="ud">${meta.rule.split('.')[0]}.</div>
-      ${acc>0?`<div class="pb"><div style="width:${acc}%"></div></div>`:''}
-      <span class="goLbl">${acc>0?`${acc}% · Seguir →`:'Empezar →'}</span>
+    out+=`<a class="case-home-card" data-case="${c}" style="--case-color:${meta.color};">
+      <div class="case-home-icon">${icons[c]||'📘'}</div>
+      <div class="case-home-short">${meta.short}</div>
+      <div class="case-home-title">${meta.es}</div>
+      <div class="case-home-desc">${meta.rule.split('.')[0]}.</div>
+      ${acc>0?`<div class="case-home-progress"><div style="width:${acc}%"></div></div>`:''}
+      <span class="case-home-start">${acc>0?`${acc}% · Seguir →`:'Empezar →'}</span>
     </a>`;
   });
   out+=`</div>`;
