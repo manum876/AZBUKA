@@ -273,6 +273,9 @@ function azRegisterAllKnownSearchIndexes(){
   if(typeof NOUNS!=='undefined' && typeof getAllAzbuka3Words==='function'){
     azRegisterSearchEntries('azbuka-3','Unidad 3 · Sustantivos','azbuka-3.html', getAllAzbuka3Words());
   }
+  if(typeof VOCAB!=='undefined' && typeof getAllDialogosWords==='function'){
+    azRegisterSearchEntries('dialogos','Diálogos','dialogos.html', getAllDialogosWords());
+  }
 }
 
 /* ── UTILIDADES DE EJERCICIOS (compartidas por los motores de quiz) ─ */
