@@ -9,6 +9,7 @@
   <title>Азбука — Diálogos</title>
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
+    html,body{overflow-x:hidden}
     body{font-family:-apple-system,"Inter","Helvetica Neue",Arial,sans-serif}
     #root{min-height:100vh}
   </style>
@@ -465,9 +466,10 @@ function App() {
     app: {
       fontFamily: FONT,
       background: T.bg,
-      minHeight: "100vh",
-      maxWidth: 520,
-      margin: "0 auto",
+      width: "90vw",
+      minHeight: "90vh",
+      maxWidth: "none",
+      margin: "5vh auto",
       color: T.text,
       transition: "background .3s,color .3s"
     },
@@ -577,7 +579,7 @@ function App() {
       transition: "transform .28s cubic-bezier(.4,0,.2,1)"
     }
   }, /*#__PURE__*/React.createElement("div", {
-    style: { padding: "calc(16px + env(safe-area-inset-top)) 16px 4px" }
+    style: { padding: "5vh 5vw 4px" }
   }, /*#__PURE__*/React.createElement("a", {
     href: "index.html",
     style: {
@@ -619,7 +621,7 @@ function App() {
       fontSize: 13.5, textDecoration: "none"
     }
   }, /*#__PURE__*/React.createElement("span", { style: { fontSize: 11, color: T.muted, minWidth: 18 } }, m.glyph), m.title))), /*#__PURE__*/React.createElement("div", {
-    style: { padding: "12px 16px calc(80px + env(safe-area-inset-bottom) + 12px)", borderTop: `1px solid ${T.border}`, display: "flex" }
+    style: { padding: "12px 5vw calc(80px + 5vh + 12px)", borderTop: `1px solid ${T.border}`, display: "flex" }
   }, /*#__PURE__*/React.createElement("button", {
     onClick: async () => {
       await azToggleTheme();
@@ -1182,13 +1184,13 @@ function App() {
   }, qStep + 1 < VOCAB.length ? "Siguiente →" : "Ver resultado 🎉")))), /*#__PURE__*/React.createElement("div", {
     style: {
       position: "fixed",
-      bottom: 0,
-      left: 0,
-      right: 0,
+      bottom: "5vh",
+      left: "5vw",
+      right: "5vw",
       background: dark ? "#0F0F14EE" : "#F7F5F0EE",
       backdropFilter: "blur(12px)",
       borderTop: `1px solid ${T.border}`,
-      padding: "10px 8px calc(10px + env(safe-area-inset-bottom))",
+      padding: "10px 2vw",
       zIndex: 100
     }
   }, /*#__PURE__*/React.createElement("div", {
@@ -1215,7 +1217,7 @@ function App() {
       color: tab === t ? T.gold : T.muted, cursor: "pointer", fontFamily: "inherit"
     }
   }, /*#__PURE__*/React.createElement("span", { style: { fontSize: 20 } }, icon), /*#__PURE__*/React.createElement("span", { style: { fontSize: 11, fontWeight: 600 } }, label)))), /*#__PURE__*/React.createElement("div", {
-    style: { height: "calc(76px + env(safe-area-inset-bottom))" }
+    style: { height: "calc(76px + 5vh)" }
   }))));
 }ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
 </script>
