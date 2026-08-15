@@ -621,7 +621,7 @@ function App() {
       fontSize: 13.5, textDecoration: "none"
     }
   }, /*#__PURE__*/React.createElement("span", { style: { fontSize: 11, color: T.muted, minWidth: 18 } }, m.glyph), m.title))), /*#__PURE__*/React.createElement("div", {
-    style: { padding: "12px 3vw 4vh", borderTop: `1px solid ${T.border}`, display: "flex" }
+    style: { padding: "12px 3vw 3vh", borderTop: `1px solid ${T.border}`, display: "flex" }
   }, /*#__PURE__*/React.createElement("button", {
     onClick: async () => {
       await azToggleTheme();
@@ -1184,9 +1184,9 @@ function App() {
   }, qStep + 1 < VOCAB.length ? "Siguiente →" : "Ver resultado 🎉")))), /*#__PURE__*/React.createElement("div", {
     style: {
       position: "fixed",
-      bottom: "5vh",
-      left: "5vw",
-      right: "5vw",
+      bottom: 0,
+      left: 0,
+      right: 0,
       background: dark ? "#0F0F14EE" : "#F7F5F0EE",
       backdropFilter: "blur(12px)",
       borderTop: `1px solid ${T.border}`,

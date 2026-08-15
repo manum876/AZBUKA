@@ -54,7 +54,7 @@ button{font-family:inherit;cursor:pointer;}
 #drawerUnits{flex:1;overflow-y:auto;padding:6px 8px;}
 .d-lbl-link{display:block;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);padding:10px 10px 6px;text-decoration:none;font-weight:700;}
 .d-lbl-link:hover{color:var(--text);}
-#drawerFoot{padding:12px 3vw 4vh;border-top:1px solid var(--border);display:flex;align-items:flex-start;}
+#drawerFoot{padding:12px 3vw 3vh;border-top:1px solid var(--border);display:flex;align-items:flex-start;}
 #themeBtnDrawer{width:36px;height:36px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;color:var(--text);padding:0;}
 #themeBtnDrawer:hover{border-color:var(--gold);}
 .d-lbl{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:10px 10px 6px;}
@@ -65,11 +65,11 @@ button{font-family:inherit;cursor:pointer;}
 .d-n{font-size:11px;color:var(--muted);min-width:18px;}
 
 /* ===== LAYOUT SHELL ===== */
-#content{min-height:100vh;padding-bottom:calc(var(--nav-h) + 4vh + 8px);}
+#content{min-height:100vh;padding-bottom:calc(var(--nav-h) + 3vh + 8px);}
 .view{display:none;animation:fi .22s ease;}
 .view.active{display:block;}
 @keyframes fi{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
-.inner{max-width:700px;margin:0 auto;padding:6vh 3vw 4vh;}
+.inner{max-width:700px;margin:0 auto;padding:6vh 3vw 3vh;}
 
 /* ===== BOTTOM NAV ===== */
 #bnav{position:fixed;bottom:0;left:0;right:0;height:var(--nav-h);background:var(--bg2);border:0;border-top:1px solid var(--border);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:space-between;padding:0 2vw;box-sizing:border-box;z-index:100;gap:6px;overflow:hidden;}
@@ -259,4 +259,4 @@ p.ps{color:var(--sub);font-size:14.5px;margin-bottom:20px;max-width:560px;line-h
 #toast{position:fixed;bottom:calc(var(--nav-h) + 8px);right:14px;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:9px 15px;border-radius:10px;font-size:13px;opacity:0;transform:translateY(8px);transition:.25s;pointer-events:none;z-index:300;}
 #toast.show{opacity:1;transform:none;}
 
-@media(max-width:560px){.ugrid{grid-template-columns:1fr 1fr;}.inner{padding:6vh 3vw 4vh;}}
+@media(max-width:560px){.ugrid{grid-template-columns:1fr 1fr;}.inner{padding:6vh 3vw 3vh;}}
