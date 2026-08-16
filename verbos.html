@@ -9,10 +9,6 @@
 <title>50 Verbos — Ruso por temas</title>
 <link rel="stylesheet" href="core.css">
 <style>
-  /* Específico de este módulo: flashcards, menú de práctica y detalle
-     de conjugación — no están en core.css porque son patrones únicos
-     de esta app. Sin header propio: el título vive en el contenido
-     (renderHome) y el ☰ vive en el nav inferior, igual que Alfabeto. */
   .conjrow{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);font-size:13.5px;}
   .conjrow:last-child{border-bottom:none;}
   .pron{color:var(--muted);font-size:12px;}
@@ -61,17 +57,24 @@
 <script src="data-azbuka3.js"></script>
 <script src="data-dialogos.js"></script>
 <script>
-// MODULES y verbs se cargan desde data-verbos.js (compartido con index.html para el buscador)
-// El SRS usa el infinitivo como identidad persistente estable; no requiere cambios en data-verbos.js.
+// MODULES y verbs vienen de data-verbos.js (NO se redeclaran acá — si se
+// llegaran a declarar de nuevo con "const" en este archivo, el navegador
+// tira SyntaxError "Identifier ya declarado" y NINGÚN código de este
+// script corre: la página queda con el nav estático visible pero sin
+// ninguna interacción. Ver MIGRACION_LEXICO.md — reconstrucción completa
+// de este archivo tras detectar ese riesgo en un backup anterior a la
+// migración a core.js.
 
 /* ============ ESTADO (en memoria, sesión actual) ============ */
 // srs (dominio por verbo 0-4) se carga/guarda vía azModule('verbos').srs.
 // history queda solo en memoria de la sesión; attempts/correct acumulados
 // sí persisten en azModule('verbos').stats para que "Precisión" sobreviva
-// a un reload.
+// a un reload. Sin gamificación: no hay XP ni racha en ningún lado.
 const state = { srs:{}, history:[], view:{name:'home'} };
-// Identidad persistente estable: el infinitivo ruso no depende del orden de MODULES.
-// Los ids numéricos siguen usándose para navegación dentro de la página, pero no para SRS.
+// Identidad persistente estable: el infinitivo ruso es la clave de todo
+// el progreso guardado (no el id numérico) — no depende del orden de
+// MODULES ni de cómo se calculó el id. Usar SIEMPRE verbKey(v), nunca
+// v.id, para leer o escribir state.srs.
 function verbKey(v){ return v.inf; }
 verbs.forEach(v=>state.srs[verbKey(v)]=0);
 function levelName(l){return ["Nuevo","Aprendido","En práctica","Dominado","Automático"][l];}
@@ -336,8 +339,9 @@ function setActiveNav(id){document.querySelectorAll('#bnav .nb').forEach(b=>b.cl
 (async () => {
   await azInit({activeType:'module', activeId:'verbos'});
   const saved = azModule('verbos').srs || {};
-  // Compatibilidad con el formato anterior: si existe SRS numérico, se migra
-  // al infinitivo estable. Las claves antiguas no se eliminan.
+  // Compatibilidad con el formato anterior: si existiera SRS numérico
+  // guardado por un id viejo, se migra al infinitivo estable. Las claves
+  // antiguas no se eliminan (no hacen daño, simplemente dejan de usarse).
   verbs.forEach(v=>{
     const key = verbKey(v);
     if(saved[key]!==undefined) state.srs[key]=saved[key];
