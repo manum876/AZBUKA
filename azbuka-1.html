@@ -52,8 +52,10 @@
 <script src="data-azbuka2.js"></script>
 <script src="data-azbuka3.js"></script>
 <script src="data-dialogos.js"></script>
+<script src="data-azbuka1.js"></script>
 <script>
 // ALPHABET y generateQuizQuestion → data-alphabet.js
+// DIALOGUES1 (diálogos de esta unidad) → data-azbuka1.js
 // sg/ss, tema, TTS, toast, drawer y AZ_UNITS → core.js
 
 // Alias de compatibilidad: el resto de este archivo llama a toast(msg)
@@ -67,24 +69,6 @@ const U1S=[
   {id:'ejercicios',lbl:'Escritura',  ic:'⚡'},
   {id:'evaluacion',lbl:'Evaluación', ic:'🎯'},
 ];
-const DIALOGUES=[
-  {title:"Saludo",lines:[
-    ["A","Привет!","Privét!","¡Hola!"],
-    ["B","Привет! Как дела?","Privét! Kak dielá?","¡Hola! ¿Cómo estás?"],
-    ["A","Хорошо, спасибо. А у тебя?","Jarashó, spasíba. A u tebiá?","Bien, gracias. ¿Y vos?"],
-    ["B","Тоже хорошо.","Tózhe jarashó.","También bien."],
-  ]},
-  {title:"Presentarse",lines:[
-    ["A","Как тебя зовут?","Kak tebiá zavút?","¿Cómo te llamás?"],
-    ["B","Меня зовут Анна. А тебя?","Miniá zavút Ánna. A tebiá?","Me llamo Anna. ¿Y vos?"],
-    ["A","Меня зовут Иван. Очень приятно!","Miniá zavút Iván. Óchien' priiátna!","Me llamo Iván. ¡Mucho gusto!"],
-  ]},
-  {title:"Despedida",lines:[
-    ["A","Мне пора идти.","Mnie pará idtí.","Me tengo que ir."],
-    ["B","Пока! До встречи!","Paká! Da fstriéchi!","¡Chau! ¡Hasta pronto!"],
-  ]},
-];
-
 // ── ESTADO ─────────────────────────────────────────
 // El dominio de letras y los favoritos de palabras-ejemplo se guardan
 // en AZ_PROGRESS.modules.alfabeto — el MISMO bucket que usa el módulo
@@ -444,7 +428,7 @@ function renderDialogos(el){
   const hdr=document.createElement('div');hdr.className='sh';
   hdr.innerHTML=`<span class="shi">💬</span><div><h2>Mini diálogos</h2><div class="shs">Primeras conversaciones con audio</div></div>`;
   el.appendChild(hdr);
-  DIALOGUES.forEach(d=>{
+  DIALOGUES1.forEach(d=>{
     const card=document.createElement('div');card.className='card sb';
     const title=document.createElement('div');title.style.cssText='font-size:11px;font-weight:700;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;';
     title.textContent=d.title;card.appendChild(title);

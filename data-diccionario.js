@@ -464,10 +464,22 @@ const DATA=[
 
 /* Aplana DATA a una lista simple de palabras — usado por diccionario.html
    (para su propio buscador interno) y por index.html (buscador global). */
+/* Fix: 7 palabras aparecían repetidas dentro del propio diccionario
+   (ej. "аптека" en "La ciudad" y en "Salud", "пожалуйста" con dos
+   sentidos distintos). Las categorías y subcategorías NO se tocan —
+   siguen mostrando cada palabra en su lugar. Esto solo deduplica la
+   lista aplanada que alimenta la búsqueda (local de diccionario.html
+   y la transversal del drawer), para no mostrar la misma palabra dos
+   veces en los resultados. Se conserva la primera aparición según el
+   orden de DATA. */
 function getAllDiccionarioWords(){
   const w=[];
-  DATA.forEach(c=>c.subcats.forEach(s=>s.words.forEach(x=>
-    w.push({es:x[0],ru:x[1],pronun:x[2],gender:x[3],cat:c.label,pairEs:x[4],pairRu:x[5]})
-  )));
+  const seen=new Set();
+  DATA.forEach(c=>c.subcats.forEach(s=>s.words.forEach(x=>{
+    const key=x[1].trim().toLowerCase();
+    if(seen.has(key))return;
+    seen.add(key);
+    w.push({es:x[0],ru:x[1],pronun:x[2],gender:x[3],cat:c.label,pairEs:x[4],pairRu:x[5]});
+  })));
   return w;
 }

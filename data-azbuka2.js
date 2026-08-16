@@ -237,8 +237,19 @@ const DIALOGUES2=[
    el vocabulario EXPLÍCITO de cada módulo (target vocabulary), no las
    líneas de los diálogos de ejemplo, para no duplicar entradas ni
    meter ruido incidental en los resultados de búsqueda. */
+/* Fix: 3 palabras se repetían dentro del vocabulario de la Unidad 2
+   (ej. "спасибо" en el Módulo 1 y en el Módulo 6). Los módulos NO se
+   tocan — cada uno sigue enseñando su vocabulario tal cual. Esto solo
+   deduplica la lista aplanada que alimenta el buscador transversal,
+   para no mostrar la misma palabra dos veces en los resultados. */
 function getAllAzbuka2Words(){
   const out=[];
-  MODULES2.forEach(m=>m.vocab.forEach(w=>out.push({ru:w.ru, es:w.es, tr:w.tr})));
+  const seen=new Set();
+  MODULES2.forEach(m=>m.vocab.forEach(w=>{
+    const key=w.ru.trim().toLowerCase();
+    if(seen.has(key))return;
+    seen.add(key);
+    out.push({ru:w.ru, es:w.es, tr:w.tr});
+  }));
   return out;
 }

@@ -1200,9 +1200,22 @@ const ALPHABET=[{
 /* Aplana ALPHABET a su lista de palabras de ejemplo — usado por el
    buscador transversal (azRegisterAllKnownSearchIndexes en core.js).
    Mismo patrón que getAllDiccionarioWords() y getAllCasosWords(). */
+/* Fix: varias palabras se usan como ejemplo de MÁS DE UNA letra (ej.
+   "город" ilustra tanto Г como О) — intencional para el estudio del
+   alfabeto letra por letra. Pero al aplanar TODAS las palabras para
+   el buscador transversal, eso las duplicaba en los resultados de
+   búsqueda. Acá se deduplica por texto ruso (se conserva la primera
+   aparición); las tarjetas de cada letra individual NO se tocan —
+   siguen mostrando la palabra completa como antes. */
 function getAllAlphabetWords(){
   const out=[];
-  ALPHABET.forEach(l=>l.words.forEach(w=>out.push({ru:w.cyrillic, es:w.meaning, tr:w.translit})));
+  const seen=new Set();
+  ALPHABET.forEach(l=>l.words.forEach(w=>{
+    const key=w.cyrillic.trim().toLowerCase();
+    if(seen.has(key))return;
+    seen.add(key);
+    out.push({ru:w.cyrillic, es:w.meaning, tr:w.translit});
+  }));
   return out;
 }
 function generateQuizQuestion(letter, allLetters) {
