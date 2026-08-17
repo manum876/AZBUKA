@@ -506,7 +506,7 @@ const REG = {
  'футбол:fútbol','снег:nieve','мороз:frío intenso','дым:humo','воздух:aire','свет:luz','цвет:color','вкус:sabor','запах:olor',
  'звук:sonido','голос:voz','взгляд:mirada','характер:carácter','возраст:edad','рост:estatura','вес:peso','размер:tamaño',
  'номер:número','адрес:dirección','район:barrio','банан:banana','апельсин:naranja','помидор:tomate','лимон:limón','рис:arroz',
- 'ковёр:alfombra','диван:sofá','телевизор:televisor','холодильник:refrigerador','карандаш:lápiz','рюкзак:mochila','чемодан:maleta',
+ 'ковёр:alfombra','диван:sofá','телевизор:televisor','холодильник:heladera / refrigerador','карандаш:lápiz','рюкзак:mochila','чемодан:maleta',
  'замок:castillo','мост:puente','рынок:mercado',
  'этаж:planta/piso (edificio)','заказ:pedido','отдых:descanso','праздник:fiesta/celebración','подъезд:portal/entrada','квартал:cuadra/manzana'
 ]},

@@ -62,7 +62,7 @@ const ALPHABET=[{
   words: [{
     cyrillic: "банан",
     translit: "banan",
-    meaning: "plátano",
+    meaning: "banana",
     note: "Б inicial fuerte y clara"
   }, {
     cyrillic: "брат",
