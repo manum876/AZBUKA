@@ -9,19 +9,32 @@
    Fuente de verdad única para nombres, iconos y hrefs.
    Si agregás una unidad o módulo nuevo, se declara UNA VEZ acá
    y todos los archivos (index, azbuka-index, drawers) lo heredan. */
+/* introducesLex (Fase 5 — ver MIGRACION_LEXICO.md): ids de data-lexicon.js
+   que cada unidad introduce como vocabulario objetivo. Es una relación
+   INDEPENDIENTE de "appearsIn" (que vive en data-lexicon.js, del lado de
+   cada palabra) — ninguna se infiere de la otra. Solo cubre las 254
+   palabras que están en el léxico central (las que aparecen en 2+
+   módulos); el resto del vocabulario de cada unidad no tiene id léxico
+   todavía porque no había ninguna ambigüedad que resolver para él. Datos
+   fijos y literales, igual criterio que el resto de los ids del proyecto
+   — nunca se recalculan en runtime. Unidades 4-12 quedan con array vacío
+   hasta que esos archivos existan. */
 const AZ_UNITS = [
-  {id:1,title:"Alfabeto y pronunciación",desc:"Las 33 letras, sonidos y primeras palabras.",href:"azbuka-1.html"},
-  {id:2,title:"Presentaciones básicas",desc:"Saludos, nombres, primeras frases.",href:"azbuka-2.html"},
-  {id:3,title:"Sustantivos y género",desc:"Masculino, femenino, neutro.",href:"azbuka-3.html"},
-  {id:4,title:"Casos básicos",desc:"Nominativo y acusativo.",href:"azbuka-4.html"},
-  {id:5,title:"Verbos en presente",desc:"Conjugación y uso cotidiano.",href:"azbuka-5.html"},
-  {id:6,title:"Movimiento y ubicación",desc:"Verbos de movimiento, preposiciones.",href:"azbuka-6.html"},
-  {id:7,title:"Tiempo y rutina diaria",desc:"Horas, días, rutinas.",href:"azbuka-7.html"},
-  {id:8,title:"Pasado",desc:"Aspecto verbal y pasado.",href:"azbuka-8.html"},
-  {id:9,title:"Futuro",desc:"Formas y uso del futuro.",href:"azbuka-9.html"},
-  {id:10,title:"Casos restantes",desc:"Genitivo, dativo, instrumental.",href:"azbuka-10.html"},
-  {id:11,title:"Conversaciones cotidianas",desc:"Diálogos extendidos, situaciones reales.",href:"azbuka-11.html"},
-  {id:12,title:"Consolidación B1",desc:"Repaso integral y examen final.",href:"azbuka-12.html"},
+  {id:1,title:"Alfabeto y pronunciación",desc:"Las 33 letras, sonidos y primeras palabras.",href:"azbuka-1.html",
+   introducesLex:["LEX-adj-001","LEX-adj-003","LEX-adj-005","LEX-otro-011","LEX-otro-016","LEX-otro-020","LEX-otro-025","LEX-otro-036","LEX-otro-037","LEX-otro-038","LEX-otro-039","LEX-otro-042","LEX-otro-043","LEX-sust-001","LEX-sust-005","LEX-sust-006","LEX-sust-009","LEX-sust-011","LEX-sust-016","LEX-sust-020","LEX-sust-025","LEX-sust-026","LEX-sust-027","LEX-sust-029","LEX-sust-032","LEX-sust-034","LEX-sust-035","LEX-sust-037","LEX-sust-039","LEX-sust-041","LEX-sust-042","LEX-sust-046","LEX-sust-048","LEX-sust-049","LEX-sust-056","LEX-sust-062","LEX-sust-063","LEX-sust-068","LEX-sust-073","LEX-sust-074","LEX-sust-076","LEX-sust-078","LEX-sust-079","LEX-sust-082","LEX-sust-083","LEX-sust-084","LEX-sust-085","LEX-sust-087","LEX-sust-088","LEX-sust-091","LEX-sust-095","LEX-sust-098","LEX-sust-101","LEX-sust-103","LEX-sust-107","LEX-sust-112","LEX-sust-117","LEX-sust-118","LEX-sust-119","LEX-sust-122","LEX-sust-126","LEX-sust-127","LEX-sust-133","LEX-sust-134","LEX-sust-139","LEX-sust-142","LEX-sust-143","LEX-sust-149","LEX-sust-152","LEX-sust-157","LEX-sust-158","LEX-sust-160","LEX-sust-161","LEX-sust-163","LEX-sust-165","LEX-sust-167","LEX-sust-169","LEX-sust-171","LEX-sust-172","LEX-sust-174","LEX-verb-004","LEX-verb-008","LEX-verb-014","LEX-verb-020","LEX-verb-026"]},
+  {id:2,title:"Presentaciones básicas",desc:"Saludos, nombres, primeras frases.",href:"azbuka-2.html",
+   introducesLex:["LEX-otro-002","LEX-otro-004","LEX-otro-007","LEX-otro-008","LEX-otro-009","LEX-otro-010","LEX-otro-012","LEX-otro-013","LEX-otro-014","LEX-otro-019","LEX-otro-020","LEX-otro-022","LEX-otro-023","LEX-otro-024","LEX-otro-025","LEX-otro-026","LEX-otro-027","LEX-otro-029","LEX-otro-033","LEX-otro-034","LEX-otro-037","LEX-otro-039","LEX-otro-042","LEX-otro-043"]},
+  {id:3,title:"Sustantivos y género",desc:"Masculino, femenino, neutro.",href:"azbuka-3.html",
+   introducesLex:["LEX-adj-001","LEX-adj-002","LEX-adj-004","LEX-adj-005","LEX-adj-006","LEX-sust-005","LEX-sust-008","LEX-sust-010","LEX-sust-015","LEX-sust-016","LEX-sust-030","LEX-sust-031","LEX-sust-033","LEX-sust-034","LEX-sust-036","LEX-sust-037","LEX-sust-038","LEX-sust-040","LEX-sust-047","LEX-sust-051","LEX-sust-054","LEX-sust-055","LEX-sust-056","LEX-sust-057","LEX-sust-058","LEX-sust-060","LEX-sust-062","LEX-sust-064","LEX-sust-065","LEX-sust-067","LEX-sust-075","LEX-sust-076","LEX-sust-081","LEX-sust-082","LEX-sust-086","LEX-sust-098","LEX-sust-103","LEX-sust-104","LEX-sust-107","LEX-sust-109","LEX-sust-111","LEX-sust-118","LEX-sust-121","LEX-sust-123","LEX-sust-127","LEX-sust-129","LEX-sust-131","LEX-sust-133","LEX-sust-134","LEX-sust-136","LEX-sust-142","LEX-sust-144","LEX-sust-145","LEX-sust-146","LEX-sust-148","LEX-sust-149","LEX-sust-151","LEX-sust-152","LEX-sust-153","LEX-sust-154","LEX-sust-158","LEX-sust-159","LEX-sust-161","LEX-sust-162","LEX-sust-164","LEX-sust-166","LEX-sust-170","LEX-sust-171","LEX-sust-174"]},
+  {id:4,title:"Casos básicos",desc:"Nominativo y acusativo.",href:"azbuka-4.html",introducesLex:[]},
+  {id:5,title:"Verbos en presente",desc:"Conjugación y uso cotidiano.",href:"azbuka-5.html",introducesLex:[]},
+  {id:6,title:"Movimiento y ubicación",desc:"Verbos de movimiento, preposiciones.",href:"azbuka-6.html",introducesLex:[]},
+  {id:7,title:"Tiempo y rutina diaria",desc:"Horas, días, rutinas.",href:"azbuka-7.html",introducesLex:[]},
+  {id:8,title:"Pasado",desc:"Aspecto verbal y pasado.",href:"azbuka-8.html",introducesLex:[]},
+  {id:9,title:"Futuro",desc:"Formas y uso del futuro.",href:"azbuka-9.html",introducesLex:[]},
+  {id:10,title:"Casos restantes",desc:"Genitivo, dativo, instrumental.",href:"azbuka-10.html",introducesLex:[]},
+  {id:11,title:"Conversaciones cotidianas",desc:"Diálogos extendidos, situaciones reales.",href:"azbuka-11.html",introducesLex:[]},
+  {id:12,title:"Consolidación B1",desc:"Repaso integral y examen final.",href:"azbuka-12.html",introducesLex:[]},
 ];
 const AZ_MODULES = [
   {id:"alfabeto",title:"Alfabeto",desc:"Letras, sonidos y caligrafía — consulta libre",href:"alfabeto.html",icon:"orange",glyph:"Я"},
