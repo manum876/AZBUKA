@@ -7,7 +7,7 @@
 > migración**: qué se hizo en cada fase, qué se verificó, y qué queda
 > pendiente. Se actualiza al cerrar cada fase, nunca antes.
 
-Última actualización: Fase 5 completada (`introducedIn`/`appearsIn` conectadas; sigue sin tocarse la UI).
+Última actualización: Fase 6 completada (`azSearchLexicon()` agregado; sigue sin conectarse a ningún buscador visible).
 
 ---
 
@@ -292,6 +292,26 @@ No se intentó detectar apariciones **incidentales** de vocabulario dentro de la
 
 ---
 
+---
+
+## Fase 6 — Segunda capa de búsqueda basada en léxico central
+
+### Qué se hizo
+- **`core.js`**: se agregó `azSearchLexicon(query)`, una función completamente nueva y separada de `azSearch()`/`AZ_SEARCH_INDEX` — ninguna línea de código existente se tocó. Consulta `LEXICON` (de `data-lexicon.js`, si la página lo cargó) y devuelve **un resultado por identidad léxica**, con todas sus fuentes agrupadas adentro (`sources`), en vez de un resultado suelto por cada módulo — ej. buscar "аптека" da 5 filas con `azSearch()` (una por módulo) pero 1 sola fila con `azSearchLexicon()`, con las 5 fuentes visibles dentro de esa fila. Devuelve además `introducedIn`/`appearsIn` de cada palabra, listos para usarse en Fase 7.
+- También se agregó `azLexiconEntry(id)`, un atajo de una línea sobre `lexById()` (ya expuesto por `data-lexicon.js`) pensado para cuando Fase 7 arme una ficha de detalle de palabra.
+- **Las 10 páginas HTML del stack estándar**: se agregó `<script src="data-lexicon.js"></script>` después de `data-azbuka1.js` — es la única línea que cambió por archivo. Antes `data-lexicon.js` existía pero no se cargaba en ninguna página; ahora está disponible en todas, sin que nada lo use todavía visiblemente.
+
+### Por qué es seguro
+`azSearchLexicon()` no se llama desde ningún lado todavía — ni el buscador del drawer, ni el de `diccionario.html`, ni ningún otro. Es una función expuesta y lista, pero inerte hasta que la Fase 7 la conecte a algo visible. Si `data-lexicon.js` no estuviera cargado en alguna página (no debería pasar, pero por las dudas), la función devuelve `[]` en vez de tirar error (`typeof LEXICON === 'undefined'` como guarda).
+
+### Verificación aplicada
+- `node --check` sobre `core.js` y sobre los 10 archivos HTML tocados (todos sus `<script>` inline).
+- Ejecución real en jsdom: las 10 páginas siguen cargando sin errores nuevos con `data-lexicon.js` sumado al stack.
+- Comparación en vivo dentro de `index.html`: `azSearch("аптека")` sigue devolviendo 5 filas exactamente igual que antes (comportamiento intacto); `azSearchLexicon("аптека")` devuelve 1 fila agrupada con `sourceCount:5`. Mismo patrón verificado con "holodильник" (3→1) y "брать" (2→1). "среда" devuelve correctamente sus 2 sentidos por separado con `azSearchLexicon()`.
+- `diff` contra la versión anterior: en `core.js` el único cambio es el bloque nuevo agregado al final (nada existente modificado); en las 10 páginas HTML, una única línea agregada por archivo.
+
+---
+
 ## Estado de fases
 
 | Fase | Descripción | Estado |
@@ -302,5 +322,5 @@ No se intentó detectar apariciones **incidentales** de vocabulario dentro de la
 | 3 | Centralizar diálogos inline de `azbuka-1.html` → `data-azbuka1.js` | ✅ Completada |
 | 4 | Creación de `data-lexicon.js` | ✅ Completada |
 | 5 | Relaciones pedagógicas (`introducedIn` / `appearsIn`) | ✅ Completada |
-| 6 | Segunda capa de búsqueda basada en léxico central | ⏳ Pendiente |
+| 6 | Segunda capa de búsqueda basada en léxico central | ✅ Completada |
 | 7 | Integración de interfaz | ⏳ Pendiente |

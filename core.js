@@ -257,6 +257,39 @@ function azSearch(query){
   ).slice(0, 40);
 }
 
+/* ── BÚSQUEDA POR LÉXICO CENTRAL (Fase 6 — ver MIGRACION_LEXICO.md) ──
+   Capa NUEVA y SEPARADA de azSearch()/AZ_SEARCH_INDEX de arriba, que
+   sigue funcionando exactamente igual que antes — nada de lo anterior
+   se tocó ni se reemplazó. Esta capa consulta data-lexicon.js (si la
+   página lo cargó) y devuelve UN resultado por identidad léxica en vez
+   de un resultado suelto por cada módulo donde aparece la palabra —
+   por ejemplo, buscar "аптека" con azSearch() da 5 filas (una por
+   módulo); con azSearchLexicon() da 1 fila con las 5 fuentes adentro.
+   Solo cubre las 254 palabras que están en data-lexicon.js (las que
+   aparecen en 2+ módulos) — para todo lo demás, azSearch() sigue
+   siendo la única fuente de resultados.
+   Esta función todavía no está conectada a ningún buscador visible de
+   la UI (eso es Fase 7) — queda lista para usarse cuando corresponda. */
+function azSearchLexicon(query){
+  if(typeof LEXICON === 'undefined') return [];
+  const q = (query||'').trim().toLowerCase();
+  if(!q) return [];
+  return Object.entries(LEXICON)
+    .filter(([id,e]) => e.ru.toLowerCase().includes(q) || e.es.toLowerCase().includes(q))
+    .map(([id,e]) => ({
+      id, ru:e.ru, es:e.es, pos:e.pos, gender:e.gender, sense:e.sense||null,
+      introducedIn:e.introducedIn, appearsIn:e.appearsIn,
+      sourceCount: Object.keys(e.sources).length,
+      sources: e.sources
+    }))
+    .slice(0, 40);
+}
+/* Atajo para una ficha de palabra completa por id (Fase 7 la va a usar
+   para armar la vista de detalle transversal de una palabra). */
+function azLexiconEntry(id){
+  return (typeof lexById==='function') ? lexById(id) : null;
+}
+
 /* Registro automático de TODOS los datasets compartidos que la página
    haya cargado por <script src="data-*.js">. Se llama solo, dentro de
    azInit(), en TODA página — así el buscador es transversal de verdad:

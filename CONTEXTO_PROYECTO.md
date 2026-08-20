@@ -15,7 +15,7 @@ Subo siempre los archivos actuales del repo al chat. Esto describe las decisione
 - `data-diccionario.js` — ~400 palabras temáticas por categoría. Compartido por `diccionario.html` y `index.html` (buscador global).
 - `data-verbos.js` — 50 verbos con conjugación. Compartido por `verbos.html` y `index.html` (buscador global).
 - `data-azbuka1.js` — diálogos de ejemplo de la Unidad 1 (`DIALOGUES1`). Usado por `azbuka-1.html`; cargado también en el resto del stack por consistencia, aunque no se indexa en el buscador (son diálogo de contexto, no vocabulario objetivo).
-- `data-lexicon.js` — léxico central (Fase 4 de `MIGRACION_LEXICO.md`). Capa de mapeo por encima de los `data-*.js` existentes: agrupa bajo un id estable (`LEX-<tipo>-NNN`) las palabras rusas que aparecen en 2+ módulos, sin duplicar ni tocar el contenido de esos módulos. Todavía no está conectado a ninguna página (eso es Fase 6/7).
+- `data-lexicon.js` — léxico central (Fase 4 de `MIGRACION_LEXICO.md`). Capa de mapeo por encima de los `data-*.js` existentes: agrupa bajo un id estable (`LEX-<tipo>-NNN`) las palabras rusas que aparecen en 2+ módulos, sin duplicar ni tocar el contenido de esos módulos. Desde la Fase 6, se carga en el stack estándar de todas las páginas (después de `data-azbuka1.js`); todavía no alimenta ningún elemento visible de la UI (eso es Fase 7).
 
 **Regla de oro:** si un dato (letras, palabras, verbos, casos) se usa en más de un archivo, va a un `data-*.js` propio que ambos importan. Nunca se copia y pega contenido de dominio entre archivos.
 
@@ -161,6 +161,7 @@ azRegisterSearchEntries(moduleId, moduleLabel, href, entries)
 - Solo se indexa el **vocabulario explícito** de cada unidad/módulo, nunca las líneas de diálogos de ejemplo.
 - **Caso especial `alfabeto.html`:** al ser React, llama manualmente a `azRegisterAllKnownSearchIndexes()` junto con `azLoadProgress()`.
 - Si se crea otra página React en el futuro, replicar este mismo llamado manual.
+- **Segunda capa (Fase 6, ver `MIGRACION_LEXICO.md`):** `azSearchLexicon(query)` en `core.js` consulta `data-lexicon.js` (si la página lo cargó) y devuelve un resultado por identidad léxica en vez de uno por módulo — ej. "аптека" da 1 fila con sus 5 fuentes adentro, en vez de 5 filas sueltas. Es una capa nueva y separada, `azSearch()`/`AZ_SEARCH_INDEX` no se tocaron. Todavía no está conectada a ningún buscador visible (eso es Fase 7).
 
 ---
 
@@ -213,7 +214,7 @@ Cada archivo modificado se valida con:
 
 ✅ Migrados al patrón v2/canónico: `index.html`, `azbuka-index.html`, `azbuka-1.html`, `azbuka-2.html`, `azbuka-3.html`, `alfabeto.html`, `diccionario.html`, `dialogos.html`.
 
-✅ Migración a léxico central (ver `MIGRACION_LEXICO.md`) — Fases 0 a 5 completadas: IDs estables, diálogos extraídos, correcciones/unificación regional, `data-lexicon.js` construido (254 identidades léxicas) y relaciones `introducedIn`/`appearsIn` conectadas entre `core.js` (`AZ_UNITS.introducesLex`) y `data-lexicon.js`. Próxima fase (6): segunda capa de búsqueda basada en el léxico.
+✅ Migración a léxico central (ver `MIGRACION_LEXICO.md`) — Fases 0 a 6 completadas: IDs estables, diálogos extraídos, correcciones/unificación regional, `data-lexicon.js` construido, relaciones `introducedIn`/`appearsIn` conectadas, y segunda capa de búsqueda (`azSearchLexicon()`) agregada en `core.js` — sin reemplazar el buscador actual del drawer. Próxima fase (7): integración de interfaz.
 
 - `alfabeto.html`, `diccionario.html` y `dialogos.html` fueron actualizados recientemente para respetar la regla responsive del 5%.
 - `dialogos.html` fue migrado desde su versión anterior a la estructura v2 siguiendo la estructura de `alfabeto.html`, manteniendo sus datos existentes y el buscador transversal.
