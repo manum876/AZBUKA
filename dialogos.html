@@ -9,6 +9,7 @@
   <title>Азбука — Diálogos</title>
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
+    html,body{overflow-x:hidden;}
     body{font-family:-apple-system,"Inter","Helvetica Neue",Arial,sans-serif}
     #root{min-height:100vh}
   </style>
@@ -476,7 +477,7 @@ function App() {
     header: {
       background: `linear-gradient(150deg,${T.bg2},${T.bg3})`,
       color: T.text,
-      padding: "16px 16px 0",
+      padding: "6vh 3vw 0",
       position: "relative",
       borderBottom: `1px solid ${T.border}`
     },
@@ -486,7 +487,7 @@ function App() {
       marginTop: 10
     },
     content: {
-      padding: "18px 14px 96px"
+      padding: "0 3vw 4vh"
     },
     card: {
       background: T.card,
@@ -579,7 +580,7 @@ function App() {
       transition: "transform .28s cubic-bezier(.4,0,.2,1)"
     }
   }, /*#__PURE__*/React.createElement("div", {
-    style: { padding: "calc(16px + env(safe-area-inset-top)) 16px 4px" }
+    style: { padding: "6vh 3vw 4px" }
   }, /*#__PURE__*/React.createElement("a", {
     href: "index.html",
     style: {

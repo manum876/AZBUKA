@@ -201,22 +201,55 @@ function azRenderDrawer(activeType, activeId){
    unidades/herramientas por resultados en el mismo contenedor. Al borrar
    el texto, vuelve a mostrar la lista normal (recordando cuál era la
    unidad/módulo activo para no perder el resaltado). */
+/* Fase 7 (ver MIGRACION_LEXICO.md): las palabras que están en el léxico
+   central (data-lexicon.js, 254 palabras que aparecen en 2+ módulos) se
+   muestran como UNA ficha consolidada — con su unidad de enseñanza y sus
+   herramientas de aparición — en vez de una fila suelta repetida por
+   cada módulo. El resto de las palabras (la gran mayoría) sigue
+   mostrándose exactamente como antes, sin ningún cambio de comportamiento.
+   azSearch()/AZ_SEARCH_INDEX no se tocan. */
+const GENDER_SHORT = {m:'masc.', f:'fem.', n:'neutro'};
+const POS_LABEL = {sustantivo:'Sustantivo', verbo:'Verbo', adjetivo:'Adjetivo', otro:'Otro'};
 function azRenderDrawerSearch(query){
   const el = document.getElementById('drawerUnits');
   if(!el) return;
   const q = (query||'').trim();
   if(!q){ azRenderDrawer(AZ_DRAWER_ACTIVE.type, AZ_DRAWER_ACTIVE.id); return; }
-  const results = azSearch(q);
-  if(results.length===0){
+
+  const lexResults = (typeof azSearchLexicon==='function') ? azSearchLexicon(q) : [];
+  const coveredRu = new Set(lexResults.map(r=>r.ru.trim().toLowerCase()));
+  const flatResults = azSearch(q).filter(r=>!coveredRu.has(r.ru.trim().toLowerCase()));
+
+  if(lexResults.length===0 && flatResults.length===0){
     el.innerHTML = '<div class="empty">Sin resultados.</div>';
     return;
   }
-  el.innerHTML = results.map(r=>`
+
+  const lexHtml = lexResults.map(r=>{
+    const unitLinks = (r.introducedIn||[]).map(u=>{
+      const unit = (typeof AZ_UNITS!=='undefined') ? AZ_UNITS.find(x=>x.id===u) : null;
+      return unit ? `<a class="lex-unit" href="${unit.href}">📘 Unidad ${u}</a>` : '';
+    }).join('');
+    const toolLinks = (r.appearsIn||[]).map(t=>{
+      const mod = (typeof AZ_MODULES!=='undefined') ? AZ_MODULES.find(m=>m.id===t) : null;
+      return mod ? `<a href="${mod.href}">${mod.title}</a>` : '';
+    }).join('');
+    const meta = [POS_LABEL[r.pos]||r.pos, r.gender?GENDER_SHORT[r.gender]:null, r.sense].filter(Boolean).join(' · ');
+    return `<div class="lex-card">
+      <div class="lex-head"><span class="lex-ru">${r.ru}</span><span class="lex-es">${r.es}</span></div>
+      <div class="lex-pos">${meta}</div>
+      <div class="lex-links">${unitLinks}${toolLinks}</div>
+    </div>`;
+  }).join('');
+
+  const flatHtml = flatResults.map(r=>`
     <a class="d-u" href="${r.href}" style="flex-direction:column;align-items:flex-start;gap:2px;">
       <span style="font-family:var(--serif);color:var(--gold);">${r.ru}</span>
       <span style="font-size:11.5px;">${r.es} · ${r.moduleLabel}</span>
       ${r.pairRu?`<span style="font-size:10.5px;color:var(--muted);">También: ${r.pairRu} (${r.pairEs})</span>`:''}
     </a>`).join('');
+
+  el.innerHTML = lexHtml + flatHtml;
 }
 
 /* Wire-up genérico de los controles del drawer — llamar una vez en init() */

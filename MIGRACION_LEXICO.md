@@ -7,7 +7,7 @@
 > migración**: qué se hizo en cada fase, qué se verificó, y qué queda
 > pendiente. Se actualiza al cerrar cada fase, nunca antes.
 
-Última actualización: Fase 6 completada (`azSearchLexicon()` agregado; sigue sin conectarse a ningún buscador visible).
+Última actualización: Fase 7 completada — migración a léxico central cerrada por completo (Fases 0-7).
 
 ---
 
@@ -312,6 +312,38 @@ No se intentó detectar apariciones **incidentales** de vocabulario dentro de la
 
 ---
 
+## Fase 7 — Integración de interfaz
+
+### Qué se hizo
+- **`core.css`**: se agregaron los estilos de `.lex-card` (ficha léxica consolidada) — borde dorado para distinguirla visualmente de una fila normal, cabecera con palabra rusa + traducción, línea de metadatos (tipo gramatical, género, sentido si es un homónimo como "среда"), y una fila de links pill: verdes para unidades del curso (`.lex-unit`), neutros para herramientas independientes. Reutiliza los tokens de color existentes (`--gold`, `--green`, `--card`, `--border`), nada nuevo fuera del sistema de diseño.
+- **`core.js`**: se reescribió `azRenderDrawerSearch()` (la función que renderiza resultados dentro de `#drawerUnits` cuando se escribe en el buscador del drawer) para combinar las dos capas:
+  1. Llama a `azSearchLexicon(query)` — si la palabra buscada está en el léxico central, arma una `.lex-card` con sus datos (`introducedIn` → link a la unidad, `appearsIn` → link a cada herramienta).
+  2. Llama a `azSearch(query)` (sin tocarla) y filtra del resultado cualquier fila cuya palabra rusa ya esté cubierta por una ficha léxica, para no duplicar la misma palabra dos veces en pantalla.
+  3. Concatena: fichas primero, filas sueltas después.
+  - Si no hay resultados en ninguna capa, se mantiene el mensaje "Sin resultados." de siempre. Si se vacía el campo de búsqueda, vuelve al drawer normal (unidades + herramientas), sin cambios.
+- Es la **misma función para las 10 páginas** (todas cargan `core.js` y usan el mismo `#drawerSearch`/`#drawerUnits`) — no hizo falta tocar ningún HTML individual para esto. Confirmado también funcionando dentro de las páginas React (`alfabeto.html`, `dialogos.html`), que llaman a esta misma función manualmente desde su propio input de búsqueda.
+
+### Qué NO se hizo (fuera de alcance, por ahora)
+- El buscador local de `diccionario.html` (`doSearch()`/`getAllDiccionarioWords()`) es un sistema aparte, ya documentado como independiente del buscador transversal — no se tocó. Podría beneficiarse de lo mismo más adelante, pero no era parte del pedido de esta fase.
+- No se creó una página o vista dedicada de "ficha de palabra" (tipo `palabra.html?id=LEX-xxx`) — se evaluó, pero enganchar la ficha directamente en el buscador del drawer da el mismo valor (ver de un vistazo dónde se enseña y dónde aparece una palabra) con muchísimo menos código nuevo y cero riesgo de romper navegación existente. Si en el futuro hace falta una vista de detalle más completa (con ejemplos de uso, audio, etc.), se puede construir aparte reutilizando `azLexiconEntry(id)`, que ya quedó expuesto desde la Fase 6 para ese propósito.
+
+### Verificación aplicada
+- `node --check` sobre `core.js` y sobre los `<script>` inline de las 10 páginas HTML.
+- CSS con llaves balanceadas (218 aperturas / 218 cierres) tras el agregado.
+- Ejecución real en jsdom simulando exactamente la interacción del usuario (escribir en `#drawerSearch`, disparar el evento `input`):
+  - "аптека" → 1 ficha consolidada (Unidad 1 + Unidad 3, Alfabeto/Casos/Diálogos/Diccionario), 0 filas sueltas.
+  - "город" → 1 ficha, 0 filas sueltas.
+  - "спасибо" → 1 ficha + 2 filas sueltas (las frases compuestas "Хорошо, спасибо" y "Большое спасибо", que no matchean como palabra exacta y correctamente NO se fusionan).
+  - Término inexistente → sigue mostrando "Sin resultados.".
+  - Buscador vacío → vuelve a las 18 filas normales del drawer (12 unidades + 5 herramientas + índice), sin cambios.
+- Las 10 páginas siguen cargando sin errores nuevos (jsdom + servidor local).
+- Confirmado que `core.css` solo tiene el bloque `.lex-card` agregado; `core.js` solo tiene el bloque de `azRenderDrawerSearch()` reescrito; ninguna de las 10 páginas HTML cambió en esta fase.
+
+### Cierre de la migración
+Con esta fase se completa el recorrido completo planificado en este documento (Fases 0 a 7). El léxico central ya no es solo una capa de datos: está activo y visible en el buscador de toda la app. Próximos pasos posibles (fuera de esta migración, a definir cuando corresponda): extender `introducesLex`/`introducedIn` a las unidades 4-12 a medida que se construyan, o evaluar si conviene una vista de ficha de palabra más completa.
+
+---
+
 ## Estado de fases
 
 | Fase | Descripción | Estado |
@@ -323,4 +355,4 @@ No se intentó detectar apariciones **incidentales** de vocabulario dentro de la
 | 4 | Creación de `data-lexicon.js` | ✅ Completada |
 | 5 | Relaciones pedagógicas (`introducedIn` / `appearsIn`) | ✅ Completada |
 | 6 | Segunda capa de búsqueda basada en léxico central | ✅ Completada |
-| 7 | Integración de interfaz | ⏳ Pendiente |
+| 7 | Integración de interfaz | ✅ Completada |

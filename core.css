@@ -250,6 +250,19 @@ p.ps{color:var(--sub);font-size:14.5px;margin-bottom:20px;max-width:560px;line-h
 .gresult:hover{border-color:var(--gold);}
 .gresult .gmod{font-size:9.5px;color:var(--gold);text-transform:uppercase;letter-spacing:1px;font-weight:700;}
 
+/* ===== FICHA LÉXICA (Fase 7 — resultado consolidado del buscador para
+   palabras del léxico central, una por identidad en vez de una por
+   módulo. Ver MIGRACION_LEXICO.md, Fase 7.) ===== */
+.lex-card{background:var(--card);border:1px solid var(--gold);border-radius:10px;padding:10px 12px;margin-bottom:8px;}
+.lex-card .lex-head{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:3px;}
+.lex-card .lex-ru{font-family:var(--serif);font-size:16px;color:var(--gold);font-weight:600;}
+.lex-card .lex-es{font-size:12.5px;color:var(--text);}
+.lex-card .lex-pos{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px;}
+.lex-card .lex-links{display:flex;flex-wrap:wrap;gap:5px;}
+.lex-card .lex-links a{font-size:11px;color:var(--sub);background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:3px 8px;text-decoration:none;}
+.lex-card .lex-links a:hover{border-color:var(--gold);color:var(--gold);}
+.lex-card .lex-links a.lex-unit{color:var(--green);border-color:var(--green);}
+
 /* ===== MISC ===== */
 .empty{color:var(--muted);font-size:13.5px;padding:26px 0;text-align:center;}
 .es2{text-align:center;padding:18px;}

@@ -161,7 +161,8 @@ azRegisterSearchEntries(moduleId, moduleLabel, href, entries)
 - Solo se indexa el **vocabulario explícito** de cada unidad/módulo, nunca las líneas de diálogos de ejemplo.
 - **Caso especial `alfabeto.html`:** al ser React, llama manualmente a `azRegisterAllKnownSearchIndexes()` junto con `azLoadProgress()`.
 - Si se crea otra página React en el futuro, replicar este mismo llamado manual.
-- **Segunda capa (Fase 6, ver `MIGRACION_LEXICO.md`):** `azSearchLexicon(query)` en `core.js` consulta `data-lexicon.js` (si la página lo cargó) y devuelve un resultado por identidad léxica en vez de uno por módulo — ej. "аптека" da 1 fila con sus 5 fuentes adentro, en vez de 5 filas sueltas. Es una capa nueva y separada, `azSearch()`/`AZ_SEARCH_INDEX` no se tocaron. Todavía no está conectada a ningún buscador visible (eso es Fase 7).
+- **Segunda capa (Fase 6, ver `MIGRACION_LEXICO.md`):** `azSearchLexicon(query)` en `core.js` consulta `data-lexicon.js` (si la página lo cargó) y devuelve un resultado por identidad léxica en vez de uno por módulo — ej. "аптека" da 1 fila con sus 5 fuentes adentro, en vez de 5 filas sueltas. Es una capa nueva y separada, `azSearch()`/`AZ_SEARCH_INDEX` no se tocaron.
+- **Ficha léxica en el drawer (Fase 7):** `azRenderDrawerSearch()` ahora combina las dos capas: para las 254 palabras del léxico central muestra una **ficha consolidada** (`.lex-card` en `core.css`) con traducción, tipo gramatical, género/sentido, y links a la unidad del curso que la enseña (`introducedIn`) y a las herramientas donde aparece (`appearsIn`). El resto de las palabras (la gran mayoría, fuera del léxico central) se sigue mostrando exactamente como antes, fila por fila. Es la misma función para las 10 páginas — no hay nada específico por página.
 
 ---
 
@@ -214,10 +215,11 @@ Cada archivo modificado se valida con:
 
 ✅ Migrados al patrón v2/canónico: `index.html`, `azbuka-index.html`, `azbuka-1.html`, `azbuka-2.html`, `azbuka-3.html`, `alfabeto.html`, `diccionario.html`, `dialogos.html`.
 
-✅ Migración a léxico central (ver `MIGRACION_LEXICO.md`) — Fases 0 a 6 completadas: IDs estables, diálogos extraídos, correcciones/unificación regional, `data-lexicon.js` construido, relaciones `introducedIn`/`appearsIn` conectadas, y segunda capa de búsqueda (`azSearchLexicon()`) agregada en `core.js` — sin reemplazar el buscador actual del drawer. Próxima fase (7): integración de interfaz.
+✅ Migración a léxico central (ver `MIGRACION_LEXICO.md`) — Fases 0 a 7 completadas: IDs estables, diálogos extraídos, correcciones/unificación regional, `data-lexicon.js` construido, relaciones `introducedIn`/`appearsIn` conectadas, segunda capa de búsqueda y **ficha léxica consolidada en el buscador del drawer** (ver sección 7 de este documento) ya integrada y visible en las 10 páginas.
 
 - `alfabeto.html`, `diccionario.html` y `dialogos.html` fueron actualizados recientemente para respetar la regla responsive del 5%.
 - `dialogos.html` fue migrado desde su versión anterior a la estructura v2 siguiendo la estructura de `alfabeto.html`, manteniendo sus datos existentes y el buscador transversal.
+- `dialogos.html` tenía código viejo de una versión anterior de la regla de zona segura (usaba `env(safe-area-inset-top)`, prohibido por la sección 8, y paddings en píxeles fijos en vez de `vw`/`vh`). Se corrigió: header y drawer ahora usan `6vh 3vw` como el resto de la app, el contenido usa `0 3vw 4vh`, y se agregó `overflow-x:hidden` global. El resto de la estructura (drawer, bottom nav, tema) ya estaba al patrón canónico desde antes — no hacía falta remigrarla.
 - `core.css` es la base común del sistema responsive y de diseño.
 - `verbos.html` y `casos.html` no deben darse por migrados al patrón completo sin revisar sus versiones actuales.
 
