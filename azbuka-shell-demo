@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Азбука">
+<title>Азбука · Prototipo de esqueleto (1)</title>
+<link rel="stylesheet" href="core.css">
+<link rel="stylesheet" href="core-shell.css">
+<style>
+  /* Solo para que las cards placeholder se vean como cards reales */
+  .ph-card{margin-bottom:14px;}
+  .ph-card h3{font-size:14.5px;margin-bottom:6px;color:var(--text);}
+  .ph-card p{font-size:12.5px;color:var(--muted);line-height:1.5;}
+  .ph-note{background:var(--goldD);border:1px solid var(--gold);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--sub);margin-bottom:20px;line-height:1.6;}
+  .ph-note b{color:var(--gold);}
+</style>
+</head>
+<body>
+
+<div id="overlay"></div>
+<div id="drawer">
+  <div class="drawer-search dh-top">
+    <input type="text" id="drawerSearch" placeholder="Buscar en el diccionario…" autocomplete="off">
+  </div>
+  <div id="drawerUnits"></div>
+  <div id="drawerFoot" class="shell-foot">
+    <button id="themeBtnDrawer" aria-label="Cambiar tema"></button>
+    <a id="homeBtnDrawer" href="index.html">🏠 Inicio</a>
+  </div>
+</div>
+
+<header id="topbar">
+  <button id="backBtn" class="tb-back" aria-label="Atrás"><span>‹</span></button>
+  <div class="tb-title">
+    <span class="tb-brand">Азбука</span>
+    <span class="tb-tagline">Aprende ruso desde cero</span>
+  </div>
+</header>
+
+<div id="content" class="shell-content">
+  <div class="shell-inner">
+    <div class="ph-note">
+      <b>Placeholder 1 de 2</b> — esta pantalla simula una vista tipo
+      "índice", con varias secciones en la nav inferior para forzar el
+      scroll horizontal. Probá: abrir el drawer, buscar algo (todavía
+      sin datos reales conectados), tocar una card para ir a la
+      pantalla 2, y volver con «‹» — debería traerte exactamente acá.
+    </div>
+
+    <div class="card ph-card">
+      <h3>Tarjeta de contenido А</h3>
+      <p>Texto de relleno para ver cómo se comporta una card normal dentro de la zona de 2% de margen del contenido.</p>
+    </div>
+    <div class="card ph-card">
+      <h3>Tarjeta de contenido Б</h3>
+      <p>Otra card de prueba. El contenido no debería scrollear horizontalmente ni permitir zoom en ningún punto de la página.</p>
+    </div>
+    <a class="card ph-card" href="azbuka-shell-demo-2.html" style="display:block;text-decoration:none;color:inherit;border-color:var(--gold);">
+      <h3 style="color:var(--gold);">Ir a la pantalla 2 →</h3>
+      <p>Simula navegar a una ficha de detalle. Desde ahí probá el botón «‹» del header.</p>
+    </a>
+    <div class="card ph-card">
+      <h3>Tarjeta de contenido Г</h3>
+      <p>Relleno adicional para poder scrollear verticalmente y confirmar que el header y la nav bar quedan siempre fijos.</p>
+    </div>
+    <div class="card ph-card">
+      <h3>Tarjeta de contenido Д</h3>
+      <p>Última card de esta pantalla.</p>
+    </div>
+  </div>
+</div>
+
+<nav id="bnav" class="shell-bnav">
+  <div class="bn-inner">
+    <div class="bn-burger-wrap">
+      <button class="nb ac" id="menuBtn"><span class="ni">☰</span><span>Menú</span></button>
+    </div>
+    <div id="navSections">
+      <button class="nb"><span class="ni">📖</span><span>Vocabulario</span></button>
+      <button class="nb"><span class="ni">✏️</span><span>Ejercicios</span></button>
+      <button class="nb"><span class="ni">🗣️</span><span>Diálogos</span></button>
+      <button class="nb"><span class="ni">📐</span><span>Gramática</span></button>
+      <button class="nb"><span class="ni">⭐</span><span>Favoritos</span></button>
+      <button class="nb"><span class="ni">📝</span><span>Notas</span></button>
+      <button class="nb"><span class="ni">📊</span><span>Progreso</span></button>
+    </div>
+  </div>
+</nav>
+
+<div id="toast"></div>
+
+<script src="core.js"></script>
+<script src="core-shell.js"></script>
+<script>
+azInitShell({activeType:null, activeId:null});
+</script>
+
+</body>
+</html>
