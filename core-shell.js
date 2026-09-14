@@ -49,6 +49,67 @@ function azShellMeasure(){
   if(bn) document.documentElement.style.setProperty('--shell-nav-h', bn.offsetHeight + 'px');
 }
 
+/* ── FIJADO POR PX REALES (no vh, no env()) ────────────────────────
+   En vez de confiar en bottom:0 / vh / env(), medimos el alto real
+   que reporta el propio navegador (visualViewport si existe, que es
+   más confiable en iOS que innerHeight) y ubicamos la nav bar y el
+   drawer con un `top` calculado en px concretos. Si el "hueco" que se
+   ve es un bug de cómo iOS resuelve bottom:0 en modo standalone, esto
+   lo evita del todo porque no usamos bottom en ningún momento. */
+function azShellRealViewportH(){
+  const vv = window.visualViewport;
+  return vv ? Math.round(vv.height + vv.offsetTop) : window.innerHeight;
+}
+
+function azShellPinToRealBottom(){
+  const h = azShellRealViewportH();
+  const bnav = document.getElementById('bnav');
+  const drawer = document.getElementById('drawer');
+  if(bnav){
+    bnav.style.bottom = 'auto';
+    bnav.style.top = (h - bnav.offsetHeight) + 'px';
+  }
+  if(drawer){
+    drawer.style.bottom = 'auto';
+    drawer.style.height = h + 'px';
+  }
+}
+
+/* ── PANEL DE DIAGNÓSTICO (temporal, solo para esta demo) ──────────
+   Muestra los números crudos que reporta el navegador, para saber si
+   el hueco es un bug nuestro de CSS o una zona que iOS reserva y no
+   deja pintar — algo que ningún CSS puede arreglar. Si existe
+   #shellDiag en la página, lo completa; si no, no hace nada. */
+function azShellRenderDiag(){
+  const el = document.getElementById('shellDiag');
+  if(!el) return;
+  const bnav = document.getElementById('bnav');
+  const vv = window.visualViewport;
+  const rect = bnav ? bnav.getBoundingClientRect() : null;
+
+  // env(safe-area-inset-bottom) no se puede leer directo por JS —
+  // se lee indirecto vía un elemento con esa propiedad en su CSS.
+  let safeBottom = 'n/d';
+  const probe = document.createElement('div');
+  probe.style.cssText = 'position:fixed;bottom:0;height:0;padding-bottom:env(safe-area-inset-bottom, -1px);visibility:hidden;';
+  document.body.appendChild(probe);
+  const padVal = getComputedStyle(probe).paddingBottom;
+  document.body.removeChild(probe);
+  safeBottom = padVal;
+
+  const lines = [
+    `window.innerHeight: ${window.innerHeight}px`,
+    `visualViewport.height: ${vv ? Math.round(vv.height) + 'px' : 'no soportado'}`,
+    `visualViewport.offsetTop: ${vv ? Math.round(vv.offsetTop) + 'px' : 'n/d'}`,
+    `screen.height: ${window.screen.height}px`,
+    `devicePixelRatio: ${window.devicePixelRatio}`,
+    `env(safe-area-inset-bottom): ${safeBottom}`,
+    `#bnav.getBoundingClientRect().bottom: ${rect ? Math.round(rect.bottom) + 'px' : 'n/d'}`,
+    `¿bnav toca el borde real medido? ${rect ? (Math.round(rect.bottom) >= azShellRealViewportH() - 1 ? 'SÍ' : 'NO — faltan ' + Math.round(azShellRealViewportH() - rect.bottom) + 'px') : 'n/d'}`,
+  ];
+  el.textContent = lines.join('\n');
+}
+
 /* Llamar en vez de azInit() en las páginas que usen el esqueleto nuevo.
    Hace todo lo que hacía azInit() (tema, progreso, drawer, buscador
    transversal) y le suma el wiring de header + atrás + medición. */
@@ -57,7 +118,16 @@ async function azInitShell({activeType = null, activeId = null} = {}){
   azShellPushNav();
   azShellRenderHeader();
   document.getElementById('backBtn')?.addEventListener('click', azShellGoBack);
-  azShellMeasure();
-  requestAnimationFrame(azShellMeasure); // por si las fuentes tardan en aplicar
-  window.addEventListener('resize', azShellMeasure);
+
+  const refresh = () => {
+    azShellMeasure();
+    azShellPinToRealBottom();
+    azShellRenderDiag();
+  };
+  refresh();
+  requestAnimationFrame(refresh); // por si las fuentes/el layout tardan en asentarse
+  setTimeout(refresh, 300);       // por si iOS ajusta el viewport recién al final
+
+  window.addEventListener('resize', refresh);
+  window.visualViewport?.addEventListener('resize', refresh);
 }
