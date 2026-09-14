@@ -1,0 +1,11 @@
+{
+  "name": "Азбука — Aprende ruso desde cero",
+  "short_name": "Азбука",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0F0F14",
+  "theme_color": "#0F0F14",
+  "lang": "es"
+}
