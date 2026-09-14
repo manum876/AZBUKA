@@ -3,8 +3,11 @@
    Se carga DESPUÉS de core.css. No modifica ni borra ninguna regla
    existente de core.css — solo agrega los elementos nuevos:
    #topbar (título persistente + atrás), drawer reordenado (buscador
-   arriba, Inicio+tema abajo) y la bottom nav con sección scrolleable
-   + zona segura inferior real.
+   arriba, Inicio+tema abajo) y la bottom nav con sección scrolleable.
+   Bottom nav y pie del drawer quedan pegados al borde real del
+   viewport, sin zona segura reservada — igual que el resto de la app
+   (ver ESTETICA_AZBUKA.md §4 y §7: nunca env(safe-area-inset-*), la
+   zona segura de 4vh la reserva el CONTENIDO, no la barra ni el drawer).
    Una vez aprobado el esqueleto, esto se funde dentro de core.css. */
 
 :root{ --topbar-h:112px; --shell-nav-h:100px; } /* fallback antes de medir con JS */
@@ -41,10 +44,11 @@
 .shell-inner{max-width:700px;margin:0 auto;}
 
 /* ===== DRAWER — buscador arriba (apunta a la base léxica), Inicio
-   pasa a vivir abajo junto al toggle de tema, respetando 4% ===== */
+   pasa a vivir abajo junto al toggle de tema. Igual que el resto de la
+   app: SIN zona segura reservada acá, pegado al borde real. ===== */
 .dh-top{padding:6vh 3vw 6px;}
 #drawerFoot.shell-foot{
-  padding:12px 3vw 4vh;border-top:1px solid var(--border);
+  padding:12px 3vw 10px;border-top:1px solid var(--border);
   display:flex;align-items:center;justify-content:space-between;gap:10px;
 }
 #drawerFoot.shell-foot #homeBtnDrawer{
@@ -56,14 +60,15 @@
 #drawerFoot.shell-foot #homeBtnDrawer:hover{border-color:var(--gold);color:var(--gold);}
 #drawerFoot.shell-foot #themeBtnDrawer{flex-shrink:0;}
 
-/* ===== BOTTOM NAV — edge to edge, respeta 4% de zona segura inferior,
-   burger fijo a la izquierda, secciones scrolleables a la derecha ===== */
+/* ===== BOTTOM NAV — edge to edge, burger fijo a la izquierda,
+   secciones scrolleables a la derecha. Igual que el resto de la app:
+   SIN zona segura reservada acá, pegada al borde real del viewport. ===== */
 #bnav.shell-bnav{
   align-items:stretch;height:auto;padding:0;box-sizing:border-box;
 }
 #bnav.shell-bnav .bn-inner{
   display:flex;align-items:stretch;width:100%;
-  padding:4px 0 4vh;box-sizing:border-box;
+  padding:4px 0;box-sizing:border-box;
 }
 .bn-burger-wrap{
   flex-shrink:0;display:flex;align-items:center;
