@@ -50,6 +50,7 @@
 #drawerFoot.shell-foot{
   padding:12px 3vw 10px;border-top:1px solid var(--border);
   display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding-bottom:calc(10px + env(safe-area-inset-bottom, 0px));
 }
 #drawerFoot.shell-foot #homeBtnDrawer{
   flex:1;display:flex;align-items:center;justify-content:center;gap:8px;
@@ -61,10 +62,17 @@
 #drawerFoot.shell-foot #themeBtnDrawer{flex-shrink:0;}
 
 /* ===== BOTTOM NAV — edge to edge, burger fijo a la izquierda,
-   secciones scrolleables a la derecha. Igual que el resto de la app:
-   SIN zona segura reservada acá, pegada al borde real del viewport. ===== */
+   secciones scrolleables a la derecha. Pegada al borde real del
+   viewport, sin zona segura reservada para el CONTENIDO visual (eso
+   sigue siendo trabajo de .shell-content). El único uso de env() en
+   toda la app: es un experimento aislado, solo acá, para que en modo
+   standalone (ícono agregado a Inicio) el fondo de la barra realmente
+   llegue hasta abajo del home indicator — algo que en ese modo
+   puntual viewport-fit=cover por sí solo no garantiza. Si funciona en
+   el celu, lo dejamos; si no, se revierte sin afectar nada más. ===== */
 #bnav.shell-bnav{
   align-items:stretch;height:auto;padding:0;box-sizing:border-box;
+  padding-bottom:env(safe-area-inset-bottom, 0px);
 }
 #bnav.shell-bnav .bn-inner{
   display:flex;align-items:stretch;width:100%;
