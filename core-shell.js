@@ -67,16 +67,21 @@ function azShellRealViewportH(){
 }
 
 /* ── PANEL DE DIAGNÓSTICO (temporal, solo para esta demo) ──────────
-   Muestra los números crudos que reporta el navegador, para saber si
-   el hueco es un bug nuestro de CSS o una zona que iOS reserva y no
-   deja pintar — algo que ningún CSS puede arreglar. Si existe
-   #shellDiag en la página, lo completa; si no, no hace nada. */
+   Muestra los números crudos que reporta el navegador. Todo esto sale
+   directo del DOM (getBoundingClientRect / getComputedStyle) — cero
+   ambigüedad de estar interpretando colores en una captura de pantalla.
+   Si existe #shellDiag en la página, lo completa; si no, no hace nada. */
 function azShellRenderDiag(){
   const el = document.getElementById('shellDiag');
   if(!el) return;
   const bnav = document.getElementById('bnav');
+  const bnInner = document.querySelector('#bnav .bn-inner');
+  const firstBtn = document.querySelector('#bnav .nb');
   const vv = window.visualViewport;
   const rect = bnav ? bnav.getBoundingClientRect() : null;
+  const bnInnerRect = bnInner ? bnInner.getBoundingClientRect() : null;
+  const btnRect = firstBtn ? firstBtn.getBoundingClientRect() : null;
+  const bnavCS = bnav ? getComputedStyle(bnav) : null;
 
   // env(safe-area-inset-bottom) no se puede leer directo por JS —
   // se lee indirecto vía un elemento con esa propiedad en su CSS.
@@ -91,12 +96,18 @@ function azShellRenderDiag(){
   const lines = [
     `window.innerHeight: ${window.innerHeight}px`,
     `visualViewport.height: ${vv ? Math.round(vv.height) + 'px' : 'no soportado'}`,
-    `visualViewport.offsetTop: ${vv ? Math.round(vv.offsetTop) + 'px' : 'n/d'}`,
     `screen.height: ${window.screen.height}px`,
     `devicePixelRatio: ${window.devicePixelRatio}`,
     `env(safe-area-inset-bottom): ${safeBottom}`,
-    `#bnav.getBoundingClientRect().bottom: ${rect ? Math.round(rect.bottom) + 'px' : 'n/d'}`,
-    `¿bnav toca el borde real medido? ${rect ? (Math.round(rect.bottom) >= azShellRealViewportH() - 1 ? 'SÍ' : 'NO — faltan ' + Math.round(azShellRealViewportH() - rect.bottom) + 'px') : 'n/d'}`,
+    `--- MEDICIÓN DIRECTA DEL DOM (sin fotos) ---`,
+    `#bnav computed height (CSS): ${bnavCS ? bnavCS.height : 'n/d'}`,
+    `#bnav getBoundingClientRect().height: ${rect ? Math.round(rect.height) + 'px' : 'n/d'}`,
+    `#bnav getBoundingClientRect().top: ${rect ? Math.round(rect.top) + 'px' : 'n/d'}`,
+    `#bnav getBoundingClientRect().bottom: ${rect ? Math.round(rect.bottom) + 'px' : 'n/d'}`,
+    `.bn-inner getBoundingClientRect().height: ${bnInnerRect ? Math.round(bnInnerRect.height) + 'px' : 'n/d'}`,
+    `primer .nb getBoundingClientRect().height: ${btnRect ? Math.round(btnRect.height) + 'px' : 'n/d'}`,
+    `#bnav computed overflow: ${bnavCS ? bnavCS.overflow : 'n/d'}`,
+    `¿bnav.bottom llega a innerHeight? ${rect ? (Math.round(rect.bottom) >= window.innerHeight - 1 ? 'SÍ' : 'NO — faltan ' + Math.round(window.innerHeight - rect.bottom) + 'px') : 'n/d'}`,
   ];
   el.textContent = lines.join('\n');
 }
