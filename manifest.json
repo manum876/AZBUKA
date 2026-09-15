@@ -1,7 +1,7 @@
 {
   "name": "Азбука — Aprende ruso desde cero",
   "short_name": "Азбука",
-  "start_url": "./index.html",
+  "start_url": "./azbuka-shell-demo.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
