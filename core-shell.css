@@ -12,18 +12,6 @@
 
 :root{ --topbar-h:112px; --shell-nav-h:100px; } /* fallback antes de medir con JS */
 
-/* ============================================================
-   DIAGNÓSTICO TEMPORAL — sacar antes de aprobar el esqueleto.
-   1) Franja LIMA: fixed bottom:0 puro, sin JS, sin env(), sin nada
-      — el test más simple posible de "¿algo con bottom:0 llega al
-      borde físico real acá?", totalmente aislado de nuestra nav.
-   2) Nav bar en FUCSIA: para comparar en la misma foto si el hueco
-      que se ve está entre la nav y la franja lima (bug nuestro) o si
-      ninguna de las dos llega al borde (límite del propio sistema).
-   ============================================================ */
-#azDiagStrip{position:fixed;left:0;right:0;bottom:0;height:20px;background:#39FF14;z-index:999;}
-#bnav.shell-bnav{background:#FF00AA !important;}
-
 /* ===== TOPBAR — título persistente, no se oculta con scroll ===== */
 #topbar{
   position:fixed;top:0;left:0;right:0;z-index:90;
@@ -57,8 +45,10 @@
 
 /* ===== DRAWER — buscador arriba (apunta a la base léxica), Inicio
    pasa a vivir abajo junto al toggle de tema. Igual que el resto de la
-   app: SIN zona segura reservada acá, pegado al borde real. ===== */
+   app: SIN zona segura reservada acá, pegado al borde real.
+   Fondo igualado a var(--bg) — ver nota más abajo en BOTTOM NAV. ===== */
 .dh-top{padding:6vh 3vw 6px;}
+#drawer{background:var(--bg);}
 #drawerFoot.shell-foot{
   padding:12px 3vw 10px;border-top:1px solid var(--border);
   display:flex;align-items:center;justify-content:space-between;gap:10px;
@@ -73,13 +63,21 @@
 #drawerFoot.shell-foot #themeBtnDrawer{flex-shrink:0;}
 
 /* ===== BOTTOM NAV — edge to edge, burger fijo a la izquierda,
-   secciones scrolleables a la derecha. La posición real la fija
-   core-shell.js (azShellPinToRealBottom), midiendo el alto de
-   viewport que reporta el propio navegador — confirmado por el panel
-   de diagnóstico que eso solo ya alcanza el borde físico real acá.
-   Nada de env() ni vh en juego para la posición. ===== */
+   secciones scrolleables a la derecha. Posición simple heredada de
+   core.css (position:fixed;bottom:0).
+
+   CAUSA REAL del "hueco" que veíamos en standalone (ya resuelta):
+   no era ninguna zona reservada del sistema — el navegador extiende
+   el color de fondo de <body> (var(--bg)) para cubrir TODO el lienzo,
+   incluida el área bajo el home indicator, pero un elemento fixed
+   normal (nuestra nav) queda acotado a window.innerHeight y no llega
+   tan lejos. Como la nav usaba var(--bg2) — un gris apenas más claro
+   que --bg, pensado para dar profundidad — se veía la costura entre
+   ambos tonos. alfabeto.html no tiene este problema porque usa el
+   mismo color para body y para su nav. Solución: iguala acá también. ===== */
 #bnav.shell-bnav{
   align-items:stretch;height:auto;padding:0;box-sizing:border-box;
+  background:var(--bg);
 }
 #bnav.shell-bnav .bn-inner{
   display:flex;align-items:stretch;width:100%;
