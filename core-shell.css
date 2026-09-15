@@ -12,6 +12,18 @@
 
 :root{ --topbar-h:112px; --shell-nav-h:100px; } /* fallback antes de medir con JS */
 
+/* ============================================================
+   DIAGNÓSTICO TEMPORAL — sacar antes de aprobar el esqueleto.
+   1) Franja LIMA: fixed bottom:0 puro, sin JS, sin env(), sin nada
+      — el test más simple posible de "¿algo con bottom:0 llega al
+      borde físico real acá?", totalmente aislado de nuestra nav.
+   2) Nav bar en FUCSIA: para comparar en la misma foto si el hueco
+      que se ve está entre la nav y la franja lima (bug nuestro) o si
+      ninguna de las dos llega al borde (límite del propio sistema).
+   ============================================================ */
+#azDiagStrip{position:fixed;left:0;right:0;bottom:0;height:20px;background:#39FF14;z-index:999;}
+#bnav.shell-bnav{background:#FF00AA !important;}
+
 /* ===== TOPBAR — título persistente, no se oculta con scroll ===== */
 #topbar{
   position:fixed;top:0;left:0;right:0;z-index:90;
