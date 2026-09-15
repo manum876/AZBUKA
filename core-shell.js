@@ -49,30 +49,21 @@ function azShellMeasure(){
   if(bn) document.documentElement.style.setProperty('--shell-nav-h', bn.offsetHeight + 'px');
 }
 
-/* ── FIJADO POR PX REALES (no vh, no env()) ────────────────────────
-   En vez de confiar en bottom:0 / vh / env(), medimos el alto real
-   que reporta el propio navegador (visualViewport si existe, que es
-   más confiable en iOS que innerHeight) y ubicamos la nav bar y el
-   drawer con un `top` calculado en px concretos. Si el "hueco" que se
-   ve es un bug de cómo iOS resuelve bottom:0 en modo standalone, esto
-   lo evita del todo porque no usamos bottom en ningún momento. */
+/* ── ALTO REAL DE VIEWPORT (solo para el panel de diagnóstico) ─────
+   Se probó fijar la nav bar y el drawer por píxeles calculados a
+   partir de esto (en vez de bottom:0 / top:0 de CSS), pero midiendo
+   con precisión de píxel sobre capturas reales del dispositivo se
+   confirmó que ambos enfoques llegan exactamente al mismo límite: el
+   borde de window.innerHeight. La franja que queda entre ese borde y
+   el borde físico real (en modo standalone) es una zona que iOS
+   reserva para sí mismo y que ningún contenido web puede pintar — ni
+   con vh, ni con env(), ni con JS. Por eso NO fijamos nada por JS acá:
+   el bottom:0 / top:0 de core.css ya llega tan lejos como se puede
+   llegar. Esta función se deja solo para seguir viendo los números
+   en el panel de diagnóstico si hace falta debuguear otra cosa. */
 function azShellRealViewportH(){
   const vv = window.visualViewport;
   return vv ? Math.round(vv.height + vv.offsetTop) : window.innerHeight;
-}
-
-function azShellPinToRealBottom(){
-  const h = azShellRealViewportH();
-  const bnav = document.getElementById('bnav');
-  const drawer = document.getElementById('drawer');
-  if(bnav){
-    bnav.style.bottom = 'auto';
-    bnav.style.top = (h - bnav.offsetHeight) + 'px';
-  }
-  if(drawer){
-    drawer.style.bottom = 'auto';
-    drawer.style.height = h + 'px';
-  }
 }
 
 /* ── PANEL DE DIAGNÓSTICO (temporal, solo para esta demo) ──────────
@@ -121,7 +112,6 @@ async function azInitShell({activeType = null, activeId = null} = {}){
 
   const refresh = () => {
     azShellMeasure();
-    azShellPinToRealBottom();
     azShellRenderDiag();
   };
   refresh();
