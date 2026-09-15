@@ -10,7 +10,7 @@
    zona segura de 4vh la reserva el CONTENIDO, no la barra ni el drawer).
    Una vez aprobado el esqueleto, esto se funde dentro de core.css. */
 
-:root{ --topbar-h:112px; --shell-nav-h:100px; } /* fallback antes de medir con JS */
+:root{ --topbar-h:112px; --shell-nav-h:64px; } /* fallback antes de medir con JS */
 
 /* ===== TOPBAR — título persistente, no se oculta con scroll ===== */
 #topbar{
@@ -66,22 +66,21 @@
    secciones scrolleables a la derecha. Posición simple heredada de
    core.css (position:fixed;bottom:0).
 
-   CAUSA REAL del "hueco" que veíamos en standalone (ya resuelta):
-   no era ninguna zona reservada del sistema — el navegador extiende
-   el color de fondo de <body> (var(--bg)) para cubrir TODO el lienzo,
-   incluida el área bajo el home indicator, pero un elemento fixed
-   normal (nuestra nav) queda acotado a window.innerHeight y no llega
-   tan lejos. Como la nav usaba var(--bg2) — un gris apenas más claro
-   que --bg, pensado para dar profundidad — se veía la costura entre
-   ambos tonos. alfabeto.html no tiene este problema porque usa el
-   mismo color para body y para su nav. Solución: iguala acá también. ===== */
+   Fondo igualado a var(--bg) (ver DRAWER arriba) para que no haya
+   costura contra lo que asoma detrás del home indicator en standalone.
+
+   ALTO FIJO — esta es la causa real de que se viera distinta a
+   alfabeto.html: con height:auto, el contenido (ícono 21px + gap +
+   texto 11.5px) se estiraba libre y terminaba ocupando ~112pt en vez
+   de los ~64-79pt de siempre. Se vuelve a fijar con var(--nav-h), el
+   mismo alto que usa el resto de la app. ===== */
 #bnav.shell-bnav{
-  align-items:stretch;height:auto;padding:0;box-sizing:border-box;
+  align-items:stretch;height:var(--nav-h);padding:0;box-sizing:border-box;
   background:var(--bg);
 }
 #bnav.shell-bnav .bn-inner{
   display:flex;align-items:stretch;width:100%;
-  padding:4px 0;box-sizing:border-box;
+  padding:0;box-sizing:border-box;
 }
 .bn-burger-wrap{
   flex-shrink:0;display:flex;align-items:center;
