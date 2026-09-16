@@ -10,7 +10,7 @@
    zona segura de 4vh la reserva el CONTENIDO, no la barra ni el drawer).
    Una vez aprobado el esqueleto, esto se funde dentro de core.css. */
 
-:root{ --topbar-h:112px; --shell-nav-h:64px; } /* fallback antes de medir con JS */
+:root{ --topbar-h:112px; --shell-nav-h:73px; } /* fallback antes de medir con JS */
 
 /* ===== TOPBAR — título persistente, no se oculta con scroll ===== */
 #topbar{
@@ -75,7 +75,7 @@
    de los ~64-79pt de siempre. Se vuelve a fijar con var(--nav-h), el
    mismo alto que usa el resto de la app. ===== */
 #bnav.shell-bnav{
-  align-items:stretch;height:var(--nav-h);padding:0;box-sizing:border-box;
+  align-items:stretch;height:73px;padding:0;box-sizing:border-box;
   background:var(--bg);
 }
 #bnav.shell-bnav .bn-inner{
