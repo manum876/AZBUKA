@@ -62,34 +62,37 @@
 #drawerFoot.shell-foot #homeBtnDrawer:hover{border-color:var(--gold);color:var(--gold);}
 #drawerFoot.shell-foot #themeBtnDrawer{flex-shrink:0;}
 
-/* ===== BOTTOM NAV — edge to edge, burger fijo a la izquierda,
-   secciones scrolleables a la derecha. Posición simple heredada de
-   core.css (position:fixed;bottom:0).
-
-   Fondo igualado a var(--bg) (ver DRAWER arriba) para que no haya
-   costura contra lo que asoma detrás del home indicator en standalone.
-
-   ALTO FIJO — esta es la causa real de que se viera distinta a
-   alfabeto.html: con height:auto, el contenido (ícono 21px + gap +
-   texto 11.5px) se estiraba libre y terminaba ocupando ~112pt en vez
-   de los ~64-79pt de siempre. Se vuelve a fijar con var(--nav-h), el
-   mismo alto que usa el resto de la app. ===== */
+/* ===== BOTTOM NAV — misma configuración visual y estructural que
+   alfabeto.html: barra fija abajo, fondo + blur, borde superior,
+   padding 10px 16px, contenido centrado a 960px y botones verticales
+   con icono + etiqueta. ===== */
 #bnav.shell-bnav{
-  align-items:stretch;height:73px;padding:0;box-sizing:border-box;
-  background:var(--bg);
+  position:fixed;left:0;right:0;bottom:0;z-index:100;
+  background:var(--bg);backdrop-filter:blur(12px);
+  border-top:1px solid var(--border);
+  padding:10px 16px;box-sizing:border-box;height:auto;
 }
 #bnav.shell-bnav .bn-inner{
-  display:flex;align-items:stretch;width:100%;
+  max-width:960px;margin:0 auto;width:100%;
+  display:flex;justify-content:space-around;align-items:center;
   padding:0;box-sizing:border-box;
 }
 .bn-burger-wrap{
   flex-shrink:0;display:flex;align-items:center;
-  border-right:1px solid var(--border);padding:0 2px;
+  border:0;padding:0;
 }
-.bn-burger-wrap .nb{min-width:56px;}
+.bn-burger-wrap .nb{min-width:0;}
 #navSections{
-  flex:1;display:flex;align-items:center;overflow-x:auto;overflow-y:hidden;
-  scrollbar-width:none;-ms-overflow-style:none;
+  flex:1;display:flex;align-items:center;justify-content:space-around;
+  overflow:visible;
 }
-#navSections::-webkit-scrollbar{display:none;}
 #navSections .nb{flex-shrink:0;}
+.nb{
+  background:none;border:none;padding:6px 20px;border-radius:10px;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  color:var(--muted);cursor:pointer;font-family:inherit;
+}
+.nb .ni{font-size:20px;line-height:1;}
+.nb > span:last-child{font-size:11px;font-weight:600;line-height:1.1;}
+.nb.ac{color:var(--gold);}
+.nb:hover{background:var(--goldD);color:var(--gold);}
