@@ -49,6 +49,24 @@ function azShellMeasure(){
   if(bn) document.documentElement.style.setProperty('--shell-nav-h', bn.offsetHeight + 'px');
 }
 
+/* ── FORZAR MÁS ALLÁ DE innerHeight (prueba nueva, nunca probada) ──
+   Todo lo anterior usó bottom:0, que frena justo en el borde de
+   innerHeight. Acá probamos algo distinto: calculamos la diferencia
+   real entre screen.height (pantalla física) e innerHeight (lo que
+   el navegador dice que tiene disponible), y empujamos la nav con un
+   bottom NEGATIVO igual a esa diferencia — forzándola a extenderse
+   más allá del borde que veníamos respetando siempre. Si esto
+   funciona, la diferencia entre screen.height e innerHeight sí era
+   pintable, solo que nunca la habíamos forzado explícitamente. */
+function azShellForceEdge(){
+  const delta = window.screen.height - window.innerHeight;
+  const bnav = document.getElementById('bnav');
+  const drawer = document.getElementById('drawer');
+  if(bnav){ bnav.style.bottom = (-delta) + 'px'; }
+  if(drawer){ drawer.style.bottom = (-delta) + 'px'; }
+  return delta;
+}
+
 /* ── ALTO REAL DE VIEWPORT (solo para el panel de diagnóstico) ─────
    Se probó fijar la nav bar y el drawer por píxeles calculados a
    partir de esto (en vez de bottom:0 / top:0 de CSS), pero midiendo
@@ -94,11 +112,15 @@ function azShellRenderDiag(){
   safeBottom = padVal;
 
   const lines = [
+    `BUILD: core-shell v11 (prueba bottom negativo)`,
     `window.innerHeight: ${window.innerHeight}px`,
     `visualViewport.height: ${vv ? Math.round(vv.height) + 'px' : 'no soportado'}`,
     `screen.height: ${window.screen.height}px`,
     `devicePixelRatio: ${window.devicePixelRatio}`,
     `env(safe-area-inset-bottom): ${safeBottom}`,
+    `--- PRUEBA: bottom negativo forzado ---`,
+    `delta (screen.height - innerHeight): ${window.screen.height - window.innerHeight}px`,
+    `#bnav style.bottom aplicado: ${bnav ? bnav.style.bottom : 'n/d'}`,
     `--- MEDICIÓN DIRECTA DEL DOM (sin fotos) ---`,
     `#bnav computed height (CSS): ${bnavCS ? bnavCS.height : 'n/d'}`,
     `#bnav getBoundingClientRect().height: ${rect ? Math.round(rect.height) + 'px' : 'n/d'}`,
@@ -107,7 +129,7 @@ function azShellRenderDiag(){
     `.bn-inner getBoundingClientRect().height: ${bnInnerRect ? Math.round(bnInnerRect.height) + 'px' : 'n/d'}`,
     `primer .nb getBoundingClientRect().height: ${btnRect ? Math.round(btnRect.height) + 'px' : 'n/d'}`,
     `#bnav computed overflow: ${bnavCS ? bnavCS.overflow : 'n/d'}`,
-    `¿bnav.bottom llega a innerHeight? ${rect ? (Math.round(rect.bottom) >= window.innerHeight - 1 ? 'SÍ' : 'NO — faltan ' + Math.round(window.innerHeight - rect.bottom) + 'px') : 'n/d'}`,
+    `¿bnav.bottom llega a screen.height (real)? ${rect ? (Math.round(rect.bottom) >= window.screen.height - 1 ? 'SÍ' : 'NO — faltan ' + Math.round(window.screen.height - rect.bottom) + 'px') : 'n/d'}`,
   ];
   el.textContent = lines.join('\n');
 }
@@ -123,6 +145,7 @@ async function azInitShell({activeType = null, activeId = null} = {}){
 
   const refresh = () => {
     azShellMeasure();
+    azShellForceEdge();
     azShellRenderDiag();
   };
   refresh();
