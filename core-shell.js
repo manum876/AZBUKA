@@ -90,11 +90,9 @@ function azShellRenderDiag(){
   const el = document.getElementById('shellDiag');
   if(!el) return;
   const bnav = document.getElementById('bnav');
-  const bnInner = document.querySelector('#bnav .bn-inner');
   const firstBtn = document.querySelector('#bnav .nb');
   const vv = window.visualViewport;
   const rect = bnav ? bnav.getBoundingClientRect() : null;
-  const bnInnerRect = bnInner ? bnInner.getBoundingClientRect() : null;
   const btnRect = firstBtn ? firstBtn.getBoundingClientRect() : null;
   const bnavCS = bnav ? getComputedStyle(bnav) : null;
 
@@ -109,7 +107,7 @@ function azShellRenderDiag(){
   safeBottom = padVal;
 
   const lines = [
-    `BUILD: core-shell v12 (revertido: bottom negativo tapado por iOS)`,
+    `BUILD: core-shell v13 (nav aplanada, sin .bn-inner)`,
     `window.innerHeight: ${window.innerHeight}px`,
     `visualViewport.height: ${vv ? Math.round(vv.height) + 'px' : 'no soportado'}`,
     `screen.height: ${window.screen.height}px`,
@@ -120,7 +118,6 @@ function azShellRenderDiag(){
     `#bnav getBoundingClientRect().height: ${rect ? Math.round(rect.height) + 'px' : 'n/d'}`,
     `#bnav getBoundingClientRect().top: ${rect ? Math.round(rect.top) + 'px' : 'n/d'}`,
     `#bnav getBoundingClientRect().bottom: ${rect ? Math.round(rect.bottom) + 'px' : 'n/d'}`,
-    `.bn-inner getBoundingClientRect().height: ${bnInnerRect ? Math.round(bnInnerRect.height) + 'px' : 'n/d'}`,
     `primer .nb getBoundingClientRect().height: ${btnRect ? Math.round(btnRect.height) + 'px' : 'n/d'}`,
     `#bnav computed overflow: ${bnavCS ? bnavCS.overflow : 'n/d'}`,
     `¿bnav.bottom llega a innerHeight? ${rect ? (Math.round(rect.bottom) >= window.innerHeight - 1 ? 'SÍ' : 'NO — faltan ' + Math.round(window.innerHeight - rect.bottom) + 'px') : 'n/d'}`,
